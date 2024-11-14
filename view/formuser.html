@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up</title>
+  
+  <link rel="stylesheet" href="path/to/your/bootstrap.css">
+  <style>
+    /* Style pour que l'image couvre tout l'arrière-plan */
+    body {
+      background: url('images/arriereform.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    
+    
+
+   /* Styles des champs de saisie */
+   .form-control, .form-select {
+      height: 50px;
+      font-size: 1.1em;
+    }
+    
+    /* Bouton Submit et Return */
+    .btn-submit {
+      height: 60px; /* Augmente la hauteur */
+      font-size: 1.2em; /* Taille de police plus grande */
+      background-color: #000000; /* Noir */
+      border-color: #000000; /* Bordure noire */
+      color: white; /* Texte en blanc */
+    }
+    
+    .btn-submit:hover {
+      background-color: #333333; /* Gris foncé au survol */
+      border-color: #333333; /* Bordure change aussi au survol */
+    }
+
+
+    .btn-block {
+      width: 40%;
+    }
+
+    
+
+    /* Pour la table */
+    table {
+      width: 100%;
+    }
+    td {
+      padding: 10px;
+      vertical-align: middle;
+    }
+    
+  </style>
+</head>
+
+<body>
+
+<div class="form-container">
+    <header>
+        <h1 align="center">SIGN UP</h1>
+    </header>
+    <br>
+    <br>
+    <form>
+        <table>
+            <tr>
+                <td><label for="fullName" class="form-label">Full Name : </label></td>
+                <td><input type="text" class="form-control rounded-0" name="fullName" id="fullName" placeholder="Full Name"></td>
+            </tr>
+            <tr>
+              <td><label for="ID" class="form-label">CIN : </label></td>
+              <td><input type="ID" class="form-control rounded-0" name="ID" id="email" placeholder="ID"></td>
+          </tr>
+            <tr>
+                <td><label for="email" class="form-label">Email : </label></td>
+                <td><input type="email" class="form-control rounded-0" name="email" id="email" placeholder="Name@gmail.com"></td>
+            </tr>
+            <tr>
+                <td><label for="address" class="form-label">Address : </label></td>
+                <td><input type="text" class="form-control rounded-0" name="address" id="address" placeholder="Address"></td>
+            </tr>
+            <tr>
+                <td><label for="phone" class="form-label">Phone Number : </label></td>
+                <td><input type="tel" class="form-control rounded-0" name="phone" id="phone" placeholder="Phone Number"></td>
+            </tr>
+            <tr>
+                <td><label for="password" class="form-label">Password : </label></td>
+                <td><input type="password" class="form-control rounded-0" name="password" id="password" placeholder="Password"></td>
+            </tr>
+            
+        </table>
+        <br>
+        <!-- Submit Button -->
+        <div class="d-grid">
+            <button type="button" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index.html';">Return</button>
+            <button type="submit" class="btn btn-submit btn-block rounded-0">Submit</button>
+            
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
