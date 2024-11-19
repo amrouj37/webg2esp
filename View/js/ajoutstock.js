@@ -42,7 +42,7 @@ b.addEventListener("click", function (event) {
     } else {
         dispo.disabled = false;
     }
-    if (!id_four) {
+    if (!id_four||/^\d+$/.test(id_four)) {
         alert("veuillez saisir id fournisseur");
         x = false;
     } else {
