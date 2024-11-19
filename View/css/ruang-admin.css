@@ -3,7 +3,11 @@
   src: url(../font/Nunito-Regular.ttf);
   src: url(../font/Nunito-Regular.ttf) format('ttf'), url(../font/Nunito-Regular.ttf) format('truetype')
 }
-
+.full-right {
+  position: relative; /* or absolute if needed */
+  right: 0;
+  width: 100vw; /* Makes the div span the full width of the viewport */
+}
 html {
   position: relative;
   min-height: 100%;

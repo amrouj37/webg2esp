@@ -1,3 +1,8 @@
+
+<?php
+  include 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_stock.php';
+  ?>
+  
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,8 +80,8 @@
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="simple-tables.html">Simple Tables</a>
-            <a class="collapse-item" href="datatables.html">DataTables</a>
+            <a class="collapse-item" href="formfournisseur.html">Ajouter un fournisseur</a>
+            <a class="collapse-item" href="formstock.html">Ajouter au stock</a>
           </div>
         </div>
       </li>
@@ -508,12 +513,12 @@
                   <table class="table align-items-center table-flush">
                     <thead class="thead-light">
                       <tr>
-                        <th>ID</th>
+                        <th>Nom_produit</th>
                         <th>Quantité</th>
                         <th>Unité</th>
                         <th>Date_expiration</th>
                         <th>Prix_unitaire</th>
-                        <th>CIN_Fournisseur</th>
+                        <th>id_Fournisseur</th>
                         <th>Disponibilité</th>
                         <th></th>
                         <th></th>
@@ -521,35 +526,28 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <?php foreach ($rows as $row): ?>
                       <tr>
-                        <td><a href="#">tomates_C</a></td>
-                        <td>60</td>
-                        <td>KG</td>
-                        <td><span class="badge badge-success">16/03/2025</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">3.7</a></td>
-                        <td><a href="#">099999991</a></td>
-                        <td><span class="badge badge-success">oui</span></td>
-                        <td><button class="badge badge-warning">Modifier</button></td>
-                          <td><button class="badge badge-danger">Supprimer</button></td>
-                        
+                        <td><a href="#"><?= $row['nom_produit']; ?></a></td>
+                        <td><?= $row['quantite']; ?></td>
+                        <td><?= $row['unite']; ?></td>
+                        <td><span class="badge <?= (($auj = new DateTime()) < ($expird = new DateTime($row['date_expir']))) ? 'badge-success' : 'badge-danger'; ?>"><?= $row['date_expir']; ?></span></td>
+                        <td><a href="#" class="btn btn-sm btn-primary"><?= $row['prix_uni']; ?></a></td>
+                        <td><a href="#"><?= $row['id_four']; ?></a></td>
+                        <td><span class="badge <?= ($row['dispo'] == 'Oui') ? 'badge-success' : 'badge-danger'; ?>">
+                        <?= $row['dispo']; ?></span></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierstock.php?id=<?= $row['nom_produit']; ?>">Modifier</a></button></td>
+                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?nom_produit=<?=$row['nom_produit']; ?>">Supprimer</a></button></td>
                       </tr>
-                      <tr>
-                        <td><a href="#">Ketchup</a></td>
-                        <td>0</td>
-                        <td>LITRE</td>
-                        <td><span class="badge badge-warning">28/05/2024</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">5.2</a></td>
-                        <td><a href="#">0298734849</a></td>
-                        <td><span class="badge badge-danger">non</span></td>
-                        <td><button class="badge badge-warning">Modifier</button></td>
-                          <td><button class="badge badge-danger">Supprimer</button></td>
+                      <?php endforeach; ?>
+                      
                     </tbody>
                     
                   </table>
                 </div>
-                <button for="stock" class="badge badge-success"><a href="login.html" style="color:white">Ajouter dans le stock</a></button>
+                <button for="stock" class="badge badge-success" style="border:0;"><a href="formstock.html" style="color:white">Ajouter dans le stock</a></button>
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Fournisseur</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Fournisseurs</h6>
                   
                 </div>
                 <div class="table-responsive">
@@ -579,8 +577,8 @@
                         <td>2876345</td>
                         <td><span class="badge badge-success">salah@goats.tn</span></td>
                         <td><span class="badge badge-success">28/02/2022</span></td>
-                        <td><button class="badge badge-warning">Modifier</button></td>
-                          <td><button class="badge badge-danger">Supprimer</button></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="#">Modifier</a></button></td>
+                        <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="#">Supprimer</a></button></td>
                         
                       </tr>
                       <tr>
@@ -592,8 +590,8 @@
                         <td>2876345</td>
                         <td><span class="badge badge-success">amrou@goats.tn</span></td>
                         <td><span class="badge badge-success">26/12/2023</span></td>
-                        <td><button class="badge badge-warning">Modifier</button></td>
-                          <td><button class="badge badge-danger">Supprimer</button></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="#">Modifier</a></button></td>
+                        <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="#">Supprimer</a></button></td>
                     </tbody>
                     
                   </table>
@@ -602,7 +600,7 @@
 
 
 
-                <button for="fournisseur" class="badge badge-success"><a href="register.html" style="color:white">Ajouter un fournisseur</a></button>
+                <button for="fournisseur" class="badge badge-success" style="border:0;"><a href="formfournisseur.html" style="color:white">Ajouter un fournisseur</a></button>
                 <div class="card-footer"></div>
               </div>
             </div>
@@ -674,7 +672,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
+                  <a href="formstock.html" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>
@@ -701,7 +699,9 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
+ 
+  
+  
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>

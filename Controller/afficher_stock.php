@@ -1,0 +1,13 @@
+<?php
+
+require 'C:\xampp\htdocs\projet_adam_final\config.php';   
+
+try {
+    
+    $pdo = conn::getConnexion();
+    $stmt = $pdo->query("SELECT * FROM stock");
+    $rows = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Error fetching data: " . $e->getMessage());
+}
+?>

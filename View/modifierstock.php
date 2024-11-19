@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>RuangAdmin - Simple Tables</title>
+  <title>SAHA PREP-form_stock</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -22,7 +24,7 @@
         <div class="sidebar-brand-icon">
           <img src="img/logo/logo2.png">
         </div>
-        <div class="sidebar-brand-text mx-3">RuangAdmin</div>
+        <div class="sidebar-brand-text mx-3">SAHA PREP</div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -75,7 +77,7 @@
         <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item active" href="simple-tables.html">Simple Tables</a>
+            <a class="collapse-item active" href="#">Modifier le stock</a>
             <a class="collapse-item" href="datatables.html">DataTables</a>
           </div>
         </div>
@@ -307,7 +309,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Simple Tables</h1>
+            <h1 class="h3 mb-0 text-gray-800">Modifier le produit</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Tables</li>
@@ -320,58 +322,50 @@
               <!-- Simple Tables -->
               <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Simple Tables</h6>
+                 <!-- <h6 class="m-0 font-weight-bold text-primary">Ajouter un fournisseur</h6> -->
                 </div>
-                <div class="table-responsive">
-                  <table class="table align-items-center table-flush">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Item</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><a href="#">RA0449</a></td>
-                        <td>Udin Wayang</td>
-                        <td>Nasi Padang</td>
-                        <td><span class="badge badge-success">Delivered</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA5324</a></td>
-                        <td>Jaenab Bajigur</td>
-                        <td>Gundam 90' Edition</td>
-                        <td><span class="badge badge-warning">Shipping</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA8568</a></td>
-                        <td>Rivat Mahesa</td>
-                        <td>Oblong T-Shirt</td>
-                        <td><span class="badge badge-danger">Pending</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1453</a></td>
-                        <td>Indri Junanda</td>
-                        <td>Hat Rounded</td>
-                        <td><span class="badge badge-info">Processing</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1998</a></td>
-                        <td>Udin Cilok</td>
-                        <td>Baby Powder</td>
-                        <td><span class="badge badge-success">Delivered</span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <div >
+                  <form method="post" action="../Controller/modifier_stock.php" style="padding-left: 20px ;padding-right: 20px">
+              
+                    <div class="form-group">
+                      <label>Nom_produit</label>
+                      <input type="text" class="form-control" name="nom_produit" id="nom_produit" value="<?= htmlspecialchars($_GET['id']); ?>" unique >
+                    </div>
+                    <div class="form-group">
+                      <label>Quantité</label>
+                      <input type="text" class="form-control" name="quantite" id="quantite"  placeholder="9.99" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Unité</label>
+                      <input type="text" class="form-control" name="unite" id="unite" placeholder="Exemple:Kg" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Date d'expiration</label>
+                      <input type="date" class="form-control" name="date_expir" id="date_expir" required>
+                    </div>
+                    <div class="form-group">
+                    <label>Prix Unitaire</label>
+                     <input type="text" class="form-control" name="prix_uni" id="prix_uni" placeholder="Prix unitaire" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label>id_fournisseur</label>
+                      <input  class="form-control" name="id_four" id="id_four"  placeholder="ID_fournisseur" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Disponibilité</label>
+                      <input type="text" class="form-control" id="dispo" 
+                        placeholder="Oui ou Non"  name="dispo"  required>
+                    </div>
+                    <div class="form-group">
+                      <button id="fs" type="submit" class="btn btn-primary btn-block badge-warning" >Modifier le produit</button>
+                    </div>
+                    <hr>
+                    <a href="index.php" class="btn btn-google btn-block">
+                       Retour au Dashboard
+                    </a>
+                  </form>
+                 </div>
                 <div class="card-footer"></div>
               </div>
             </div>
@@ -408,7 +402,7 @@
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+              <b><a href="#" target="_blank">GOATS</a></b>
             </span>
           </div>
         </div>
@@ -426,6 +420,7 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
+  <script src="js/ajoutstock.js"></script>
 
 </body>
 
