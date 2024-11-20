@@ -40,10 +40,10 @@ b.addEventListener("click", function (event) {
         alert("veuillez saisir un prix valide");
         x = false;
     } else {
-        dispo.disabled = false;
+       id_four.disabled = false;
     }
-    if (!id_four||/^\d+$/.test(id_four)) {
-        alert("veuillez saisir id fournisseur");
+    if  (!id_four || !/^\d+$/.test(id_four)) {
+        alert("veuillez saisir id fournisseur !");
         x = false;
     } else {
         dispo.disabled = false;
