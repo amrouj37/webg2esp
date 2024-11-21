@@ -42,6 +42,10 @@ b.addEventListener("click", function (event) {
     } else {
        id_four.disabled = false;
     }
+
+   
+
+
     if  (!id_four || !/^\d+$/.test(id_four)) {
         alert("veuillez saisir id fournisseur !");
         x = false;

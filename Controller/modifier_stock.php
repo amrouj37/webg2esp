@@ -1,5 +1,5 @@
 <?php
-require 'C:\xampp\htdocs\projet_adam_final\config.php'; 
+require_once 'C:\xampp\htdocs\projet_adam_final\config.php'; 
 include_once 'C:\xampp\htdocs\projet_adam_final\Controller\stock.php';
 include_once 'C:\xampp\htdocs\projet_adam_final\Model\stockModel.php';
 ini_set('display_errors', 1);

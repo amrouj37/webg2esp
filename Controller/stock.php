@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 require_once 'C:\xampp\htdocs\projet_adam_final\config.php'; 
-include 'C:\xampp\htdocs\projet_adam_final\Model\stockModel.php';
+include_once 'C:\xampp\htdocs\projet_adam_final\Model\stockModel.php';
 class stockC{
 public function ajouter($stock){
 	$pdo=conn::getConnexion();

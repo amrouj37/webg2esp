@@ -1,6 +1,6 @@
 
 <?php
-  include 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_stock.php';
+  include_once 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_stock.php';
   ?>
   
 <!DOCTYPE html>
