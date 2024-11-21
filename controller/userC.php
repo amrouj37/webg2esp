@@ -56,7 +56,7 @@ class userC{
     
     
 
-    public function updateUser($id_user, $user) {
+    public function updateUser($cin_user, $user) {
         $conn = config::getConnexion();
         $sql = "UPDATE user 
                 SET cin_user=:cin_user, 
@@ -67,7 +67,7 @@ class userC{
                     num_user=:num_user, 
                     pwd_user=:pwd_user, 
                     role_user=:role_user
-                WHERE id_user = :id_user";
+                WHERE cin_user = :cin_user";
     
         try {
             $query = $conn->prepare($sql);
@@ -100,25 +100,30 @@ public function deleteUser($cin_user){
 }
 
 // Dans le fichier userC.php, assurez-vous que la méthode getUserById fonctionne correctement.
-public function getUserById($id_user) {
-    $conn = config::getConnexion();
-    $sql = "SELECT * FROM user WHERE id_user = :id_user";
+
+
+
+public function getUserById($cin_user) {
+    $sql = "SELECT * FROM user WHERE cin_user = :cin_user";
+    $db = config::getConnexion();
+
     try {
-        $query = $conn->prepare($sql);
-        $query->bindParam(':id_user', $id_user, PDO::PARAM_STR);  // Utilisation de PDO::PARAM_STR pour sécurité
-        $query->execute();
-        $user = $query->fetch();
-        
-        // Vérifier si l'utilisateur existe dans la base de données
-        if ($user) {
-            return $user;
-        } else {
-            return null;  // Aucun utilisateur trouvé
-        }
+        $query = $db->prepare($sql);
+        $query->execute(['cin_user' => $cin_user]);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        // Débogage
+        if ($result === false) {
+            echo "Aucun utilisateur trouvé avec l'ID : " . $cin_user;
+        } 
+
+        return $result;
     } catch (Exception $e) {
-        die('Erreur: ' . $e->getMessage());
+        die('Erreur : ' . $e->getMessage());
     }
 }
+
+
 
 
 

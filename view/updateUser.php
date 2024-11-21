@@ -1,38 +1,60 @@
 <?php
-require_once '../controller/userC.php';
+include '../controller/userC.php';
+include_once '../model/user.php';
 
-// Vérifier si un `id_user` est passé dans l'URL
+$error = "";
+$success = "";
+$user = null;
 
-  if (isset($_GET['id_user'])) {
-    $id_user = $_GET['id_user'];
-    if (!is_numeric($id_user)) {
-        die("Erreur : l'ID de l'utilisateur n'est pas valide.");
-    }
+// Vérifier si un ID utilisateur est fourni dans l'URL
+if (isset($_GET["id_user"])) {
+    $id_user = intval($_GET["id_user"]); // Assurez-vous que c'est un entier valide
 
     // Créer une instance du contrôleur
     $userC = new userC();
-    $user = $userC->getUserById($id_user);
-    if (!$user) {
+
+    // Récupérer les informations de l'utilisateur à mettre à jour
+    $userToUpdate = $userC->getUserById($id_user);
+
+    // Vérifier si l'utilisateur existe
+    if (!$userToUpdate) {
         die("Erreur : utilisateur introuvable.");
     }
-} else {
-    header('Location: listUser.php');
-    exit();
-}
 
-    // Récupérer les informations de l'utilisateur
-    $user = $userC->getUserById($id_user);
-
-    // Vérifier si un utilisateur a été trouvé
-    if (!$user) {
-        die("Erreur : utilisateur introuvable."); // Afficher une erreur si aucun utilisateur trouvé
+    // Vérification si les données sont présentes dans $_POST
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (
+            isset($_POST["cin_user"]) &&
+            isset($_POST["nom_user"]) &&
+            isset($_POST["prenom_user"]) &&
+            isset($_POST["email_user"]) &&
+            isset($_POST["adress_user"]) &&
+            isset($_POST["num_user"]) &&
+            isset($_POST["pwd_user"]) &&
+            isset($_POST["role_user"])
+        ) {
+            // Traitement et affichage des données du formulaire
+            echo "<h3>Formulaire soumis avec succès !</h3>";
+            echo "<ul>";
+            echo "<li><strong>CIN:</strong> " . htmlspecialchars($_POST["cin_user"]) . "</li>";
+            echo "<li><strong>Nom:</strong> " . htmlspecialchars($_POST["nom_user"]) . "</li>";
+            echo "<li><strong>Prénom:</strong> " . htmlspecialchars($_POST["prenom_user"]) . "</li>";
+            echo "<li><strong>Email:</strong> " . htmlspecialchars($_POST["email_user"]) . "</li>";
+            echo "<li><strong>Adresse:</strong> " . htmlspecialchars($_POST["adress_user"]) . "</li>";
+            echo "<li><strong>Numéro:</strong> " . htmlspecialchars($_POST["num_user"]) . "</li>";
+            echo "<li><strong>Mot de passe:</strong> ********</li>"; // Ne pas afficher le mot de passe en clair
+            echo "<li><strong>Rôle:</strong> " . htmlspecialchars($_POST["role_user"]) . "</li>";
+            echo "</ul>";
+        } else {
+            echo "<p><strong>Erreur :</strong> Tous les champs doivent être remplis.</p>";
+        }
     }
- else {
-    // Rediriger vers la liste si aucun `id_user` n'est spécifié
-    header('Location: listUser.php');
-    exit();
+} else {
+    echo "<p><strong>Erreur :</strong> ID utilisateur manquant dans l'URL.</p>";
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -114,57 +136,56 @@ require_once '../controller/userC.php';
       </header>
       <br>
       <br>
-      <?php if (!empty($error)) echo "<p>$error</p>"; ?>
-    <?php if ($user): ?>
-    <form method="POST" action="">
-    <div>
-            <label>CIN:</label>
-            <input type="text" name="cin_user" value="<?= htmlspecialchars($user['cin_user']) ?>" required>
-        </div>
-        <div>
-            <label>Nom:</label>
-            <input type="text" name="nom_user" value="<?= htmlspecialchars($user['nom_user']) ?>" required>
-        </div>
-        <div>
-            <label>Prénom:</label>
-            <input type="text" name="prenom_user" value="<?= htmlspecialchars($user['prenom_user']) ?>" required>
-        </div>
-        <div>
-            <label>Email:</label>
-            <input type="email" name="email_user" value="<?= htmlspecialchars($user['email_user']) ?>" required>
-        </div>
-        <div>
-            <label>Adresse:</label>
-            <input type="text" name="adress_user" value="<?= htmlspecialchars($user['adress_user']) ?>" required>
-        </div>
-        <div>
-            <label>Numéro:</label>
-            <input type="text" name="num_user" value="<?= htmlspecialchars($user['num_user']) ?>" required>
-        </div>
-        <div>
-            <label>Mot de passe:</label>
-            <input type="password" name="pwd_user" value="<?= htmlspecialchars($user['pwd_user']) ?>" required>
-        </div>
-        <div>
-            <label>Rôle:</label>
-            <input type="text" name="role_user" value="<?= htmlspecialchars($user['role_user']) ?>" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-    </form>
-    <?php endif; ?>
-          </table>
-          <br>
-          <!-- Submit Button -->
-          <div class="d-grid">
-              <button type="button" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index.html';">Return</button>
-              <button  type="submit" class="btn btn-submit btn-block rounded-0">Submit</button>
-                       
-   
-                       
-                   
-          </div>
-      </form>
-  </div>
+      <!-- Affichage des erreurs ou succès -->
+      <?php if ($error): ?>
+          <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+      <?php endif; ?>
+
+      <?php if ($success): ?>
+          <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
+      <?php endif; ?>
+
+      <!-- Vérifier si l'utilisateur à mettre à jour existe -->
+      <?php if ($userToUpdate): ?>
+        <form method="POST" action="index2.php?id_user=<?php echo $id_user; ?>">
+            <div>
+                <label>CIN:</label>
+                <input type="text" name="cin_user" value="<?php echo htmlspecialchars($userToUpdate['cin_user']); ?>" required>
+            </div>
+            <div>
+                <label>Nom:</label>
+                <input type="text" name="nom_user" value="<?php echo htmlspecialchars($userToUpdate['nom_user']); ?>" required>
+            </div>
+            <div>
+                <label>Prénom:</label>
+                <input type="text" name="prenom_user" value="<?php echo htmlspecialchars($userToUpdate['prenom_user']); ?>" required>
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email_user" value="<?php echo htmlspecialchars($userToUpdate['email_user']); ?>" required>
+            </div>
+            <div>
+                <label>Adresse:</label>
+                <input type="text" name="adress_user" value="<?php echo htmlspecialchars($userToUpdate['adress_user']); ?>" required>
+            </div>
+            <div>
+                <label>Numéro:</label>
+                <input type="text" name="num_user" value="<?php echo htmlspecialchars($userToUpdate['num_user']); ?>" required>
+            </div>
+            <div>
+                <label>Mot de passe:</label>
+                <input type="password" name="pwd_user" placeholder="Entrez un nouveau mot de passe" required>
+            </div>
+            <div>
+                <label>Rôle:</label>
+                <input type="text" name="role_user" value="<?php echo htmlspecialchars($userToUpdate['role_user']); ?>" required>
+            </div>
+            <div class="d-grid">
+                <button type="button" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index.html';">Return</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+      <?php endif; ?>
   </body>
   
 </html>
