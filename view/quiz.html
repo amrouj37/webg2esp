@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Quiz</title>
+</head>
+<body>
+    <form method="post" action="Verification.php">
+        <label for="titre">Titre :</label>
+        <input type="text" id="titre" name="titre" required>
+        <br><br>
+
+        <label for="categorie">Catégorie :</label>
+        <input type="text" id="categorie" name="categorie" required>
+        <br><br>
+
+        <label for="description">Description :</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+        <br><br>
+
+        <label for="date_creation">Date de création :</label>
+        <input type="date" id="date_creation" name="date_creation" required>
+        <br><br>
+
+        <input type="submit" value="Ajouter le Quiz">
+    </form>
+</body>
+</html>
