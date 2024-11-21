@@ -8,13 +8,16 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>RuangAdmin - Charts</title>
+  <title>RuangAdmin - Simple Tables</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
+<?php
+  include 'C:\xampp\htdocs\ABABA\view\afficherpanier.php';
+  ?>
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
@@ -66,16 +69,16 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
           <span>Tables</span>
         </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="simple-tables.html">Simple Tables</a>
+            <a class="collapse-item active" href="simple-tables.html">Simple Tables</a>
             <a class="collapse-item" href="datatables.html">DataTables</a>
           </div>
         </div>
@@ -106,7 +109,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span>
@@ -307,69 +310,110 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Charts</h1>
+            <h1 class="h3 mb-0 text-gray-800">Simple Tables</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Charts</li>
+              <li class="breadcrumb-item">Tables</li>
+              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
             </ol>
           </div>
-          <!-- Row -->
+
           <div class="row">
-            <!-- Area Charts -->
-            <div class="col-lg-12">
-              <div class="card mb-4">
+            <div class="col-lg-12 mb-4">
+              <!-- Simple Tables -->
+              <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Commandes</h6>
                 </div>
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                  <hr>
-                  Styling for the area chart can be found in the
-                  <code>/js/demo/chart-area-demo.js</code> file.
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><a href="#">RA0449</a></td>
+                        <td>Mohamed</td>
+                        <td>Produit 1</td>
+                        <td><span class="badge badge-success">Delivered</span></td>
+                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">RA5324</a></td>
+                        <td>Aziz</td>
+                        <td>Produit 2</td>
+                        <td><span class="badge badge-warning">Shipping</span></td>
+                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">RA8568</a></td>
+                        <td>Amrou</td>
+                        <td>Produit 3</td>
+                        <td><span class="badge badge-danger">Pending</span></td>
+                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">RA1453</a></td>
+                        <td>Salah</td>
+                        <td>Produit 4</td>
+                        <td><span class="badge badge-info">Processing</span></td>
+                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                      </tr>
+                      <tr>
+                        <td><a href="#">RA1998</a></td>
+                        <td>Yassine</td>
+                        <td>Produit 5</td>
+                        <td><span class="badge badge-success">Delivered</span></td>
+                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-              </div>
-            </div>
-            <!-- Bar Chart -->
-            <div class="col-lg-8">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-bar">
-                    <canvas id="myBarChart"></canvas>
-                  </div>
-                  <hr>
-                  Styling for the bar chart can be found in the <code>/js/demo/chart-bar-demo.js</code> file.
-                </div>
-              </div>
-            </div>
-            <!-- Donut Chart -->
-            <div class="col-lg-4">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-pie pt-4">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <hr>
-                  Styling for the donut chart can be found in the <code>/js/demo/chart-pie-demo.js</code> file.
-                </div>
+                <div class="card-footer"></div>
               </div>
             </div>
           </div>
           <!--Row-->
-
-          <!-- Documentation Link -->
           <div class="row">
-            <div class="col-lg-12">
-              <p class="mb-4">Chart.js is a third party plugin that is used to generate the charts in this theme. The
-                charts below have been customized - for further customization options, please visit the <a
-                  target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js documentation</a>.</p>
+            <div class="col-lg-12 mb-4">
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Panier</h6>
+                    <a href="..\create_panier.php" class="btn btn-sm btn-success">Create New Panier</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead>
+                            <tr>
+                                <th>Quantité</th>
+                                <th>Prix Unitaire</th>
+                                <th>Date Ajout</th>
+                                <th>Modify</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                      <?php foreach ($rows as $row): ?>
+                      <tr>
+                        <td><a href="#"><?= $row['quantite']; ?></a></td>
+                        <td><?= $row['prix_unitaire']; ?></td>
+                        <td><?= $row['date_ajout']; ?></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="../update_panier.php?id=<?= $row['id_panier']; ?>">Modifier</a></button></td>
+                        <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../delete_panier.php?id=<?=$row['id_panier']; ?>">Supprimer</a></button></td>
+                      </tr>
+                      <?php endforeach; ?>
+
+                    </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer"></div>
+                </div>          
             </div>
           </div>
 
@@ -394,7 +438,6 @@
               </div>
             </div>
           </div>
-
 
         </div>
         <!---Container Fluid-->
@@ -422,13 +465,39 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
-  <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
-  <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
-  <script src="js/demo/chart-bar-demo.js"></script>
-</body>
+
+  
+
+
+  <script>
+    // Fetch panier data from the server
+    fetch('get_paniers.php')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('panier-rows');
+            tableBody.innerHTML = ''; // Clear any existing rows
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4">No data available</td></tr>';
+            } else {
+                data.forEach(panier => {
+                    const row = `
+                        <tr>
+                            <td>${panier.quantite}</td>
+                            <td>${panier.prix_unitaire}</td>
+                            <td>${panier.date_ajout}</td>
+                            <td>
+                                <a href="read_panier.php?id=${panier.id_panier}" class="btn btn-sm btn-info">Read</a>
+                                <a href="update_panier_form.php?id=${panier.id_panier}" class="btn btn-sm btn-warning">Update</a>
+                                <a href="delete_panier.php?id=${panier.id_panier}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
 
 </body>
 
