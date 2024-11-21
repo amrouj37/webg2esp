@@ -536,7 +536,7 @@
                         <td><a href="#"><?= $row['id_four']; ?></a></td>
                         <td><span class="badge <?= ($row['dispo'] == 'Oui') ? 'badge-success' : 'badge-danger'; ?>">
                         <?= $row['dispo']; ?></span></td>
-                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierstock.php?id=<?= $row['nom_produit']; ?>">Modifier</a></button></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierstock.php?id=<?= $row['nom_produit']; ?>&quantite=<?= $row['quantite']; ?>&unite=<?= $row['unite']; ?>&date_expir=<?= $row['date_expir']; ?>&prix_uni=<?= $row['prix_uni']; ?>&id_four=<?= $row['id_four']; ?>&dispo=<?= $row['dispo']; ?>">Modifier</a></button></td>
                           <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?nom_produit=<?=$row['nom_produit']; ?>">Supprimer</a></button></td>
                       </tr>
                       <?php endforeach; ?>
