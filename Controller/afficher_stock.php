@@ -1,6 +1,6 @@
 <?php
 
-require 'C:\xampp\htdocs\projet_adam_final\config.php';   
+require_once 'C:\xampp\htdocs\projet_adam_final\config.php';   
 
 try {
     

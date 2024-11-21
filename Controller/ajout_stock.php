@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-require 'C:\xampp\htdocs\projet_adam_final\config.php';        
+require_once 'C:\xampp\htdocs\projet_adam_final\config.php';        
 include 'C:\xampp\htdocs\projet_adam_final\Controller\stock.php';
 
 
