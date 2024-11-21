@@ -1,3 +1,59 @@
+<?php
+// Inclure le fichier de connexion à la base de données
+require_once '../config.php';
+
+// Vérifier si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer les données du formulaire
+    $cin_user = $_POST['cin_user'];
+    $nom_user = $_POST['nom_user'];
+    $prenom_user = $_POST['prenom_user'];
+    $email_user = $_POST['email_user'];
+    $adress_user = $_POST['adress_user'];
+    $num_user = $_POST['num_user'];
+    $pwd_user = $_POST['pwd_user'];
+    $role_user = $_POST['role_user'];
+
+    // Vérifier que les champs obligatoires ne sont pas vides
+    if (empty($cin_user) || empty($nom_user) || empty($prenom_user) || empty($email_user) || empty($adress_user) || empty($num_user) || empty($pwd_user) || empty($role_user)) {
+        echo "Tous les champs doivent être remplis.";
+    } else {
+        // Préparer la requête SQL pour insérer les données dans la base de données
+        $sql = "INSERT INTO user (cin_user, nom_user, prenom_user, email_user, adress_user, num_user, pwd_user, role_user) 
+                VALUES (:cin_user, :nom_user, :prenom_user, :email_user, :adress_user, :num_user, :pwd_user, :role_user)";
+
+        // Exécuter la requête d'insertion
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute([
+            ':cin_user' => $cin_user,
+            ':nom_user' => $nom_user,
+            ':prenom_user' => $prenom_user,
+            ':email_user' => $email_user,
+            ':adress_user' => $adress_user,
+            ':num_user' => $num_user,
+            ':pwd_user' => $pwd_user,
+            ':role_user' => $role_user
+        ]);
+
+        // Rediriger vers la même page pour éviter de resoumettre le formulaire lors d'un rafraîchissement
+        header("Location: index2.php");
+        exit();
+    }
+}
+
+// Récupérer tous les utilisateurs depuis la base de données
+try {
+    $sql = "SELECT * FROM user";
+    $stmt = config::getConnexion()->prepare($sql);
+    $stmt->execute();
+    $users = $stmt->fetchAll(); // Récupérer tous les résultats sous forme de tableau associatif
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage();
+    $users = []; // Si une erreur se produit, on définit $users comme un tableau vide.
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -398,7 +454,7 @@
             </div>
 
             <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-xl-8 col-lg-8">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Monthly Recap Report</h6>
@@ -444,53 +500,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-body">
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Oblong T-Shirt
-                      <div class="small float-right"><b>600 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Gundam 90'Editions
-                      <div class="small float-right"><b>500 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 70%" aria-valuenow="70"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Rounded Hat
-                      <div class="small float-right"><b>455 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: 55%" aria-valuenow="55"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Indomie Goreng
-                      <div class="small float-right"><b>400 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="small text-gray-500">Remote Control Car Racing
-                      <div class="small float-right"><b>200 of 800 Items</b></div>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                </div>
+                
+                 
                 <div class="card-footer text-center">
                   <a class="m-0 small text-primary card-link" href="#">View More <i
                       class="fas fa-chevron-right"></i></a>
@@ -498,12 +509,11 @@
               </div>
             </div>
             <!-- Invoice Example -->
-            <div class="col-xl-8 col-lg-7 mb-4">
+            <div class="col-xl-13 col-lg-13 mb-9">
               <div class="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
-                  <a class="m-0 float-right btn btn-danger btn-sm" href="#">View More <i
-                      class="fas fa-chevron-right"></i></a>
+                <div class="card-header py-5 d-flex flex-row align-items-center justify-content-between">
+                  
+                  
                 </div>
                 <div class="table-responsive">
                   <table class="table align-items-center table-flush">
@@ -516,109 +526,47 @@
                         <th>ADRESS</th>
                         <th>PHONE NUMBER</th>
                         <th>PASSWORD</th>
+                        <th>ROLE</th>
+                        <th>ACTION</th>
                       </tr>
                     </thead>
+                    
+                      
                     <tbody>
-                      <tr>
-                        <td><a href="#">RA0449</a></td>
-                        <td></td>
-                        <td></td>
-                        <td><span class="badge badge-success">Delivered</span></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">UPDATE</a>
-                            <a href="#" class="btn btn-sm btn-primary">DELETE</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA5324</a></td>
-                        <td>Jaenab Bajigur</td>
-                        <td>Gundam 90' Edition</td>
-                        <td><span class="badge badge-warning">Shipping</span></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">UPDATE</a>
-                            <a href="#" class="btn btn-sm btn-primary">DELETE</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA8568</a></td>
-                        <td>Rivat Mahesa</td>
-                        <td>Oblong T-Shirt</td>
-                        <td><span class="badge badge-danger">Pending</span></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">UPDATE</a>
-                            <a href="#" class="btn btn-sm btn-primary">DELETE</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1453</a></td>
-                        <td>Indri Junanda</td>
-                        <td>Hat Rounded</td>
-                        <td><span class="badge badge-info">Processing</span></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">UPDATE</a>
-                            <a href="#" class="btn btn-sm btn-primary">DELETE</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1998</a></td>
-                        <td>Udin Cilok</td>
-                        <td>Baby Powder</td>
-                        <td><span class="badge badge-success">Delivered</span></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="#" class="btn btn-sm btn-primary">UPDATE</a>
-                            <a href="#" class="btn btn-sm btn-primary">DELETE</a></td>
-                      </tr>
-                    </tbody>
+                    
+                    <?php
+// Vérifier si des utilisateurs ont été récupérés
+if (!empty($users)) {
+    foreach ($users as $user) {
+        echo "<tr>
+                <td>" . htmlspecialchars($user['cin_user']) . "</td>
+                <td>" . htmlspecialchars($user['nom_user']) . "</td>
+                <td>" . htmlspecialchars($user['prenom_user']) . "</td>
+                <td>" . htmlspecialchars($user['email_user']) . "</td>
+                <td>" . htmlspecialchars($user['adress_user']) . "</td>
+                <td>" . htmlspecialchars($user['num_user']) . "</td>
+                <td>" . htmlspecialchars($user['pwd_user']) . "</td>
+                <td>" . htmlspecialchars($user['role_user']) . "</td>
+                <td>
+                    <a href='updateUser.php?id_user=" . urlencode($user['cin_user']) . "' class='btn btn-sm btn-primary'>UPDATE</a>
+                    <a href='deleteUser.php?id_user=" . urlencode($user['cin_user']) . "' class='btn btn-sm btn-danger'>DELETE</a>
+
+                </td>
+              </tr>";
+    }
+} else {
+    echo "<tr><td colspan='9'>Aucun utilisateur trouvé.</td></tr>";
+}
+?>
+
+     
+</tbody>
                   </table>
                 </div>
                 <div class="card-footer"></div>
               </div>
             </div>
-            <!-- Message From Customer-->
-            <div class="col-xl-4 col-lg-5 ">
-              <div class="card">
-                <div class="card-header py-4 bg-primary d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-light">Message From Customer</h6>
-                </div>
-                <div>
-                  <div class="customer-message align-items-center">
-                    <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">Hi there! I am wondering if you can help me with a
-                        problem I've been having.</div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Udin Cilok · 58m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a href="#">
-                      <div class="text-truncate message-title">But I must explain to you how all this mistaken idea
-                      </div>
-                      <div class="small text-gray-500 message-time">Nana Haminah · 58m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                      </div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Jajang Cincau · 25m</div>
-                    </a>
-                  </div>
-                  <div class="customer-message align-items-center">
-                    <a class="font-weight-bold" href="#">
-                      <div class="text-truncate message-title">At vero eos et accusamus et iusto odio dignissimos
-                        ducimus qui blanditiis
-                      </div>
-                      <div class="small text-gray-500 message-time font-weight-bold">Udin Wayang · 54m</div>
-                    </a>
-                  </div>
-                  <div class="card-footer text-center">
-                    <a class="m-0 small text-primary card-link" href="#">View More <i
-                        class="fas fa-chevron-right"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            
           <!--Row-->
 
           <div class="row">

@@ -1,3 +1,41 @@
+<?php
+// Inclure le fichier de connexion à la base de données
+require_once '../config.php';
+
+// Vérifiez si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer les données du formulaire
+    $cin_user = $_POST['cin_user'];
+    $nom_user = $_POST['nom_user'];
+    $prenom_user = $_POST['prenom_user'];
+    $email_user = $_POST['email_user'];
+    $adress_user = $_POST['address_user']; // Corrigé ici pour correspondre à l'attribut du formulaire
+    $num_user = $_POST['num_user'];
+    $pwd_user = $_POST['pwd_user'];
+    $role_user = $_POST['role_user'];
+
+    // Préparer la requête SQL pour insérer les données dans la base de données
+    $sql = "INSERT INTO user (cin_user, nom_user, prenom_user, email_user, adress_user, num_user, pwd_user, role_user) 
+            VALUES (:cin_user, :nom_user, :prenom_user, :email_user, :adress_user, :num_user, :pwd_user, :role_user)";
+
+    // Préparer et exécuter la requête
+    $stmt = config::getConnexion()->prepare($sql);
+    $stmt->execute([
+        ':cin_user' => $cin_user,
+        ':nom_user' => $nom_user,
+        ':prenom_user' => $prenom_user,
+        ':email_user' => $email_user,
+        ':adress_user' => $adress_user,
+        ':num_user' => $num_user,
+        ':pwd_user' => $pwd_user,
+        ':role_user' => $role_user
+    ]);
+
+    // Rediriger après l'ajout des données vers index2.php
+    header("Location: index2.php"); 
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +116,7 @@
       </header>
       <br>
       <br>
-      <form>
+      <form action="formuser.php" method="POST" >
           <table>
               <tr>
                   <td><label for="prenom_user" class="form-label">First Name:</label></td>

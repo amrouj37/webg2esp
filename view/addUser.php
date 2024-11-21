@@ -1,37 +1,16 @@
 <?php
-include '../controller/userC.php';
-include '../model/user.php';
+require_once '../controller/UserC.php';
+require_once '../model/user.php'; // Inclure la classe User
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-$error = "";
+// Créer une instance du contrôleur
+$userC = new UserC();
 
-$user = null;
-
-// create an instance of the controller
-$userC = new userC();
-if (
-    isset($_POST["cin_user"]) &&
-    isset($_POST["nom_user"]) &&
-    isset($_POST["prenom_user"]) &&
-    isset($_POST["email_user"]) &&
-    isset($_POST["adress_user"]) &&
-    isset($_POST["num_user"]) &&
-    isset($_POST["pwd_user"]) &&
-    isset($_POST["role_user"]) 
-) {
-    if (
-        !empty($_POST['cin_user']) &&
-        !empty($_POST['nom_user']) &&
-        !empty($_POST["prenom_user"]) &&
-        !empty($_POST["email_user"]) &&
-        !empty($_POST["adress_user"]) &&
-        !empty($_POST["num_user"]) &&
-        !empty($_POST["pwd_user"]) &&
-        !empty($_POST["role_user"])
-    ) {
-        $user = new user(
-            
+if (isset($_POST["cin_user"]) && isset($_POST["nom_user"]) && isset($_POST["prenom_user"]) && isset($_POST["email_user"]) && isset($_POST["adress_user"]) && isset($_POST["num_user"]) && isset($_POST["pwd_user"]) && isset($_POST["role_user"])) {
+    // Vérifier si les champs sont remplis
+    if (!empty($_POST["cin_user"]) && !empty($_POST["nom_user"]) && !empty($_POST["prenom_user"]) && !empty($_POST["email_user"]) && !empty($_POST["adress_user"]) && !empty($_POST["num_user"]) && !empty($_POST["pwd_user"]) && !empty($_POST["role_user"])) {
+        
+        // Créer un objet User
+        $user = new User(
             $_POST['cin_user'],
             $_POST['nom_user'],
             $_POST['prenom_user'],
@@ -39,19 +18,21 @@ if (
             $_POST['adress_user'],
             $_POST['num_user'],
             $_POST['pwd_user'],
-            $_POST['role_user'],
+            $_POST['role_user']
         );
-        if ($userC->addUser($user)) {
-            echo "Data inserted successfully";
-            header('Location: listUser.php');
-            exit; // Important to exit after the header
-        } else {
-            $error = "Error inserting data";
-        }
+
+        // Ajouter l'utilisateur à la base de données
+        $userC->addUser($user);
+
+        // Rediriger vers la page de liste des utilisateurs après l'ajout
+        header('Location: index2.php');
+        exit();
     } else {
-        $error = "Missing information";
+        echo "Veuillez remplir tous les champs.";
     }
 }
+?>
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -133,7 +114,7 @@ if (
       </header>
       <br>
       <br>
-      <form>
+      <form action="index2.php" method="POST">
           <table>
               <tr>
                   <td><label for="prenom_user" class="form-label">First Name:</label></td>

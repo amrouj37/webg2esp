@@ -26,3 +26,4 @@ class config {
 
 // Appel de la méthode pour établir la connexion
 config::getConnexion();
+?>

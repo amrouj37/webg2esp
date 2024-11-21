@@ -6,90 +6,121 @@ require_once '../config.php';
 require_once '../model/user.php';
 class userC{
     public function getUser() {
-        $conn = config::getConnexion(); // Connexion à la base de données
-
+        $conn = config::getConnexion();
         $sql = "SELECT * FROM user";
+        try {
+            $query = $conn->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC); // Récupère tous les utilisateurs sous forme de tableau associatif
+        } catch (Exception $e) {
+            die('Erreur: ' . $e->getMessage());
+        }
+    }
+    
+    public function getAllUsers() {
+        $conn = config::getConnexion();
+        $sql = "SELECT * FROM user";
+        try {
+            $query = $conn->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC); // Récupérer tous les utilisateurs
+        } catch (Exception $e) {
+            die('Erreur: ' . $e->getMessage());
+        }
+    }
+    
 
+
+    public function addUser($user) {
+        $conn = config::getConnexion(); // Connexion à la base de données
+        $sql = "INSERT INTO user(cin_user, nom_user, prenom_user, email_user, adress_user, num_user, pwd_user, role_user) 
+                VALUES (:cin_user, :nom_user, :prenom_user, :email_user, :adress_user, :num_user, :pwd_user, :role_user)";
+    
         try {
             $query = $conn->prepare($sql); // Préparation de la requête
-            $query->execute(); // Exécution de la requête
-            return $query->fetchAll(); // Retourne tous les résultats
+            // On accède aux propriétés de l'objet User et on les passe à la requête SQL
+            $query->execute([
+                ':cin_user' => $user->getCin(),
+                ':nom_user' => $user->getNom(),
+                ':prenom_user' => $user->getPrenom(),
+                ':email_user' => $user->getEmail(),
+                ':adress_user' => $user->getAdress(),
+                ':num_user' => $user->getNum(),
+                ':pwd_user' => $user->getPwd(),
+                ':role_user' => $user->getRole()
+            ]);
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage()); // Gestion des erreurs
         }
     }
+    
+    
 
-
-public function addUser($user) {
-    $conn = config::getConnexion(); // Connexion à la base de données
-    $sql = "INSERT INTO user(cin_user, nom_user, prenom_user, email_user, adress_user, num_user, pwd_user, role_user) VALUES ( :cin_user, :nom_user, :prenom_user,:email_user, :adress_user, :num_user, :pwd_user, :role_user)";
-
-    try {
-        $query = $conn->prepare($sql); // Préparation de la requête(optional)
-        $query->execute([
-            ':cin_user' => $user['cin_user'],
-            ':nom_user' => $user['nom_user'],
-            ':prenom_user' => $user['prenom_user'],
-            ':email_user' => $user['email_user'],
-            ':adress_user' => $user['adress_user'],
-            ':num_user' => $user['num_user'],
-            ':pwd_user' => $user['pwd_user'],
-            ':role_user' => $user['role_user']
-        ]); // Exécution avec les valeurs du nouvel utilisateur
-    } catch (Exception $e) {
-        die('Erreur: ' . $e->getMessage()); // Gestion des erreurs
+    public function updateUser($id_user, $user) {
+        $conn = config::getConnexion();
+        $sql = "UPDATE user 
+                SET cin_user=:cin_user, 
+                    nom_user=:nom_user, 
+                    prenom_user=:prenom_user, 
+                    email_user=:email_user, 
+                    adress_user=:adress_user, 
+                    num_user=:num_user, 
+                    pwd_user=:pwd_user, 
+                    role_user=:role_user
+                WHERE id_user = :id_user";
+    
+        try {
+            $query = $conn->prepare($sql);
+            $query->execute([
+                ':id_user' => $id_user,
+                ':cin_user' => $user['cin_user'],
+                ':nom_user' => $user['nom_user'],
+                ':prenom_user' => $user['prenom_user'],
+                ':email_user' => $user['email_user'],
+                ':adress_user' => $user['adress_user'],
+                ':num_user' => $user['num_user'],
+                ':pwd_user' => $user['pwd_user'],
+                ':role_user' => $user['role_user']
+            ]);
+        } catch (Exception $e) {
+            die('Erreur: ' . $e->getMessage());
+        }
     }
-}
-
-public function updateUser($id_user,$user){
+    
+public function deleteUser($cin_user){
     $conn = config::getConnexion();
-    $sql="UPDATE user SET cin_user=:cin_user ,nom_user=:nom_user ,prenom_user=:prenom_user ,email_user=:email_user ,adress_user=:adress_user ,num_user=:num_user ,pwd_user=:pwd_user ,role_user=:role_user   WHERE id_user = :id_user";
+    $sql="DELETE FROM user WHERE cin_user = :cin_user";
     try{
         $query=$conn->prepare($sql);
-        $query->execute([
-            ':id_user'=>$id_user,
-            ':cin_user'=>$user['cin_user'],
-            ':nom_user'=>$user['nom_user'],
-            ':prenom_user'=>$user['prenom_user'],
-            ':email_user'=>$user['email_user'],
-            ':adress_user'=>$user['adress_user'],
-            ':num_user'=>$user['num_user'],
-            ':pwd_user'=>$user['pwd_user'],
-            ':role_user'=>$user['role_user']
-        ]);
+        $query->execute([':cin_user'=>$cin_user]);
     }
     catch (Exception $e) {
-        die('Erreur: ' . $e->getMessage()); // Gestion des erreurs
+        die('Erreur: ' . $e->getMessage());
     }
 }
-    // Supprimer un utilisateur
-    public function deleteUser($id_user){
-        $conn = config::getConnexion();
-        $sql="DELETE FROM user WHERE id_user = :id_user";
-        try{
-            $query=$conn->prepare($sql);
-            $query->execute([':id_user'=>$id_user]);
-        }
-        catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage()); // Gestion des erreurs
-        }
-   }
 
-
-public function getUserById($id_user){
+// Dans le fichier userC.php, assurez-vous que la méthode getUserById fonctionne correctement.
+public function getUserById($id_user) {
     $conn = config::getConnexion();
-    $sql="select * from User where id_user=:id_user ";
-    try{
-       $query=$conn->prepare($sql);
-         $query->execute( [':id_user'=>$id_user]);
-        return $query->fetch();
+    $sql = "SELECT * FROM user WHERE id_user = :id_user";
+    try {
+        $query = $conn->prepare($sql);
+        $query->bindParam(':id_user', $id_user, PDO::PARAM_STR);  // Utilisation de PDO::PARAM_STR pour sécurité
+        $query->execute();
+        $user = $query->fetch();
+        
+        // Vérifier si l'utilisateur existe dans la base de données
+        if ($user) {
+            return $user;
+        } else {
+            return null;  // Aucun utilisateur trouvé
+        }
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
 
 
-        } 
-catch (Exception $e) {
-    die('Erreur: ' . $e->getMessage());
-}
-}
 
 }
 

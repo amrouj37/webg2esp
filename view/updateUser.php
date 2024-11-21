@@ -1,75 +1,39 @@
 <?php
+require_once '../controller/userC.php';
 
+// Vérifier si un `id_user` est passé dans l'URL
 
-require_once '../controller/UserC.php';  
-$error = "";
-
-// create client
-$user = null;
-// create an instance of the controller
-$userC = new userC();
-
-// Check if the form is submitted and an idPatient is provided
-echo "ID user from form: " . $_POST['id_user'] . "<br>";
-
-if (isset($_POST["id_user"])) {
-    $user = $userC->showUser($_POST['id_user']);
-}
-
-if (
-    isset($_POST["cin_user"]) &&
-    isset($_POST["nom_user"]) &&
-    isset($_POST["prenom_user"]) &&
-    isset($_POST["email_user"]) &&
-    isset($_POST["adress_user"]) &&
-    isset($_POST["num_user"]) &&
-    isset($_POST["pwd_user"]) &&
-    isset($_POST["role_user"]) 
-) {
-    if (
-        !empty($_POST['cin_user']) &&
-        !empty($_POST['nom_user']) &&
-        !empty($_POST["prenom_user"]) &&
-        !empty($_POST["email_user"]) &&
-        !empty($_POST["adress_user"]) &&
-        !empty($_POST["num_user"]) &&
-        !empty($_POST["pwd_user"]) &&
-        !empty($_POST["role_user"]) 
-    ) {
-        // Loop through POST data for debugging
-        foreach ($_POST as $key => $value) {
-            echo "Key: $key, Value: $value<br>";
-        }
-
-        // Create a new Patient object
-        $user = new user(
-            null,
-            $_POST['cin_user'],
-            $_POST['nom_user'],
-            $_POST['prenom_user'],
-            $_POST['email_user'],
-            $_POST['adress_user'],
-            $_POST['num_user'],
-            $_POST['pwd_user'],
-            $_POST['role_user']
-        );
-
-        // Display information about the patient
-        var_dump($user);
-
-        // Update patient information using the controller
-        var_dump($user); // Add this line before the updatePatient call
-        $userC->updateUser($user, $_POST['id_user']);
-        var_dump($user); // Add this line after the updatePatient call
-
-        // Redirect to the list of patients
-        header('Location:listUser.php');
-    } else {
-        $error = "Missing information";
+  if (isset($_GET['id_user'])) {
+    $id_user = $_GET['id_user'];
+    if (!is_numeric($id_user)) {
+        die("Erreur : l'ID de l'utilisateur n'est pas valide.");
     }
+
+    // Créer une instance du contrôleur
+    $userC = new userC();
+    $user = $userC->getUserById($id_user);
+    if (!$user) {
+        die("Erreur : utilisateur introuvable.");
+    }
+} else {
+    header('Location: listUser.php');
+    exit();
 }
 
+    // Récupérer les informations de l'utilisateur
+    $user = $userC->getUserById($id_user);
+
+    // Vérifier si un utilisateur a été trouvé
+    if (!$user) {
+        die("Erreur : utilisateur introuvable."); // Afficher une erreur si aucun utilisateur trouvé
+    }
+ else {
+    // Rediriger vers la liste si aucun `id_user` n'est spécifié
+    header('Location: listUser.php');
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -150,40 +114,44 @@ if (
       </header>
       <br>
       <br>
-      <form>
-          <table>
-              <tr>
-                  <td><label for="prenom_user" class="form-label">First Name:</label></td>
-                  <td><input type="text" class="form-control rounded-0" name="prenom_user" id="prenom_user" placeholder="first Name" required></td>
-              </tr>
-              <tr>
-                <td><label for="nom_user" class="form-label">last Name:</label></td>
-                <td><input type="text" class="form-control rounded-0" name="nom_user" id="nom_user" placeholder="last Name" required></td>
-            </tr>
-              <tr>
-                  <td><label for="cin_user" class="form-label">CIN:</label></td>
-                  <td><input type="text" class="form-control rounded-0" name="cin_user" id="cin_user" placeholder="CIN" required></td>
-              </tr>
-              <tr>
-                  <td><label for="email_user" class="form-label">Email:</label></td>
-                  <td><input type="email" class="form-control rounded-0" name="email_user" id="email_user" placeholder="Name@gmail.com" required></td>
-              </tr>
-              <tr>
-                  <td><label for="address_user" class="form-label">Address:</label></td>
-                  <td><input type="text" class="form-control rounded-0" name="address_user" id="address_user" placeholder="Address" required ></td>
-              </tr>
-              <tr>
-                  <td><label for="num_user" class="form-label">Phone Number:</label></td>
-                  <td><input type="tel" class="form-control rounded-0" name="num_user" id="num_user" placeholder="Phone Number" required></td>
-              </tr>
-              <tr>
-                  <td><label for="pwd_user" class="form-label">Password:</label></td>
-                  <td><input type="password" class="form-control rounded-0" name="pwd_user" id="pwd_user" placeholder="Password" required></td>
-              </tr>
-              <tr>
-                <td><label for="role_user" class="form-label">Role:</label></td>
-                <td><input type="text" class="form-control rounded-0" name="role_user" id="role_user" placeholder="role" required></td>
-            </tr>
+      <?php if (!empty($error)) echo "<p>$error</p>"; ?>
+    <?php if ($user): ?>
+    <form method="POST" action="">
+    <div>
+            <label>CIN:</label>
+            <input type="text" name="cin_user" value="<?= htmlspecialchars($user['cin_user']) ?>" required>
+        </div>
+        <div>
+            <label>Nom:</label>
+            <input type="text" name="nom_user" value="<?= htmlspecialchars($user['nom_user']) ?>" required>
+        </div>
+        <div>
+            <label>Prénom:</label>
+            <input type="text" name="prenom_user" value="<?= htmlspecialchars($user['prenom_user']) ?>" required>
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="email" name="email_user" value="<?= htmlspecialchars($user['email_user']) ?>" required>
+        </div>
+        <div>
+            <label>Adresse:</label>
+            <input type="text" name="adress_user" value="<?= htmlspecialchars($user['adress_user']) ?>" required>
+        </div>
+        <div>
+            <label>Numéro:</label>
+            <input type="text" name="num_user" value="<?= htmlspecialchars($user['num_user']) ?>" required>
+        </div>
+        <div>
+            <label>Mot de passe:</label>
+            <input type="password" name="pwd_user" value="<?= htmlspecialchars($user['pwd_user']) ?>" required>
+        </div>
+        <div>
+            <label>Rôle:</label>
+            <input type="text" name="role_user" value="<?= htmlspecialchars($user['role_user']) ?>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+    <?php endif; ?>
           </table>
           <br>
           <!-- Submit Button -->
