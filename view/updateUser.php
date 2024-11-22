@@ -153,36 +153,37 @@ if (isset($_GET["id_user"])) {
                 <input type="text" name="cin_user" value="<?php echo htmlspecialchars($userToUpdate['cin_user']); ?>" required>
             </div>
             <div>
-                <label>Nom:</label>
-                <input type="text" name="nom_user" value="<?php echo htmlspecialchars($userToUpdate['nom_user']); ?>" required>
-            </div>
-            <div>
-                <label>Prénom:</label>
+                <label>First name:</label>
                 <input type="text" name="prenom_user" value="<?php echo htmlspecialchars($userToUpdate['prenom_user']); ?>" required>
             </div>
+            <div>
+                <label>Last:</label>
+                <input type="text" name="nom_user" value="<?php echo htmlspecialchars($userToUpdate['nom_user']); ?>" required>
+            </div>
+            
             <div>
                 <label>Email:</label>
                 <input type="email" name="email_user" value="<?php echo htmlspecialchars($userToUpdate['email_user']); ?>" required>
             </div>
             <div>
-                <label>Adresse:</label>
+                <label>Adress:</label>
                 <input type="text" name="adress_user" value="<?php echo htmlspecialchars($userToUpdate['adress_user']); ?>" required>
             </div>
             <div>
-                <label>Numéro:</label>
+                <label>Phone number:</label>
                 <input type="text" name="num_user" value="<?php echo htmlspecialchars($userToUpdate['num_user']); ?>" required>
             </div>
             <div>
-                <label>Mot de passe:</label>
-                <input type="password" name="pwd_user" placeholder="Entrez un nouveau mot de passe" required>
+                <label>Password:</label>
+                <input type="password" name="pwd_user" value="<?php echo htmlspecialchars($userToUpdate['pwd_user']); ?>"  required>
             </div>
             <div>
-                <label>Rôle:</label>
+                <label>Role:</label>
                 <input type="text" name="role_user" value="<?php echo htmlspecialchars($userToUpdate['role_user']); ?>" required>
             </div>
             <div class="d-grid">
-                <button type="button" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index.html';">Return</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-submit btn-block -0" onclick="window.location.href='index2.php';">Return</button>
+                <button type="submit" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index2.php';">Update</button>
             </div>
         </form>
       <?php endif; ?>
@@ -194,3 +195,4 @@ if (isset($_GET["id_user"])) {
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
   <script src="js/ajoutuser.js"></script>
+ 
