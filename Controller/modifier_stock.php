@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $controller = new stockC();
         $controller->modifier($stock, $nom_produit);
-        echo "Produit a été modifié! <a href='../view/index.php'>Retour au Dashboard</a>";
+        header('location:../View/index.php');
+        //echo "Produit a été modifié! <a href='../view/index.php'>Retour au Dashboard</a>";
         
 
     } else {

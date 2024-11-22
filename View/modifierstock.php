@@ -333,29 +333,29 @@
                     </div>
                     <div class="form-group">
                       <label>Quantité</label>
-                      <input type="text" class="form-control" name="quantite" id="quantite"  value="<?= htmlspecialchars($_GET['quantite']); ?>"  required>
+                      <input type="text" class="form-control" name="quantite" id="quantite"  value="<?= htmlspecialchars($_GET['quantite']); ?>" >
                     </div>
                     <div class="form-group">
                       <label>Unité</label>
-                      <input type="text" class="form-control" name="unite" id="unite" value="<?= htmlspecialchars($_GET['unite']); ?>" required>
+                      <input type="text" class="form-control" name="unite" id="unite" value="<?= htmlspecialchars($_GET['unite']); ?>">
                     </div>
                     <div class="form-group">
                       <label>Date d'expiration</label>
-                      <input type="date" class="form-control" name="date_expir" id="date_expir" value="<?= htmlspecialchars($_GET['date_expir']); ?>" required>
+                      <input type="date" class="form-control" name="date_expir" id="date_expir" value="<?= htmlspecialchars($_GET['date_expir']); ?>">
                     </div>
                     <div class="form-group">
                     <label>Prix Unitaire</label>
-                     <input type="text" class="form-control" name="prix_uni" id="prix_uni" value="<?= htmlspecialchars($_GET['prix_uni']); ?>"placeholder="Prix unitaire" required>
+                     <input type="text" class="form-control" name="prix_uni" id="prix_uni" value="<?= htmlspecialchars($_GET['prix_uni']); ?>"placeholder="Prix unitaire">
                     </div>
 
                     <div class="form-group">
                       <label>id_fournisseur</label>
-                      <input  class="form-control" name="id_four" id="id_four" value="<?= htmlspecialchars($_GET['id_four']); ?>" placeholder="ID_fournisseur" required>
+                      <input  class="form-control" name="id_four" id="id_four" value="<?= htmlspecialchars($_GET['id_four']); ?>" placeholder="ID_fournisseur">
                     </div>
                     <div class="form-group">
                       <label>Disponibilité</label>
                       <input type="text" class="form-control" id="dispo" 
-                        placeholder="Oui ou Non"  name="dispo" value="<?= htmlspecialchars($_GET['dispo']); ?>"  required>
+                        placeholder="Oui ou Non"  name="dispo" value="<?= htmlspecialchars($_GET['dispo']); ?>" >
                     </div>
                     <div class="form-group">
                       <button id="fs" type="submit" class="btn btn-primary btn-block badge-warning" >Modifier le produit</button>
