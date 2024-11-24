@@ -33,7 +33,10 @@ if (isset($_GET["id_user"])) {
             isset($_POST["pwd_user"]) &&
             isset($_POST["role_user"])
         ) {
-            // Traitement et affichage des données du formulaire
+            // Crypter le mot de passe avant de l'utiliser
+            $hashed_password = password_hash($_POST["pwd_user"], PASSWORD_BCRYPT);
+    
+            // Afficher un message de confirmation avec les données (mot de passe crypté non affiché)
             echo "<h3>Formulaire soumis avec succès !</h3>";
             echo "<ul>";
             echo "<li><strong>CIN:</strong> " . htmlspecialchars($_POST["cin_user"]) . "</li>";
@@ -42,17 +45,31 @@ if (isset($_GET["id_user"])) {
             echo "<li><strong>Email:</strong> " . htmlspecialchars($_POST["email_user"]) . "</li>";
             echo "<li><strong>Adresse:</strong> " . htmlspecialchars($_POST["adress_user"]) . "</li>";
             echo "<li><strong>Numéro:</strong> " . htmlspecialchars($_POST["num_user"]) . "</li>";
-            echo "<li><strong>Mot de passe:</strong> ********</li>"; // Ne pas afficher le mot de passe en clair
+            echo "<li><strong>Mot de passe:</strong> ********</li>"; // Masqué
             echo "<li><strong>Rôle:</strong> " . htmlspecialchars($_POST["role_user"]) . "</li>";
             echo "</ul>";
+    
+            // Ajouter ou mettre à jour les données utilisateur avec le mot de passe crypté
+            $userC->updateUser(
+                $id_user,
+                $_POST["cin_user"],
+                $_POST["nom_user"],
+                $_POST["prenom_user"],
+                $_POST["email_user"],
+                $_POST["adress_user"],
+                $_POST["num_user"],
+                $hashed_password, // Utilisation du mot de passe crypté
+                $_POST["role_user"]
+            );
+    
+            echo "<p>Mise à jour réussie avec mot de passe sécurisé.</p>";
         } else {
             echo "<p><strong>Erreur :</strong> Tous les champs doivent être remplis.</p>";
         }
     }
-} else {
-    echo "<p><strong>Erreur :</strong> ID utilisateur manquant dans l'URL.</p>";
-}
+} // <-- Cette accolade fermante manquait !
 ?>
+
 
 
 

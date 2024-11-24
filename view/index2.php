@@ -2,7 +2,6 @@
 // Inclure le fichier de connexion à la base de données
 require_once '../config.php';
 
-// Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire
     $cin_user = $_POST['cin_user'];
@@ -11,47 +10,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_user = $_POST['email_user'];
     $adress_user = $_POST['adress_user'];
     $num_user = $_POST['num_user'];
-    $pwd_user = $_POST['pwd_user'];
     $role_user = $_POST['role_user'];
+    $hashed_pwd = password_hash($_POST['pwd_user'], PASSWORD_BCRYPT); // Hachage du mot de passe
 
     // Vérifier que les champs obligatoires ne sont pas vides
-    if (empty($cin_user) || empty($nom_user) || empty($prenom_user) || empty($email_user) || empty($adress_user) || empty($num_user) || empty($pwd_user) || empty($role_user)) {
+    if (empty($cin_user) || empty($nom_user) || empty($prenom_user) || empty($email_user) || empty($adress_user) || empty($num_user) || empty($role_user)) {
         echo "Tous les champs doivent être remplis.";
     } else {
-        // Préparer la requête SQL pour insérer les données dans la base de données
-        $sql = "INSERT INTO user (cin_user, nom_user, prenom_user, email_user, adress_user, num_user, pwd_user, role_user) 
-                VALUES (:cin_user, :nom_user, :prenom_user, :email_user, :adress_user, :num_user, :pwd_user, :role_user)";
+        try {
+            // Vérifier si l'utilisateur existe déjà dans la base
+            $sql = "SELECT id_user FROM user WHERE cin_user = :cin_user";
+            $stmt = config::getConnexion()->prepare($sql);
+            $stmt->execute([':cin_user' => $cin_user]);
+            $existingUser = $stmt->fetch();
 
-        // Exécuter la requête d'insertion
-        $stmt = config::getConnexion()->prepare($sql);
-        $stmt->execute([
-            ':cin_user' => $cin_user,
-            ':nom_user' => $nom_user,
-            ':prenom_user' => $prenom_user,
-            ':email_user' => $email_user,
-            ':adress_user' => $adress_user,
-            ':num_user' => $num_user,
-            ':pwd_user' => $pwd_user,
-            ':role_user' => $role_user
-        ]);
+            if ($existingUser) {
+                // Si l'utilisateur existe, mettre à jour ses informations
+                $sql = "UPDATE user 
+                        SET nom_user = :nom_user, 
+                            prenom_user = :prenom_user, 
+                            email_user = :email_user, 
+                            adress_user = :adress_user, 
+                            num_user = :num_user, 
+                            role_user = :role_user, 
+                            pwd_user = :pwd_user 
+                        WHERE cin_user = :cin_user";
+                $stmt = config::getConnexion()->prepare($sql);
+                $stmt->execute([
+                    ':cin_user' => $cin_user,
+                    ':nom_user' => $nom_user,
+                    ':prenom_user' => $prenom_user,
+                    ':email_user' => $email_user,
+                    ':adress_user' => $adress_user,
+                    ':num_user' => $num_user,
+                    ':role_user' => $role_user,
+                    ':pwd_user' => $hashed_pwd
+                ]);
 
-        // Rediriger vers la même page pour éviter de resoumettre le formulaire lors d'un rafraîchissement
-        header("Location: index2.php");
-        exit();
+                echo "Les informations de l'utilisateur ont été mises à jour avec succès.";
+            } else {
+                // Si l'utilisateur n'existe pas, afficher un message d'erreur
+                echo "Aucun utilisateur avec ce CIN n'existe.";
+            }
+        } catch (Exception $e) {
+            echo "Erreur : " . $e->getMessage();
+        }
     }
 }
 
 // Récupérer tous les utilisateurs depuis la base de données
 try {
-    $sql = "SELECT * FROM user";
+    $sql = "SELECT * FROM user ORDER BY id_user DESC"; // Trier par ID utilisateur pour afficher les plus récents en premier
     $stmt = config::getConnexion()->prepare($sql);
     $stmt->execute();
-    $users = $stmt->fetchAll(); // Récupérer tous les résultats sous forme de tableau associatif
+    $users = $stmt->fetchAll(); // Récupérer tous les utilisateurs
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
-    $users = []; // Si une erreur se produit, on définit $users comme un tableau vide.
+    $users = []; // Si une erreur se produit, définir un tableau vide
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -64,7 +82,7 @@ try {
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>RuangAdmin - Dashboard</title>
+  <title>SAHAprep - Dashboard</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -545,7 +563,7 @@ if (!empty($users)) {
                 <td>" . htmlspecialchars($user['email_user']) . "</td>
                 <td>" . htmlspecialchars($user['adress_user']) . "</td>
                 <td>" . htmlspecialchars($user['num_user']) . "</td>
-                <td>" . htmlspecialchars($user['pwd_user']) . "</td>
+                <td>********</td> <!-- Mot de passe masqué -->
                 <td>" . htmlspecialchars($user['role_user']) . "</td>
                 <td>
                     <a href='updateUser.php?id_user=" . urlencode($user['cin_user']) . "' class='btn btn-sm btn-primary'>UPDATE</a>

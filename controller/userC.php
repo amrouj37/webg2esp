@@ -56,36 +56,32 @@ class userC{
     
     
 
-    public function updateUser($cin_user, $user) {
-        $conn = config::getConnexion();
-        $sql = "UPDATE user 
-                SET cin_user=:cin_user, 
-                    nom_user=:nom_user, 
-                    prenom_user=:prenom_user, 
-                    email_user=:email_user, 
-                    adress_user=:adress_user, 
-                    num_user=:num_user, 
-                    pwd_user=:pwd_user, 
-                    role_user=:role_user
-                WHERE cin_user = :cin_user";
-    
-        try {
-            $query = $conn->prepare($sql);
-            $query->execute([
-                ':id_user' => $id_user,
-                ':cin_user' => $user['cin_user'],
-                ':nom_user' => $user['nom_user'],
-                ':prenom_user' => $user['prenom_user'],
-                ':email_user' => $user['email_user'],
-                ':adress_user' => $user['adress_user'],
-                ':num_user' => $user['num_user'],
-                ':pwd_user' => $user['pwd_user'],
-                ':role_user' => $user['role_user']
-            ]);
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
+    public function updateUser($id_user, $cin_user, $nom_user, $prenom_user, $email_user, $adress_user, $num_user, $pwd_user, $role_user) {
+        $sql = "UPDATE users SET 
+                 cin_user = :cin_user, 
+                 nom_user = :nom_user, 
+                 prenom_user = :prenom_user, 
+                 email_user = :email_user, 
+                 adress_user = :adress_user, 
+                 num_user = :num_user, 
+                 pwd_user = :pwd_user, 
+                 role_user = :role_user 
+                WHERE id_user = :id_user";
+        $db = config::getConnexion();
+        $req = $db->prepare($sql);
+        $req->execute([
+            'cin_user' => $cin_user,
+            'nom_user' => $nom_user,
+            'prenom_user' => $prenom_user,
+            'email_user' => $email_user,
+            'adress_user' => $adress_user,
+            'num_user' => $num_user,
+            'pwd_user' => $pwd_user, // Mot de passe crypté
+            'role_user' => $role_user,
+            'id_user' => $id_user,
+        ]);
     }
+    
     
 public function deleteUser($cin_user){
     $conn = config::getConnexion();
