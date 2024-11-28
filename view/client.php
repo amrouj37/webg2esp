@@ -1,5 +1,11 @@
 
+<?php
+session_start(); // Démarrer la session pour accéder aux données stockées
 
+// Vérifier si le prénom est dans la session
+$prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'Utilisateur';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -262,7 +268,7 @@
                 <a href="index.html" class="nav-link">Home</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle pe-3" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+                <a class="nav-link dropdown-toggle pe-3" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
                 <ul class="dropdown-menu border-0 p-3 rounded-0 shadow" aria-labelledby="pages">
                   <li><a href="index.html" class="dropdown-item">About Us </a></li>
                   <li><a href="index.html" class="dropdown-item">Shop </a></li>
@@ -278,18 +284,19 @@
                   <li><a href="index.html" class="dropdown-item">404 Error </a></li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="formuser.php" >
-                  <svg width="24" height="24"><use xlink:href="#user"></use></svg>
-                </a>
-              <li class="nav-item">
-                <a href="Login.php" class="nav-link">Log In</a>
-              </li>
-              <li>
-                <a href="#" class="p-2 mx-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                  <svg width="24" height="24"><use xlink:href="#shopping-bag"></use></svg>
-                </a>
-              </li>
+              <li class="nav-item active">
+            <a href="formuser.php" class="nav-link"><?php echo htmlspecialchars($prenom_user); ?></a>
+          </li>
+          <li class="nav-item">
+            <a href="login.php" class="nav-link">
+              <!-- Affiche le prénom si défini, sinon "Utilisateur" -->
+              Log in
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="logout.php" class="nav-link">Log out</a>
+          </li>
+              
             </ul>
           </div>
           

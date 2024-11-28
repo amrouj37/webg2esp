@@ -73,87 +73,41 @@ if (isset($_GET["id_user"])) {
 
 
 
-<!DOCTYPE html>
+
+
+
+  <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign up</title>
-  
-  <link rel="stylesheet" href="path/to/your/bootstrap.css">
-  <style>
-    /* Style pour que l'image couvre tout l'arrière-plan */
-    body {
-      background: url('images/arriereform.png') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    
-    
 
-   /* Styles des champs de saisie */
-   .form-control, .form-select {
-      height: 50px;
-      font-size: 1.1em;
-    }
-    
-    /* Bouton Submit et Return */
-    .btn-submit {
-      height: 60px; /* Augmente la hauteur */
-      font-size: 1.2em; /* Taille de police plus grande */
-      background-color: #000000; /* Noir */
-      border-color: #000000; /* Bordure noire */
-      color: white; /* Texte en blanc */
-    }
-    
-    .btn-submit:hover {
-      background-color: #333333; /* Gris foncé au survol */
-      border-color: #333333; /* Bordure change aussi au survol */
-    }
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="img/logo/logo.png" rel="icon">
+  <title>RuangAdmin - Register</title>
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="css/ruang-admin.min.css" rel="stylesheet">
 
-
-    .btn-block {
-      width: 40%;
-    }
-
-    
-
-    /* Pour la table */
-    table {
-      width: 100%;
-    }
-    td {
-      padding: 10px;
-      vertical-align: middle;
-    }
-    /* Style pour les labels */
-    label {
-        display: inline-block; /* Assure que le padding s'applique */
-        background-color: #f0f0f0; /* Couleur de fond */
-        padding: 8px 12px; /* Espacement interne */
-        border-radius: 12px; /* Coins arrondis */
-        font-weight: bold; /* Met le texte en gras */
-        font-size: 1em; /* Taille de police */
-        margin-right: 10px; /* Espacement à droite */
-    }
-</style>
-
-    
-  </style>
 </head>
 
-<body>
-  <div class="form-container">
-      <header>
-          <h1 align="center">SIGN UP</h1>
-      </header>
-      <br>
-      <br>
-      <!-- Affichage des erreurs ou succès -->
+<body class="bg-gradient-login">
+  <!-- Register Content -->
+  <div class="container-login">
+    <div class="row justify-content-center">
+      <div class="col-xl-10 col-lg-12 col-md-9">
+        <div class="card shadow-sm my-5">
+          <div class="card-body p-0">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="login-form">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-6"> UPDATE </h1>
+                  </div>
+                  <!-- Affichage des erreurs ou succès -->
       <?php if ($error): ?>
           <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
       <?php endif; ?>
@@ -161,55 +115,75 @@ if (isset($_GET["id_user"])) {
       <?php if ($success): ?>
           <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
       <?php endif; ?>
-
       <!-- Vérifier si l'utilisateur à mettre à jour existe -->
       <?php if ($userToUpdate): ?>
-        <form method="POST" action="index2.php?id_user=<?php echo $id_user; ?>">
-            <div>
-                <label>CIN:</label>
-                <input type="text" name="cin_user" value="<?php echo htmlspecialchars($userToUpdate['cin_user']); ?>" required>
+                  <form method="POST" action="index2.php?id_user=<?php echo $id_user; ?>">
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <br>
+                      <input type="text" class="form-control" name="prenom_user" value="<?php echo htmlspecialchars($userToUpdate['prenom_user']); ?>" required >
+                    </div>
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <br>
+                      <input type="text" class="form-control" name="nom_user" value="<?php echo htmlspecialchars($userToUpdate['nom_user']); ?>" required >
+                    </div>
+                    <div class="form-group">
+                      <label>CIN</label>
+                      <br>
+                      <input  type="text" class="form-control" name="cin_user" value="<?php echo htmlspecialchars($userToUpdate['cin_user']); ?>" required >
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" class="form-control"  aria-describedby="emailHelp" name="email_user" value="<?php echo htmlspecialchars($userToUpdate['email_user']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                    <label>Adress</label>
+                      <input type="text" class="form-control"  name="adress_user" value="<?php echo htmlspecialchars($userToUpdate['adress_user']); ?>" required >
+                    </div>
+                    <div class="form-group">
+                    <label>Phone Number</label>
+                      <input type="text" class="form-control"  name="num_user" value="<?php echo htmlspecialchars($userToUpdate['num_user']); ?>" required >
+                    </div>
+                    <div class="form-group">
+                      <label>Password</label>
+                      <input type="password" class="form-control"  placeholder="Password" name="pwd_user" value="<?php echo htmlspecialchars($userToUpdate['pwd_user']); ?>"  required>
+                    </div>
+                    <div class="form-group">
+                      <label>Role </label>
+                      <input type="text" class="form-control" name="role_user" value="<?php echo htmlspecialchars($userToUpdate['role_user']); ?>" required  >
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary btn-block"  onclick="window.location.href='index2.php';">update</button>
+                    </div>
+                    <hr>
+                    
+                    <a href="index2.php" class="btn btn-facebook btn-block">
+                      <i class="fab fa-facebook-f fa-fw"></i>
+                    </a>
+                  </form>
+                  <?php endif; ?>
+                  <hr>
+                  <div class="text-center">
+                    <a class="font-weight-bold small" href="login.html">Already have an account?</a>
+                  </div>
+                  <div class="text-center">
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-                <label>First name:</label>
-                <input type="text" name="prenom_user" value="<?php echo htmlspecialchars($userToUpdate['prenom_user']); ?>" required>
-            </div>
-            <div>
-                <label>Last:</label>
-                <input type="text" name="nom_user" value="<?php echo htmlspecialchars($userToUpdate['nom_user']); ?>" required>
-            </div>
-            
-            <div>
-                <label>Email:</label>
-                <input type="email" name="email_user" value="<?php echo htmlspecialchars($userToUpdate['email_user']); ?>" required>
-            </div>
-            <div>
-                <label>Adress:</label>
-                <input type="text" name="adress_user" value="<?php echo htmlspecialchars($userToUpdate['adress_user']); ?>" required>
-            </div>
-            <div>
-                <label>Phone number:</label>
-                <input type="text" name="num_user" value="<?php echo htmlspecialchars($userToUpdate['num_user']); ?>" required>
-            </div>
-            <div>
-                <label>Password:</label>
-                <input type="password" name="pwd_user" value="<?php echo htmlspecialchars($userToUpdate['pwd_user']); ?>"  required>
-            </div>
-            <div>
-                <label>Role:</label>
-                <input type="text" name="role_user" value="<?php echo htmlspecialchars($userToUpdate['role_user']); ?>" required>
-            </div>
-            <div class="d-grid">
-                <button type="button" class="btn btn-submit btn-block -0" onclick="window.location.href='index2.php';">Return</button>
-                <button type="submit" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index2.php';">Update</button>
-            </div>
-        </form>
-      <?php endif; ?>
-  </body>
-  
-</html>
-<script src="vendor/jquery/jquery.min.js"></script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Register Content -->
+  <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
   <script src="js/ajoutuser.js"></script>
+</body>
+
+</html>
  

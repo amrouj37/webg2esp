@@ -94,13 +94,13 @@ try {
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-          <img src="img/logo/logo2.png">
+          <img src="images/logo_web_1.png">
         </div>
-        <div class="sidebar-brand-text mx-3">RuangAdmin</div>
+        <div class="sidebar-brand-text mx-3">Sahaprep</div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="index2.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -499,38 +499,20 @@ try {
               </div>
             </div>
             <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Products Sold</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle btn btn-primary btn-sm" href="#" role="button" id="dropdownMenuLink"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Month <i class="fas fa-chevron-down"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                      aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Select Periode</div>
-                      <a class="dropdown-item" href="#">Today</a>
-                      <a class="dropdown-item" href="#">Week</a>
-                      <a class="dropdown-item active" href="#">Month</a>
-                      <a class="dropdown-item" href="#">This Year</a>
-                    </div>
-                  </div>
-                </div>
+           
                 
                  
-                <div class="card-footer text-center">
-                  <a class="m-0 small text-primary card-link" href="#">View More <i
-                      class="fas fa-chevron-right"></i></a>
-                </div>
-              </div>
-            </div>
+                <!-- Invoice Example -->
+            
             <!-- Invoice Example -->
             <div class="col-xl-13 col-lg-13 mb-9">
               <div class="card">
                 <div class="card-header py-5 d-flex flex-row align-items-center justify-content-between">
-                  
+                
+                <a class="m-0 float-right btn btn-danger btn-sm" href="downloadTable.php">Télécharger le tableau <i class="fas fa-download"></i></a>
+
+              </div>
+            
                   
                 </div>
                 <div class="table-responsive">
@@ -538,8 +520,8 @@ try {
                     <thead class="thead-light">
                       <tr>
                         <th>CIN</th>
-                        <th>FIRST NAMe</th>
-                        <th>Last name</th>
+                        <th>FIRST Name</th>
+                        <th>Last Name</th>
                         <th>EMAIL</th>
                         <th>ADRESS</th>
                         <th>PHONE NUMBER</th>
@@ -558,8 +540,8 @@ if (!empty($users)) {
     foreach ($users as $user) {
         echo "<tr>
                 <td>" . htmlspecialchars($user['cin_user']) . "</td>
-                <td>" . htmlspecialchars($user['nom_user']) . "</td>
                 <td>" . htmlspecialchars($user['prenom_user']) . "</td>
+                <td>" . htmlspecialchars($user['nom_user']) . "</td>
                 <td>" . htmlspecialchars($user['email_user']) . "</td>
                 <td>" . htmlspecialchars($user['adress_user']) . "</td>
                 <td>" . htmlspecialchars($user['num_user']) . "</td>

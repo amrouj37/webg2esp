@@ -1,6 +1,7 @@
 <?php
 // Inclure le fichier de connexion à la base de données
 require_once '../config.php';
+session_start(); // Démarrer la session
 
 // Vérifiez si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -31,11 +32,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ':role_user' => $role_user
     ]);
 
-    // Rediriger après l'ajout des données vers index2.php
-    header("Location: index2.php"); 
+    // Sauvegarder le prénom dans une session
+    $_SESSION['prenom_user'] = $prenom_user;
+
+    // Rediriger après l'ajout des données vers client.php
+    header("Location: client.php");
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,25 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       font-size: 1.1em;
     }
     
-    /* Bouton Submit et Return */
-    .btn-submit {
-      height: 60px; /* Augmente la hauteur */
-      font-size: 1.2em; /* Taille de police plus grande */
-      background-color: #000000; /* Noir */
-      border-color: #000000; /* Bordure noire */
-      color: white; /* Texte en blanc */
-    }
     
-    .btn-submit:hover {
-      background-color: #333333; /* Gris foncé au survol */
-      border-color: #333333; /* Bordure change aussi au survol */
-    }
-
-
-    .btn-block {
-      width: 40%;
-    }
-
     
 
     /* Pour la table */
@@ -93,28 +80,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       padding: 10px;
       vertical-align: middle;
     }
-    /* Style pour les labels */
-    label {
-        display: inline-block; /* Assure que le padding s'applique */
-        background-color: #f0f0f0; /* Couleur de fond */
-        padding: 8px 12px; /* Espacement interne */
-        border-radius: 12px; /* Coins arrondis */
-        font-weight: bold; /* Met le texte en gras */
-        font-size: 1em; /* Taille de police */
-        margin-right: 10px; /* Espacement à droite */
-    }
-</style>
+/* Styles personnalisés pour les boutons */
+.btn-custom {
+  background-color: #000000; /* Noir */
+  color: white; /* Couleur du texte */
+  font-size: 1.2em; /* Taille du texte */
+  height: 60px; /* Hauteur */
+  width: 200px; /* Largeur */
+  border-radius: 30px; /* Coins arrondis */
+  border: none; /* Sans bordure */
+  transition: background-color 0.3s, color 0.3s; /* Animation douce */
+}
+
+.btn-custom:hover {
+  background-color: #333333; /* Noir plus clair au survol */
+  color: #f8f9fa; /* Blanc cassé pour le texte */
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center; /* Centrer les boutons */
+  gap: 20px; /* Espace entre les boutons */
+}
+
+
+  </style>
 
     
-  </style>
+  
 </head>
 
 <body>
   <div class="form-container">
       <header>
+        <br>
           <h1 align="center">SIGN UP</h1>
       </header>
-      <br>
+      
       <br>
       <form action="formuser.php" method="POST" >
           <table>
@@ -147,20 +149,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <td><input type="password" class="form-control rounded-0" name="pwd_user" id="pwd_user" placeholder="Password" required></td>
               </tr>
               <tr>
-                <td><label for="role_user" class="form-label">Role:</label></td>
-                <td><input type="text" class="form-control rounded-0" name="role_user" id="role_user" placeholder="role" required></td>
-            </tr>
+  <td>
+    <label>Role:</label>
+  </td>
+  <td>
+    <div>
+      <input type="radio" name="role_user" value="client" id="client" required>
+      <label for="client">Client</label>
+      
+      <input type="radio" name="role_user" value="admin" id="admin">
+      <label for="admin">Admin</label>
+    </div>
+  </td>
+</tr>
+
           </table>
           <br>
           <!-- Submit Button -->
-          <div class="d-grid">
-              <button type="button" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index.html';">Return</button>
-              <button  type="submit" class="btn btn-submit btn-block rounded-0">Submit</button>
-                       
-   
-                       
-                   
-          </div>
+          <div class="btn-container">
+        <button type="button" class="btn btn-custom" onclick="window.location.href='index.html';">Return</button>
+        <button type="submit" class="btn btn-custom">Submit</button>
+      </div>
       </form>
   </div>
   </body>

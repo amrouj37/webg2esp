@@ -119,6 +119,16 @@ public function getUserById($cin_user) {
     }
 }
 
+public function getUserByEmail($email_user) {
+    $conn = config::getConnexion();  // Utilisation de la classe config pour obtenir la connexion
+    $query = "SELECT * FROM user WHERE email_user = :email_user";  // Requête SQL pour récupérer l'utilisateur
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':email_user', $email_user);  // Liaison du paramètre
+    $stmt->execute();
+    $user = $stmt->fetch();  // Récupérer l'utilisateur
+    return $user;
+}
+
 
 
 
