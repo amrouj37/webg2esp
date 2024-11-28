@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>SAHA PREP-form_fournisseur</title>
+  <title>SAHA PREP-Ajouter_fournisseur</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -323,45 +323,54 @@
                  <!-- <h6 class="m-0 font-weight-bold text-primary">Ajouter un fournisseur</h6> -->
                 </div>
                 <div >
-                  <form method="post" style="padding-left: 20px ;padding-right: 20px">
-                    <div class="form-group" >
+                  <form method="post" action="../Controller/ajout_fournisseur.php" style="padding-left: 20px ;padding-right: 20px" onsubmit="return validateForm(event)">
+                    <div class="form-group">
                         <label>CIN</label>
-                        <input type="text" class="form-control" id="cin" placeholder="Saisir 8 chiffres exactement" required>
+                        <input type="text" name="cin_fournisseur" class="form-control" id="cin" placeholder="Saisir 8 chiffres exactement" required>
+                        <span id="error_cin" style="color:red;"></span>
                     </div>
                     <div class="form-group">
                         <label>Prénom</label>
-                        <input type="text" class="form-control" id="prenom" placeholder="Exemple:Adam" required>
+                        <input type="text" name="prenom" class="form-control" id="prenom" placeholder="Exemple: Adam" required>
+                        <span id="error_prenom" style="color:red;"></span>
                     </div>
                     <div class="form-group">
                         <label>Nom</label>
-                        <input type="text" class="form-control" id="nom" placeholder="Exemple:Ouederni" required>
+                        <input type="text" name="nom" class="form-control" id="nom" placeholder="Exemple: Ouederni" required>
+                        <span id="error_nom" style="color:red;"></span>
                     </div>
                     <div class="form-group">
                         <label>Date de naissance</label>
-                        <input type="date" class="form-control" id="date_naiss" required>
+                        <input type="date" name="date_naiss" class="form-control" id="date_naiss" required>
+                        <span id="error_date_naiss" style="color:red;"></span>
                     </div>
                     <div class="form-group">
                         <label>Adresse</label>
-                        <input class="form-control" id="adresse" maxlength="20" placeholder="Entrer votre adresse" required>
+                        <input class="form-control" name="adresse" id="adresse" maxlength="20" placeholder="Entrer votre adresse" required>
+                        <span id="error_adresse" style="color:red;"></span>
                     </div>
-                    <div class="form-group">
-                        <label>Numéro</label>
-                        <input type="text" class="form-control" id="numero" placeholder="Entrer votre numero" required>
-                    </div>
+                    
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Entrer votre Email" required>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Entrer votre Email" required>
+                        <span id="error_email" style="color:red;"></span>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>Date du contrat</label>
-                        <input type="date" class="form-control" id="date_contrat" required>
-                    </div>
+                        <input type="date" name="date_contrat" class="form-control" id="date_contrat" required>
+                    </div> -->
+                    <div class="form-group">
+                      <label>Numéro</label>
+                      <input type="text" name="numero" class="form-control" id="numero" placeholder="Entrer votre numero" required>
+                      <span id="error_numero" style="color:red;"></span>
+                  </div>
                     <div class="form-group">
                         <button id="ff" type="submit" class="btn btn-primary btn-block">Ajouter le fournisseur</button>
                     </div>
                     <hr>
                     <a href="index.html" class="btn btn-google btn-block">Retour au Dashboard</a>
                 </form>
+                
                  </div>
                 <div class="card-footer"></div>
               </div>

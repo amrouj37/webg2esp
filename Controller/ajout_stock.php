@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $controller->ajouter($stock);
     
     
-    echo "Product added successfully! <a href='../view/index.php'>Retour au Dashboard</a>";
+    header('location:../View/index.php');
     }
     else {
         echo "All form fields are required!";

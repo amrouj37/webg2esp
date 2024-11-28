@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>SAHA PREP-form_stock</title>
+  <title>SAHA PREP-Modifier_fournisseur</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
         <div class="sidebar-brand-icon">
           <img src="img/logo/logo2.png">
         </div>
-        <div class="sidebar-brand-text mx-3">SAHA PREP</div>
+        <div class="sidebar-brand-text mx-3">Saha Prep</div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
@@ -75,7 +75,7 @@
         <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item active" href="#">Ajouter au stock</a>
+            <a class="collapse-item active" href="#">Modifier un fournisseur</a>
             <a class="collapse-item" href="datatables.html">DataTables</a>
           </div>
         </div>
@@ -307,7 +307,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Ajouter un produit</h1>
+            <h1 class="h3 mb-0 text-gray-800">Modifier un fournisseur</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Tables</li>
@@ -323,44 +323,54 @@
                  <!-- <h6 class="m-0 font-weight-bold text-primary">Ajouter un fournisseur</h6> -->
                 </div>
                 <div >
-                  <form method="post" action="../Controller/ajout_stock.php" style="padding-left: 20px ;padding-right: 20px">
+                  <form method="post" action="../Controller/modifier_fournisseur.php?id_fournisseur=<?= htmlspecialchars($_GET['id_fournisseur']); ?>" style="padding-left: 20px ;padding-right: 20px" onsubmit="return validateForm(event)">
                     <div class="form-group">
-                      <label>Nom_produit</label>
-                      <input type="text" class="form-control" name="nom_produit"   id="nom_produit" placeholder="Entrer nom_produit" unique >
+                        <label>CIN</label>
+                        <input type="text" name="cin_fournisseur" class="form-control" id="cin" value="<?= htmlspecialchars($_GET['cin_fournisseur']); ?>"placeholder="Saisir 8 chiffres exactement" required>
+                        <span id="error_cin" style="color:red;"></span>
                     </div>
                     <div class="form-group">
-                      <label>Quantité</label>
-                      <input type="text" class="form-control" name="quantite" id="quantite"  placeholder="3" >
+                        <label>Prénom</label>
+                        <input type="text" name="prenom" class="form-control" id="prenom" value="<?= htmlspecialchars($_GET['prenom']); ?>" placeholder="Exemple: Adam" required>
+                        <span id="error_prenom" style="color:red;"></span>
                     </div>
                     <div class="form-group">
-                      <label>Unité</label>
-                      <input type="text" class="form-control" id="unite" name="unite" placeholder="Exemple:Kg" >
+                        <label>Nom</label>
+                        <input type="text" name="nom" class="form-control" id="nom" value="<?= htmlspecialchars($_GET['nom']); ?>" placeholder="Exemple: Ouederni" required>
+                        <span id="error_nom" style="color:red;"></span>
                     </div>
                     <div class="form-group">
-                      <label>Date d'expiration</label>
-                      <input type="date" class="form-control" name="date_expir" id="date_expir" >
+                        <label>Date de naissance</label>
+                        <input type="date" name="date_naiss" class="form-control" value="<?= htmlspecialchars($_GET['date_naiss']); ?>" id="date_naiss" required>
+                        <span id="error_date_naiss" style="color:red;"></span>
                     </div>
                     <div class="form-group">
-                      <label>Prix_unitaire</label>
-                      <input  class="form-control" id="prix_uni" name="prix_uni"  placeholder="9.99" >
+                        <label>Adresse</label>
+                        <input class="form-control" name="adresse" value="<?= htmlspecialchars($_GET['adresse']); ?>" id="adresse" maxlength="20" placeholder="Entrer votre adresse" required>
+                        <span id="error_adresse" style="color:red;"></span>
                     </div>
+                    
                     <div class="form-group">
-                      <label>id_fournisseur</label>
-                      <input  class="form-control" id="id_four" name="id_four"  placeholder="ID_fournisseur" >
+                        <label>Email</label>
+                        <input type="email" name="email" value="<?= htmlspecialchars($_GET['email']); ?>" class="form-control" id="email" placeholder="Entrer votre Email" required>
+                        <span id="error_email" style="color:red;"></span>
                     </div>
+                    <!-- <div class="form-group">
+                        <label>Date du contrat</label>
+                        <input type="date" name="date_contrat" class="form-control" id="date_contrat" required>
+                    </div> -->
                     <div class="form-group">
-                      <label>Disponibilité</label>
-                      <input type="text" class="form-control" id="dispo" name="dispo"
-                        placeholder="Oui ou Non"   >
-                    </div>
+                      <label>Numéro</label>
+                      <input type="text" name="numero" value="<?= htmlspecialchars($_GET['numero']); ?>" class="form-control" id="numero" placeholder="Entrer votre numero" required>
+                      <span id="error_numero" style="color:red;"></span>
+                  </div>
                     <div class="form-group">
-                      <button id="fs" type="submit" class="btn btn-primary btn-block" >Ajouter le produit</button>
+                        <button id="ff" type="submit" class="btn btn-primary btn-block badge-warning">Modifier le fournisseur</button>
                     </div>
                     <hr>
-                    <a href="index.php" class="btn btn-google btn-block">
-                       Retour au Dashboard
-                    </a>
-                  </form>
+                    <a href="index.html" class="btn btn-google btn-block">Retour au Dashboard</a>
+                </form>
+                
                  </div>
                 <div class="card-footer"></div>
               </div>
@@ -416,7 +426,7 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
-  <script src="js/ajoutstock.js"></script>
+  <script src="js/ajoutfournisseur.js"></script>
 
 </body>
 

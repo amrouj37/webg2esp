@@ -1,6 +1,6 @@
 
-
-<?php include_once 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_fournisseur.php';?>
+<?php
+include_once 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_fournisseur.php';?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>SAHA PREP-Modifier_stock</title>
+  <title>SAHA PREP-form_stock</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -78,7 +78,7 @@
         <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item active" href="#">Modifier le stock</a>
+            <a class="collapse-item active" href="#">Ajouter au stock</a>
             <a class="collapse-item" href="datatables.html">DataTables</a>
           </div>
         </div>
@@ -310,7 +310,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Modifier le produit</h1>
+            <h1 class="h3 mb-0 text-gray-800">Ajouter un produit</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item">Tables</li>
@@ -326,72 +326,74 @@
                  <!-- <h6 class="m-0 font-weight-bold text-primary">Ajouter un fournisseur</h6> -->
                 </div>
                 <div >
-                  <form method="post" action="../Controller/modifier_stock.php?id_produit=<?= htmlspecialchars($_GET['id_produit']); ?>" style="padding-left: 20px ;padding-right: 20px">
-              
-                  <div class="form-group">
-        <label>Nom du produit</label>
-        <input type="text" class="form-control" name="nom_produit" id="nom_produit" value="<?= htmlspecialchars($_GET['nom_produit']); ?>" required>
-        <span id="error_nom_produit" style="color: red;"></span>
-    </div>
-    
-    <div class="form-group">
-        <label>Quantité</label>
-        <input type="text" class="form-control" name="quantite" id="quantite" value="<?= htmlspecialchars($_GET['quantite']); ?>" required>
-        <span id="error_quantite" style="color: red;"></span>
-    </div>
-    
-    <div class="form-group">
-        <label>Unité</label>
-        <input type="text" class="form-control" name="unite" id="unite" value="<?= htmlspecialchars($_GET['unite']); ?>" required>
-        <span id="error_unite" style="color: red;"></span>
-    </div>
-    
-    <div class="form-group">
-        <label>Date d'expiration</label>
-        <input type="date" class="form-control" name="date_expir" id="date_expir" value="<?= htmlspecialchars($_GET['date_expir']); ?>" required>
-        <span id="error_date_expir" style="color: red;"></span>
-    </div>
-    
-    <div class="form-group">
-        <label>Prix unitaire</label>
-        <input type="text" class="form-control" name="prix_uni" id="prix_uni" value="<?= htmlspecialchars($_GET['prix_uni']); ?>" required>
-        <span id="error_prix_uni" style="color: red;"></span>
-    </div>
-    
-    <!-- <div class="form-group">
-        <label>ID Fournisseur</label>
-        <input type="text" class="form-control" name="id_four" id="id_four" value="<?= htmlspecialchars($_GET['id_four']); ?>" required>
-        <span id="error_id_four" style="color: red;"></span>
-    </div> -->
-    <style>
-    input[type="radio"] {
-        width: 15px; /* Adjust size */
-        height: 15px; /* Adjust size */
-    }
-</style>
-<label>Nom et prénom du Fournisseur: </label>
+                <form method="post" action="../Controller/ajout_stock.php" style="padding-left: 20px; padding-right: 20px" >
+                    <div class="form-group">
+                        <label>Nom_produit</label>
+                        <input type="text" class="form-control" name="nom_produit" id="nom_produit" placeholder="Entrer nom_produit">
+                        <span id="error_nom_produit" style="color: red;"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Quantité</label>
+                        <input type="text" class="form-control" name="quantite" id="quantite" placeholder="3">
+                        <span id="error_quantite" style="color: red;"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Unité</label>
+                        <input type="text" class="form-control" id="unite" name="unite" placeholder="Exemple: Kg">
+                        <span id="error_unite" style="color: red;"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Date d'expiration</label>
+                        <input type="date" class="form-control" name="date_expir" id="date_expir">
+                        <span id="error_date_expir" style="color: red;"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Prix_unitaire</label>
+                        <input class="form-control" id="prix_uni" name="prix_uni" placeholder="9.99">
+                        <span id="error_prix_uni" style="color: red;"></span>
+                    </div>
+                    
+                    <!-- <div class="form-group">
+                        <label>id_fournisseur</label>
+                        <input class="form-control" id="id_four" name="id_four" placeholder="ID_fournisseur">
+                        <span id="error_id_four" style="color: red;"></span>
+                    </div> -->
+                    <style>
+                      input[type="radio"] {
+                          width: 15px; /* Adjust size */
+                          height: 15px; /* Adjust size */
+                      }
+                  </style>
+                      <label>Nom et prénom du Fournisseur: </label>
                       <?php foreach($rowsf as $row): ?>
                       <div class="form-group">
                           <label><?= htmlspecialchars($row['nom']); ?> <?= htmlspecialchars($row['prenom']); ?> </label>
-                          <input type="radio" class="form-control" <?= $row['id_fournisseur'] == htmlspecialchars($_GET['id_four']) ? 'checked' : ''; ?> value="<?= htmlspecialchars($row['id_fournisseur']); ?>" name="id_four" id="id_four" required>
+                          <input type="radio" class="form-control" value="<?= htmlspecialchars($row['id_fournisseur']); ?>" name="id_four" id="id_four" required>
                                  
                       </div>
                       <?php endforeach; ?>
-    
-    <div class="form-group">
-        <label>Disponibilité</label>
-        <input type="text" class="form-control" name="dispo" id="dispo" value="<?= htmlspecialchars($_GET['dispo']); ?>" required>
-        <span id="error_dispo" style="color: red;"></span>
-    </div>
+
+                   
+                    
                     <div class="form-group">
-                      
-                      <button id="fs" type="submit" class="btn btn-primary btn-block badge-warning" >Modifier le produit</button>
+                        <label>Disponibilité</label>
+                        <input type="text" class="form-control" id="dispo" name="dispo" placeholder="Oui ou Non">
+                        <span id="error_dispo" style="color: red;"></span>
                     </div>
+                    
+                    <div class="form-group">
+                        <button id="fs" type="submit" class="btn btn-primary btn-block">Ajouter le produit</button>
+                    </div>
+                    
                     <hr>
-                    <a href="index.php" class="btn btn-google btn-block">
-                       Retour au Dashboard
-                    </a>
-                  </form>
+                    
+                    <a href="index.php" class="btn btn-google btn-block">Retour au Dashboard</a>
+                </form>
+                
                  </div>
                 <div class="card-footer"></div>
               </div>
@@ -452,3 +454,4 @@
 </body>
 
 </html>
+?>

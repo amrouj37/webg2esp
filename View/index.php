@@ -1,11 +1,24 @@
 
 <?php
   include_once 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_stock.php';
+  include_once 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_fournisseur.php';
+  include_once 'C:/xampp/htdocs/projet_adam_final/Controller/fournisseur.php';
+ include_once 'C:/xampp/htdocs/projet_adam_final/Controller/afficher_prod_four.php';
+ include_once 'C:/xampp/htdocs/projet_adam_final/Controller/stock.php';
+   
   ?>
   
+  
+  
+ 
+  <?php
+
+$list = isset($_SESSION['list']) ? $_SESSION['list'] : [];
+?>
 <!DOCTYPE html>
 <html lang="en">
-
+<?php $fournisseurC = new fournisseurC(); 
+$fournisseur=$fournisseurC->afficherFournisseur();?>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -81,7 +94,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
             <a class="collapse-item" href="formfournisseur.html">Ajouter un fournisseur</a>
-            <a class="collapse-item" href="formstock.html">Ajouter au stock</a>
+            <a class="collapse-item" href="formstock.php">Ajouter au stock</a>
           </div>
         </div>
       </li>
@@ -518,7 +531,7 @@
                         <th>Unité</th>
                         <th>Date_expiration</th>
                         <th>Prix_unitaire</th>
-                        <th>id_Fournisseur</th>
+                        <th>ID_Fournisseur</th>
                         <th>Disponibilité</th>
                         <th></th>
                         <th></th>
@@ -536,8 +549,8 @@
                         <td><a href="#"><?= $row['id_four']; ?></a></td>
                         <td><span class="badge <?= ($row['dispo'] == 'Oui') ? 'badge-success' : 'badge-danger'; ?>">
                         <?= $row['dispo']; ?></span></td>
-                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierstock.php?id=<?= $row['nom_produit']; ?>&quantite=<?= $row['quantite']; ?>&unite=<?= $row['unite']; ?>&date_expir=<?= $row['date_expir']; ?>&prix_uni=<?= $row['prix_uni']; ?>&id_four=<?= $row['id_four']; ?>&dispo=<?= $row['dispo']; ?>">Modifier</a></button></td>
-                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?nom_produit=<?=$row['nom_produit']; ?>">Supprimer</a></button></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierstock.php?id_produit=<?=$row['id_produit'];?>&nom_produit=<?= $row['nom_produit']; ?>&quantite=<?= $row['quantite']; ?>&unite=<?= $row['unite']; ?>&date_expir=<?= $row['date_expir']; ?>&prix_uni=<?= $row['prix_uni']; ?>&id_four=<?= $row['id_four']; ?>&dispo=<?= $row['dispo']; ?>"> Modifier</a></button></td>
+                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?id_produit=<?=$row['id_produit']; ?>">Supprimer</a></button></td>
                       </tr>
                       <?php endforeach; ?>
                       
@@ -545,7 +558,7 @@
                     
                   </table>
                 </div>
-                <button for="stock" class="badge badge-success" style="border:0;"><a href="formstock.html" style="color:white">Ajouter dans le stock</a></button>
+                <button for="stock" class="badge badge-success" style="border:0;"><a href="formstock.php" style="color:white">Ajouter dans le stock</a></button>
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Fournisseurs</h6>
                   
@@ -561,49 +574,129 @@
                         <th>Adresse</th>
                         <th>Numéro</th>
                         <th>email</th>
-                        <th>Date_contrat</th>
+      
                         <th></th>
                         <th></th>
                         
                       </tr>
                     </thead>
                     <tbody>
+                    <?php foreach ($rowsf as $row): ?>
                       <tr>
-                        <td><a href="#">099999991</a></td>
-                        <td>salah</td>
-                        <td>chebil</td>
-                        <td><span class="badge badge-success">16/03/2000</span></td>
-                        <td>Aouina,rue meneza,1900</td>
-                        <td>2876345</td>
-                        <td><span class="badge badge-success">salah@goats.tn</span></td>
-                        <td><span class="badge badge-success">28/02/2022</span></td>
-                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="#">Modifier</a></button></td>
-                        <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="#">Supprimer</a></button></td>
-                        
+                        <td><a href="#"><?= $row['cin_fournisseur']; ?></a></td>
+                        <td><?= $row['prenom']; ?></td>
+                        <td><?= $row['nom']; ?></td>
+                        <td><span class="badge badge-success"><?= $row['date_naiss']; ?></span></td>
+                        <td><?= $row['adresse']; ?></td>
+                        <td><?= $row['numero']; ?></td>
+                        <td><span class="badge badge-success"><?= $row['email']; ?></span></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierfournisseur.php?id_fournisseur=<?=$row['id_fournisseur'];?>&cin_fournisseur=<?= $row['cin_fournisseur']; ?>&prenom=<?= $row['prenom']; ?>&nom=<?= $row['nom']; ?>&date_naiss=<?= $row['date_naiss']; ?>&adresse=<?= $row['adresse']; ?>&email=<?= $row['email']; ?>&numero=<?= $row['numero']; ?>">Modifier</a></td>
+                        <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_fournisseur.php?id_fournisseur=<?=$row['id_fournisseur']; ?>">Supprimer</a></button></td>
                       </tr>
-                      <tr>
-                        <td><a href="#">0298734849</a></td>
-                        <td>amrou</td>
-                        <td>jemai</td>
-                        <td><span class="badge badge-success">16/03/1989</span></td>
-                        <td>Sokra,rue manouba,1937</td>
-                        <td>2876345</td>
-                        <td><span class="badge badge-success">amrou@goats.tn</span></td>
-                        <td><span class="badge badge-success">26/12/2023</span></td>
-                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="#">Modifier</a></button></td>
-                        <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="#">Supprimer</a></button></td>
+                      <?php endforeach; ?>
                     </tbody>
                     
                   </table>
+                </div>
+                <button for="fournisseur" class="badge badge-success" style="border:0;"><a href="formfournisseur.html" style="color:white">Ajouter un fournisseur</a></button>
+
+
+
+
+
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Recherche des produits par fournisseur:</h6>
+                  
+                </div>
+                
+                <div class="table-responsive">
+                <?php
+$lastfour = isset($_SESSION['lastfour']) ? $_SESSION['lastfour'] : null;
+?>
+                  <form method="post" action="../Controller/afficher_prod_four.php">
+                  <label>Sélectionner un fournisseur</label>
+                  <select class="table align-items-center table-flush"  name="choix">
+                    <option>Choisir un fournisseur</option>
+                    <?php foreach($fournisseur as $fournisseur):?>
+                    
+                    <option value="<?= htmlspecialchars($fournisseur['id_fournisseur']); ?>">
+                <?= htmlspecialchars($fournisseur['prenom'] . " " . $fournisseur['nom']); ?>
+            </option>
+                      <?php endforeach; ?>
+                      
+                   
+                      
+                </div>
+                <button for="rechercher" class="badge badge-success" style="border:0;">Rechercher</button>
+                    </form>
+
+                <div class="table-responsive">
+                
+                  <table class="table align-items-center table-flush">
+                 
+                    <thead class="thead-light">
+                
+                      <tr>
+                        <th>Nom_produit</th>
+                        <th>Quantité</th>
+                        <th>Unité</th>
+                        <th>Date_expiration</th>
+                        <th>Prix_unitaire</th>
+                        <th>ID_Fournisseur</th>
+                        <th>Disponibilité</th>
+                        <th></th>
+                        <th></th>
+                        
+                      </tr>
+                    
+                    </thead>
+                    
+                    <tbody>
+                      
+                     
+                      <?php if(isset($list)) foreach ($list as $row): ?>
+                      <tr>
+                        <td><a href="#"><?= $row['nom_produit']; ?></a></td>
+                        <td><?= $row['quantite']; ?></td>
+                        <td><?= $row['unite']; ?></td>
+                        <td><span class="badge <?= (($auj = new DateTime()) < ($expird = new DateTime($row['date_expir']))) ? 'badge-success' : 'badge-danger'; ?>"><?= $row['date_expir']; ?></span></td>
+                        <td><a href="#" class="btn btn-sm btn-primary"><?= $row['prix_uni']; ?></a></td>
+                        <td><a href="#"><?= $row['id_four']; ?></a></td>
+                        <td><span class="badge <?= ($row['dispo'] == 'Oui') ? 'badge-success' : 'badge-danger'; ?>">
+                        <?= $row['dispo']; ?></span></td>
+                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierstock.php?id_produit=<?=$row['id_produit'];?>&nom_produit=<?= $row['nom_produit']; ?>&quantite=<?= $row['quantite']; ?>&unite=<?= $row['unite']; ?>&date_expir=<?= $row['date_expir']; ?>&prix_uni=<?= $row['prix_uni']; ?>&id_four=<?= $row['id_four']; ?>&dispo=<?= $row['dispo']; ?>"> Modifier</a></button></td>
+                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?id_produit=<?=$row['id_produit']; ?>">Supprimer</a></button></td>
+                      </tr>
+                      <?php endforeach; ?>
+                      
+                    </tbody>
+                    
+                  </table>
+                  
+                  <?php session_unset();session_destroy(); ?>
                 </div>
 
 
 
 
-                <button for="fournisseur" class="badge badge-success" style="border:0;"><a href="formfournisseur.html" style="color:white">Ajouter un fournisseur</a></button>
+
+
+
+
+
+
+
+
+
+
+
+
                 <div class="card-footer"></div>
               </div>
+              
+              
             </div>
+            
             <!-- Message From Customer-->
             <div class="col-xl-4 col-lg-5 ">
               <div class="card">
