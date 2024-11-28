@@ -12,6 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $platController->ajouterplat($plat);
     echo "Plat ajouté avec succès!";
+    header('Location: index.php');
+    exit();
 }
 ?>
 

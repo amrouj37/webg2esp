@@ -1,33 +1,40 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    const nomRecette = document.querySelector("input[name='nom_recette']");
+    const nombreIng = document.querySelector("input[name='nombre_ing']");
+    const instructionsRecette = document.querySelector("textarea[name='instructions_recette']");
 
-    form.addEventListener('submit', function (event) {
-        let valid = true;
+    form.addEventListener("submit", function (event) {
         let errors = [];
-        const nomRecette = document.getElementById('nom_recette');
-        if (nomRecette.value.trim() === '') {
-            errors.push('Nom de la recette est requis');
-            valid = false;
-        } else if (nomRecette.value.length < 1 || nomRecette.value.length > 50) {
-            errors.push('Nom de la recette doit contenir entre 1 et 50 caractères');
-            valid = false;
+
+        if (!nomRecette.value.trim() || nomRecette.value.length > 50) {
+            errors.push("Le nom de la recette doit contenir entre 1 et 50 caractères.");
         }
-        const nombreIng = document.getElementById('nombre_ing');
-        if (nombreIng.value <= 0 || nombreIng.value > 20) {
-            errors.push('Nombre d\'ingrédients doit être supérieur à zéro et inférieur ou égal à 20');
-            valid = false;
+
+        const nombreIngValue = parseInt(nombreIng.value, 10);
+        if (isNaN(nombreIngValue) || nombreIngValue < 1 || nombreIngValue > 20) {
+            errors.push("Le nombre d'ingrédients doit être compris entre 1 et 20.");
         }
-        const instructionsRecette = document.getElementById('instructions_recette');
-        if (instructionsRecette.value.trim() === '') {
-            errors.push('Les instructions sont requises');
-            valid = false;
-        } else if (instructionsRecette.value.length < 10 || instructionsRecette.value.length > 80) {
-            errors.push('Les instructions doivent contenir entre 10 et 80 caractères');
-            valid = false;
+
+        if (!instructionsRecette.value.trim() || instructionsRecette.value.length > 80) {
+            errors.push("Les instructions doivent contenir entre 1 et 80 caractères.");
         }
-        if (!valid) {
+
+        if (errors.length > 0) {
             event.preventDefault();
-            alert(errors.join('\n'));
+            const existingErrorContainer = document.querySelector(".error-messages");
+            if (existingErrorContainer) {
+                existingErrorContainer.remove();
+            }
+            const newErrorContainer = document.createElement("div");
+            newErrorContainer.classList.add("alert", "alert-danger", "error-messages");
+            errors.forEach(error => {
+                const errorItem = document.createElement("p");
+                errorItem.textContent = error;
+                newErrorContainer.appendChild(errorItem);
+            });
+            document.body.appendChild(newErrorContainer);
+            newErrorContainer.scrollIntoView({ behavior: "smooth" });
         }
     });
 });

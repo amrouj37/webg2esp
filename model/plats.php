@@ -4,16 +4,14 @@ class Plat {
     private $nom_plat;
     private $prix_plat;
     private $id_recette;
-    private $description;
+    private $url_img;
     private $disponible;
-
-    // Constructor to initialize all fields
-    public function __construct($nom_plat, $prix_plat, $id_recette, $description, $disponible, $id_plat = null) {
+    public function __construct($nom_plat, $prix_plat, $id_recette, $url_img, $disponible, $id_plat = null) {
         $this->id_plat = $id_plat;
         $this->nom_plat = $nom_plat;
         $this->prix_plat = $prix_plat;
         $this->id_recette = $id_recette;
-        $this->description = $description;
+        $this->url_img = $url_img;
         $this->disponible = $disponible;
     }
 
@@ -34,8 +32,8 @@ class Plat {
         return $this->id_recette;
     }
 
-    public function getDescription() {
-        return $this->description;
+    public function getUrlImg() {
+        return $this->url_img;
     }
 
     public function getDisponible() {
@@ -59,8 +57,8 @@ class Plat {
         $this->id_recette = $id_recette;
     }
 
-    public function setDescription($description) {
-        $this->description = $description;
+    public function setUrlImg($url_img) { 
+        $this->url_img = $url_img;
     }
 
     public function setDisponible($disponible) {
@@ -68,4 +66,3 @@ class Plat {
     }
 }
 ?>
-

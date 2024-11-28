@@ -15,13 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $recetteController = new RecetteController();
     $recetteController->ajouterRecette($recette);
+    header('Location: index.php');
+    exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="C:\xampp\htdocs\QQQQQ\view\back\js"></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -49,15 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   <form method="POST" action="ajouterrecette.php">
                     <div class="form-group">
                       <label>Nom Recette</label>
-                      <input type="text" class="form-control" name="nom_recette" placeholder="Enter Nom Recette" required>
+                      <input type="text" class="form-control" name="nom_recette" placeholder="Enter Nom Recette">
                     </div>
                     <div class="form-group">
                       <label>Nombre des Ingrédients</label>
-                      <input type="number" class="form-control" name="nombre_ing" placeholder="Nombre des Ingrédients" required>
+                      <input type="number" class="form-control" name="nombre_ing" placeholder="Nombre des Ingrédients" >
                     </div>
                     <div class="form-group">
                       <label>Instructions Recette</label>
-                      <textarea class="form-control" name="instructions_recette" rows="4" placeholder="Instructions Recette" required></textarea>
+                      <textarea class="form-control" name="instructions_recette" rows="4" placeholder="Instructions Recette"></textarea>
                     </div>
                     <div class="form-group">
                       <button type="submit" class="btn btn-primary btn-block">Ajouter Recette</button>
@@ -74,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
     </div>
   </div>
-
+  <script src="js\valid1.js"></script>
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>

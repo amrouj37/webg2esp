@@ -1,5 +1,14 @@
 <?php
-  include 'C:/xampp/htdocs/QQQQQ/view/back/afficherrecette.php';
+require_once 'C:/xampp/htdocs/QQQQQ/controller/platcontroller.php';
+require_once 'C:/xampp/htdocs/QQQQQ/controller/recettecontroller.php';
+
+$platController = new PlatController();
+$recetteController = new RecetteController();
+
+// Fetch data
+$plats = $platController-> getPlats();
+$recettes = $recetteController->getRecettes();
+
   ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -501,108 +510,91 @@
             </div>
             <!-- Invoice Example -->
             <div class="col-xl-9 col-lg-7 mb-4">
-              <div class="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
-                  <a class="m-0 float-right btn btn-danger btn-sm" href="register plat.html"target="_blank">ajouter plat<i
-                      class="fas fa-chevron-right"></i></a>
-                </div>
-                <div class="table-responsive">
-                  <table class="table align-items-center table-flush">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Plat   ID</th>
-                        <th>Nom PLAT</th>
-                        <th>Prix plat</th>
-                        <th>ID Recette</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><a href="#">RA0449</a></td>
-                        <td>slata mechouia</td>
-                        <td>9.000DT</td>
-                        <td>adfgsdgadg</td>
-                        <td><a href="#" class="btn btn-sm btn-primary">modify</a></td>
-                        <td><a href="#" class="btn btn-sm btn-secondary">Delete</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA5324</a></td>
-                        <td>High protein Kamounia</td>
-                        <td>18.000DT</td>
-                        <td>adfgsdgadg</td>
-                        <td><a href="#" class="btn btn-sm btn-primary">modify</a></td>
-                        <td><a href="#" class="btn btn-sm btn-secondary">Delete</a></td>
-                        
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA8568</a></td>
-                        <td>Oven baked brick</td>
-                        <td>9.900DT</td>
-                        <td>adfgsdgadg</td>
-                        <td><a href="#" class="btn btn-sm btn-primary">modify</a></td>
-                        <td><a href="#" class="btn btn-sm btn-secondary">Delete</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1453</a></td>
-                        <td>Couscous au viande</td>
-                        <td>18.000DT</td>
-                        <td>adfgsdgadg</td>
-                        <td><a href="#" class="btn btn-sm btn-primary">modify</a></td>
-                        <td><a href="#" class="btn btn-sm btn-secondary">Delete</a></td>
-                      </tr>
-                      <tr>
-                        <td><a href="#">RA1998</a></td>
-                        <td>mexican tacos</td>
-                        <td>14.000DT</td>
-                        <td>adfgsdgadg</td>
-                        <td><a href="#" class="btn btn-sm btn-primary">modify</a></td>
-                        <td><a href="#" class="btn btn-sm btn-secondary">Delete</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                
-              </div>
-            </div>
-            <div class="col-xl-9 col-lg-7 mb-4">
-              <div class="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
-                  <a class="m-0 float-right btn btn-danger btn-sm" href="ajouterrecette.php">ajouter recette<i
-                      class="fas fa-chevron-right"></i></a>
-                </div>
-                <div class="table-responsive">
-                  <table class="table align-items-center table-flush">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Nom Recette</th>
-                        <th>nombre de ingredients</th>
-                        <th>dscription recette</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                      </tr>
-                    </thead>
-                   <tbody>
-                      <?php foreach ($rows as $row): ?>
-                      <>
-                        <td><a href="#"><?= $row['nom_recette']; ?></a></td>
-                        <td><?= $row['nombre_ing']; ?></td>
-                        <td><?= $row['instructions_recette']; ?></td>
-                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="modifierrecette.php?id=<?= $row['id_recette']; ?>">Modifier</a></button></td>
-                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="supprimerrecette.php?id=<?=$row['id_recette']; ?>">Supprimer</a></button></td>
-                        
-                      </tr>
-                      <?php endforeach; ?>
+  <div class="card">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Tableau Plats</h6>
+      <a class="m-0 float-right btn btn-danger btn-sm" href="ajouterplat.php" target="_blank">
+        ajouter plat <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+        <thead class="thead-light">
+          <tr>
+            <th>Nom PLAT</th>
+            <th>Prix plat</th>
+            <th>ID Recette</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($plats as $plat): ?>
+            <tr>
+              <td><a href="#"><?= htmlspecialchars($plat['nom_plat']); ?></a></td>
+              <td><?= htmlspecialchars($plat['prix_plat']); ?></td>
+              <td><?= htmlspecialchars($plat['id_recette']); ?></td>
+              <td>
+                <button class="btn btn-sm btn-primary badge-warning">
+                  <a style="color:white" href="modifierplat.php?id=<?= $plat['id_plat']; ?>">Modifier</a>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-primary badge-danger">
+                  <a style="color:white" href="supprimerplat.php?id=<?= $plat['id_plat']; ?>">Supprimer</a>
+                </button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-                    </tbody>
-                  </table>
-                </div>
-                
-              </div>
-            </div>
+            <div class="col-xl-9 col-lg-7 mb-4">
+  <div class="card">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Tableau Recettes</h6>
+      <a class="m-0 float-right btn btn-danger btn-sm" href="ajouterrecette.php">
+        ajouter recette <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-items-center table-flush">
+        <thead class="thead-light">
+          <tr>
+            <th>Nom Recette</th>
+            <th>Nombre d'Ingrédients</th>
+            <th>Description Recette</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($recettes as $recette): ?>
+            <tr>
+              <td><a href="#"><?= htmlspecialchars($recette['nom_recette']); ?></a></td>
+              <td><?= htmlspecialchars($recette['nombre_ing']); ?></td>
+              <td><?= htmlspecialchars($recette['instructions_recette']); ?></td>
+              <td>
+                <button class="btn btn-sm btn-primary badge-warning">
+                  <a style="color:white" href="modifierrecette.php?id=<?= $recette['id_recette']; ?>">Modifier</a>
+                </button>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-primary badge-danger">
+                  <a style="color:white" href="supprimerrecette.php?id=<?= $recette['id_recette']; ?>">Supprimer</a>
+                </button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
  
           <!--Row-->
 

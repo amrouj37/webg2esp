@@ -2,7 +2,6 @@
 require_once 'C:\xampp\htdocs\QQQQQ\connection.php';
 
 class PlatController {
-    // Récupérer tous les plats
     public function getPlats() {
         $conn = config::getConnexion();
         $sql = "SELECT * FROM plats";
@@ -16,32 +15,26 @@ class PlatController {
         }
     }
 
-    // Ajouter un plat
     public function ajouterplat($plat) {
         $conn = config::getConnexion();
-    
-        // Step 1: Check if the id_recette exists in the recettes table
         $checkRecetteSql = "SELECT COUNT(*) FROM recettes WHERE id_recette = :id_recette";
         try {
             $query = $conn->prepare($checkRecetteSql);
             $query->execute([':id_recette' => $plat['id_recette']]);
             $count = $query->fetchColumn();
-    
-            // If the id_recette does not exist, throw an error
             if ($count == 0) {
                 echo "Erreur: L'id_recette spécifié n'existe pas dans la table recettes.";
                 return;
             }
-    
-            // Step 2: Proceed with the insertion into the plats table
-            $sql = "INSERT INTO plats (nom_plat, prix_plat, id_recette) 
-                    VALUES (:nom_plat, :prix_plat, :id_recette)";
+            $sql = "INSERT INTO plats (nom_plat, prix_plat, id_recette, url_img) 
+                    VALUES (:nom_plat, :prix_plat, :id_recette, :url_img)";
             
             $query = $conn->prepare($sql);
             $query->execute([
                 ':nom_plat' => $plat['nom_plat'],
                 ':prix_plat' => $plat['prix_plat'],
-                ':id_recette' => $plat['id_recette']
+                ':id_recette' => $plat['id_recette'],
+                ':url_img' => $plat['url_img']
             ]);
     
             echo "Plat ajouté avec succès!";
@@ -49,13 +42,10 @@ class PlatController {
             die('Erreur: ' . $e->getMessage());
         }
     }
-    
-
-    // Mettre à jour un plat
     public function updatePlat($id, $plat) {
         $conn = config::getConnexion();
         $sql = "UPDATE plats SET nom_plat = :nom_plat, prix_plat = :prix_plat, 
-                id_recette = :id_recette WHERE id_plat = :id";
+                id_recette = :id_recette, url_img = :url_img WHERE id_plat = :id";
 
         try {
             $query = $conn->prepare($sql);
@@ -63,14 +53,13 @@ class PlatController {
                 ':id' => $id,
                 ':nom_plat' => $plat['nom_plat'],
                 ':prix_plat' => $plat['prix_plat'],
-                ':id_recette' => $plat['id_recette']
+                ':id_recette' => $plat['id_recette'],
+                ':url_img' => $plat['url_img']
             ]);
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
     }
-
-    // Supprimer un plat
     public function deletePlat($id) {
         $conn = config::getConnexion();
         $sql = "DELETE FROM plats WHERE id_plat = :id";
@@ -82,8 +71,6 @@ class PlatController {
             die('Erreur: ' . $e->getMessage());
         }
     }
-
-    // Récupérer un plat par ID
     public function getPlatById($id) {
         $conn = config::getConnexion();
         $sql = "SELECT * FROM plats WHERE id_plat = :id";
