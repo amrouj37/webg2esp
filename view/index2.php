@@ -166,7 +166,7 @@ $data = [];
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
         <div class="sidebar-brand-icon">
           <img src="images/logo_web_1.png">
         </div>
@@ -443,8 +443,8 @@ $data = [];
       Activity Log
     </a>
     <div class="dropdown-divider"></div>
-    <!-- Logout button directly redirects to index.html -->
-    <a class="dropdown-item" href="index.html">
+    <!-- Logout button directly redirects to index.php -->
+    <a class="dropdown-item" href="index.php">
       <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
       Logout
     </a>

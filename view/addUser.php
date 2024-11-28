@@ -152,7 +152,7 @@ if (isset($_POST["cin_user"]) && isset($_POST["nom_user"]) && isset($_POST["pren
           <br>
           <!-- Submit Button -->
           <div class="d-grid">
-              <button type="button" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index.html';">Return</button>
+              <button type="button" class="btn btn-submit btn-block rounded-0" onclick="window.location.href='index.php';">Return</button>
               <button  type="submit" class="btn btn-submit btn-block rounded-0">Submit</button>
                        
    

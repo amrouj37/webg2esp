@@ -171,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <br>
           <!-- Submit Button -->
           <div class="btn-container">
-        <button type="button" class="btn btn-custom" onclick="window.location.href='index.html';">Return</button>
+        <button type="button" class="btn btn-custom" onclick="window.location.href='index.php';">Return</button>
         <button type="submit" class="btn btn-custom">Submit</button>
       </div>
       </form>

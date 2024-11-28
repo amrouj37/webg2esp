@@ -102,61 +102,61 @@
     
         <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
           <li class="nav-item border-dashed active">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#fruits"></use></svg>
               <span>Fruits and vegetables</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#dairy"></use></svg>
               <span>Dairy and Eggs</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#meat"></use></svg>
               <span>Meat and Poultry</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#seafood"></use></svg>
               <span>Seafood</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#bakery"></use></svg>
               <span>Bakery and Bread</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#canned"></use></svg>
               <span>Canned Goods</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#frozen"></use></svg>
               <span>Frozen Foods</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#pasta"></use></svg>
               <span>Pasta and Rice</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#breakfast"></use></svg>
               <span>Breakfast Foods</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#snacks"></use></svg>
               <span>Snacks and Chips</span>
             </a>
@@ -170,45 +170,45 @@
             </button>
             <div class="collapse" id="beverages-collapse">
               <ul class="btn-toggle-nav list-unstyled fw-normal ps-5 pb-1">
-                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Water</a></li>
-                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Juice</a></li>
-                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Soda</a></li>
-                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Tea</a></li>
+                <li class="border-bottom py-2"><a href="index.php" class="dropdown-item">Water</a></li>
+                <li class="border-bottom py-2"><a href="index.php" class="dropdown-item">Juice</a></li>
+                <li class="border-bottom py-2"><a href="index.php" class="dropdown-item">Soda</a></li>
+                <li class="border-bottom py-2"><a href="index.php" class="dropdown-item">Tea</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#spices"></use></svg>
               <span>Spices and Seasonings</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#baby"></use></svg>
               <span>Baby Food and Formula</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#health"></use></svg>
               <span>Health and Wellness</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#household"></use></svg>
               <span>Household Supplies</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#personal"></use></svg>
               <span>Personal Care</span>
             </a>
           </li>
           <li class="nav-item border-dashed">
-            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+            <a href="index.php" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
               <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#pet"></use></svg>
               <span>Pet Food and Supplies</span>
             </a>
@@ -225,7 +225,7 @@
           
           <div class="col-sm-5 col-lg-1 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
             <div class="d-flex align-items-center my-3 my-sm-0">
-              <a href="index.html">
+              <a href="index.php">
                 <img src="images/logo_web_1.png" alt="logo" class="img-fluid">
               </a>
             </div>
@@ -246,7 +246,7 @@
                 </select>
               </div>
               <div class="col-11 col-md-7">
-                <form id="search-form" class="text-center" action="index.html" method="post">
+                <form id="search-form" class="text-center" action="index.php" method="post">
                   <input type="text" class="form-control border-0 bg-transparent" placeholder="Search for more than 20,000 products">
                 </form>
               </div>
@@ -259,23 +259,23 @@
           <div class="col-lg-7">
             <ul class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
               <li class="nav-item active">
-                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.php" class="nav-link">Home</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle pe-3" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
                 <ul class="dropdown-menu border-0 p-3 rounded-0 shadow" aria-labelledby="pages">
-                  <li><a href="index.html" class="dropdown-item">About Us </a></li>
-                  <li><a href="index.html" class="dropdown-item">Shop </a></li>
-                  <li><a href="index.html" class="dropdown-item">Single Product </a></li>
-                  <li><a href="index.html" class="dropdown-item">Cart </a></li>
-                  <li><a href="index.html" class="dropdown-item">Checkout </a></li>
-                  <li><a href="index.html" class="dropdown-item">Blog </a></li>
-                  <li><a href="index.html" class="dropdown-item">Single Post </a></li>
-                  <li><a href="index.html" class="dropdown-item">Styles </a></li>
-                  <li><a href="index.html" class="dropdown-item">Contact </a></li>
-                  <li><a href="index.html" class="dropdown-item">Thank You </a></li>
-                  <li><a href="index.html" class="dropdown-item">My Account </a></li>
-                  <li><a href="index.html" class="dropdown-item">404 Error </a></li>
+                  <li><a href="index.php" class="dropdown-item">About Us </a></li>
+                  <li><a href="index.php" class="dropdown-item">Shop </a></li>
+                  <li><a href="index.php" class="dropdown-item">Single Product </a></li>
+                  <li><a href="index.php" class="dropdown-item">Cart </a></li>
+                  <li><a href="index.php" class="dropdown-item">Checkout </a></li>
+                  <li><a href="index.php" class="dropdown-item">Blog </a></li>
+                  <li><a href="index.php" class="dropdown-item">Single Post </a></li>
+                  <li><a href="index.php" class="dropdown-item">Styles </a></li>
+                  <li><a href="index.php" class="dropdown-item">Contact </a></li>
+                  <li><a href="index.php" class="dropdown-item">Thank You </a></li>
+                  <li><a href="index.php" class="dropdown-item">My Account </a></li>
+                  <li><a href="index.php" class="dropdown-item">404 Error </a></li>
                 </ul>
               </li>
               <li class="nav-item">
@@ -490,7 +490,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-1.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -525,7 +525,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-2.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -560,7 +560,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-3.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -595,7 +595,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-4.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -630,7 +630,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-5.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -665,7 +665,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-6.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -700,7 +700,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-7.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -735,7 +735,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-8.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -770,7 +770,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-9.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -805,7 +805,7 @@
               <div class="col">
                 <div class="product-item">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-10.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -920,7 +920,7 @@
                                 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-10.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -953,7 +953,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-11.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -986,7 +986,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-12.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1019,7 +1019,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-13.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1052,7 +1052,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-14.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1085,7 +1085,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-15.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1118,7 +1118,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-16.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1151,7 +1151,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-17.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1184,7 +1184,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-18.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1291,7 +1291,7 @@
                                 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-15.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1324,7 +1324,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-16.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1357,7 +1357,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-17.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1390,7 +1390,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-18.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1423,7 +1423,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-19.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1456,7 +1456,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-10.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1489,7 +1489,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-11.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1522,7 +1522,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-12.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1555,7 +1555,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-13.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1624,7 +1624,7 @@
                 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-20.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1657,7 +1657,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-1.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1690,7 +1690,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-21.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1723,7 +1723,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-22.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1756,7 +1756,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-23.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1789,7 +1789,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-10.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1822,7 +1822,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-11.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1855,7 +1855,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-12.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -1889,7 +1889,7 @@
 
                 <div class="product-item swiper-slide">
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="index.php" title="Product Title">
                       <img src="images/product-thumb-13.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
@@ -2233,7 +2233,7 @@
             <div class="footer-menu">
               <h5 class="widget-title">Subscribe Us</h5>
               <p>Subscribe to our newsletter to get updates about our grand offers.</p>
-              <form class="d-flex mt-3 gap-0" action="index.html">
+              <form class="d-flex mt-3 gap-0" action="index.php">
                 <input class="form-control rounded-start rounded-0 bg-light" type="email" placeholder="Email Address" aria-label="Email Address">
                 <button class="btn btn-dark rounded-end rounded-0" type="submit">Subscribe</button>
               </form>
