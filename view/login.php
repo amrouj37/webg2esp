@@ -125,6 +125,9 @@ input.form-control:focus {
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Connexion</button>
+            <p class="text-center" >
+                Do you have an account ?<a href="formuser.php"> Create an account </a>
+</p>
         </form>
     </div>
 

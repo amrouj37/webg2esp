@@ -1859,6 +1859,7 @@
                       <img src="images/product-thumb-12.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
+                  
                   <div class="d-flex flex-column text-center">
                     <h3 class="fs-6 fw-normal">Fresh Oranges</h3>
                     <div>

@@ -2,8 +2,15 @@
 // Inclure le fichier de connexion à la base de données
 require_once '../config.php';
 
+// Récupérer l'ordre de tri demandé (par défaut : ASC)
+$sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
+
+// Récupérer les critères de recherche
+$nomUserSearch = isset($_GET['nom_user']) ? $_GET['nom_user'] : '';
+$prenomUserSearch = isset($_GET['prenom_user']) ? $_GET['prenom_user'] : '';
+
+// Si une méthode POST est utilisée (soumission du formulaire)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les données du formulaire
     $cin_user = $_POST['cin_user'];
     $nom_user = $_POST['nom_user'];
     $prenom_user = $_POST['prenom_user'];
@@ -11,21 +18,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $adress_user = $_POST['adress_user'];
     $num_user = $_POST['num_user'];
     $role_user = $_POST['role_user'];
-    $hashed_pwd = password_hash($_POST['pwd_user'], PASSWORD_BCRYPT); // Hachage du mot de passe
+    $hashed_pwd = password_hash($_POST['pwd_user'], PASSWORD_BCRYPT);
 
-    // Vérifier que les champs obligatoires ne sont pas vides
+    // Vérification des champs
     if (empty($cin_user) || empty($nom_user) || empty($prenom_user) || empty($email_user) || empty($adress_user) || empty($num_user) || empty($role_user)) {
         echo "Tous les champs doivent être remplis.";
     } else {
         try {
-            // Vérifier si l'utilisateur existe déjà dans la base
+            // Vérifier si l'utilisateur existe
             $sql = "SELECT id_user FROM user WHERE cin_user = :cin_user";
             $stmt = config::getConnexion()->prepare($sql);
             $stmt->execute([':cin_user' => $cin_user]);
             $existingUser = $stmt->fetch();
 
             if ($existingUser) {
-                // Si l'utilisateur existe, mettre à jour ses informations
+                // Mise à jour des informations
                 $sql = "UPDATE user 
                         SET nom_user = :nom_user, 
                             prenom_user = :prenom_user, 
@@ -49,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "Les informations de l'utilisateur ont été mises à jour avec succès.";
             } else {
-                // Si l'utilisateur n'existe pas, afficher un message d'erreur
                 echo "Aucun utilisateur avec ce CIN n'existe.";
             }
         } catch (Exception $e) {
@@ -58,17 +64,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Récupérer tous les utilisateurs depuis la base de données
+
 try {
-    $sql = "SELECT * FROM user ORDER BY id_user DESC"; // Trier par ID utilisateur pour afficher les plus récents en premier
+    // Récupérer les utilisateurs triés selon l'ordre de tri demandé
+    $sql = "SELECT * FROM user ORDER BY cin_user $sortOrder";
     $stmt = config::getConnexion()->prepare($sql);
     $stmt->execute();
-    $users = $stmt->fetchAll(); // Récupérer tous les utilisateurs
+    $users = $stmt->fetchAll();
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
-    $users = []; // Si une erreur se produit, définir un tableau vide
+    $users = [];
 }
+
+
+
+// Préparer la requête de recherche
+try {
+  if (empty($nomUserSearch) && empty($prenomUserSearch)) {
+      // Si aucun critère de recherche, récupérer tous les utilisateurs
+      $sql = "SELECT * FROM user ORDER BY cin_user $sortOrder";
+      $stmt = config::getConnexion()->prepare($sql);
+      $stmt->execute();
+  } else {
+      // Sinon, appliquer les filtres de recherche
+      $sql = "SELECT * FROM user WHERE nom_user LIKE :nom_user AND prenom_user LIKE :prenom_user ORDER BY cin_user $sortOrder";
+      $stmt = config::getConnexion()->prepare($sql);
+      $stmt->execute([
+          ':nom_user' => '%' . $nomUserSearch . '%',
+          ':prenom_user' => '%' . $prenomUserSearch . '%'
+      ]);
+  }
+  $users = $stmt->fetchAll();
+} catch (Exception $e) {
+  echo "Erreur : " . $e->getMessage();
+  $users = [];
+}
+
+// Préparer les statistiques pour le graphique
+try {
+  $sql = "SELECT adress_user, COUNT(*) as count
+          FROM user
+          WHERE role_user = 'client'
+          GROUP BY adress_user";
+  $stmt = config::getConnexion()->prepare($sql);
+  $stmt->execute();
+  $statistics = $stmt->fetchAll();
+
+  
+// Calculer le nombre total de clients
+$totalClients = 0;
+foreach ($statistics as $stat) {
+    $totalClients += $stat['count'];
+}
+
+// Exemple de nombre de clients du mois précédent
+$clientsMoisPrecedent = 300; // Remplacez par la valeur réelle ou récupérez-la depuis la base de données
+
+// Calculer le pourcentage de changement
+if ($clientsMoisPrecedent > 0) {
+    $pourcentageChange = (($totalClients - $clientsMoisPrecedent) / $clientsMoisPrecedent) * 100;
+} else {
+    $pourcentageChange = 0; // Evitez une division par zéro
+}
+
+// Préparer les données pour Chart.js
+$labels = [];
+$data = [];
+
+foreach ($statistics as $stat) {
+    $labels[] = $stat['adress_user']; // Adresse
+    $data[] = $stat['count'];         // Nombre de clients
+}
+} catch (Exception $e) {
+echo "Erreur : " . $e->getMessage();
+$labels = [];
+$data = [];
+}
+
 ?>
+
 
 
 
@@ -349,32 +423,34 @@ try {
               </div>
             </li>
             <div class="topbar-divider d-none d-sm-block"></div>
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
+<li class="nav-item dropdown no-arrow">
+  <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
+    <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+  </a>
+  <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+    <a class="dropdown-item" href="#">
+      <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+      Profile
+    </a>
+    <a class="dropdown-item" href="#">
+      <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+      Settings
+    </a>
+    <a class="dropdown-item" href="#">
+      <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+      Activity Log
+    </a>
+    <div class="dropdown-divider"></div>
+    <!-- Logout button directly redirects to index.html -->
+    <a class="dropdown-item" href="index.html">
+      <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+      Logout
+    </a>
+  </div>
+</li>
+
           </ul>
         </nav>
         <!-- Topbar -->
@@ -431,25 +507,27 @@ try {
               </div>
             </div>
             <!-- New User Card Example -->
+            <!-- Code HTML pour afficher le tableau des utilisateurs -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">New User</div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">366</div>
-                      <div class="mt-2 mb-0 text-muted text-xs">
-                        <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 20.4%</span>
-                        <span>Since last month</span>
-                      </div>
+    <div class="card h-100">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">Clients par Adresse</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $totalClients; ?></div>
+                    <div class="mt-2 mb-0 text-muted text-xs">
+                        <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> <?php echo $pourcentageChange; ?>%</span>
+                        <span>Depuis le mois dernier</span>
                     </div>
-                    <div class="col-auto">
-                      <i class="fas fa-users fa-2x text-info"></i>
-                    </div>
-                  </div>
                 </div>
-              </div>
+                <div class="col-auto">
+                    <i class="fas fa-chart-bar fa-2x text-info"></i>
+                </div>
             </div>
+        </div>
+    </div>
+</div>
+
             <!-- Pending Requests Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
@@ -472,32 +550,66 @@ try {
             </div>
 
             <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-8">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Monthly Recap Report</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                      aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                </div>
-              </div>
+            <!-- Chart section -->
+<div class="col-xl-8 col-lg-8">
+    <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Number de clients By Adress</h6>
+        </div>
+        <div class="card-body">
+            <div class="chart-bar">
+                <canvas id="clientChart"></canvas>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour afficher le graphique -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Récupérer les données depuis PHP
+    const labels = <?php echo json_encode($labels); ?>;
+    const data = <?php echo json_encode($data); ?>;
+
+    // Configuration du graphique
+    const ctx = document.getElementById('clientChart').getContext('2d');
+    const clientChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Nombre de clients',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false // Masquer la légende
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Adresse'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Nombre de clients'
+                    }
+                }
+            }
+        }
+    });
+</script>
             <!-- Pie Chart -->
            
                 
@@ -508,16 +620,38 @@ try {
             <div class="col-xl-13 col-lg-13 mb-9">
               <div class="card">
                 <div class="card-header py-5 d-flex flex-row align-items-center justify-content-between">
-                
-                <a class="m-0 float-right btn btn-danger btn-sm" href="">Télécharger le tableau <i class="fas fa-download"></i></a>
-
+                <a class="" href=""> </a>
+                <div class="card-header py-5 d-flex justify-content-between align-items-center">
+                <form method="GET" action="">
+    <label for="nom_user">Nom:</label>
+    <input type="text" name="nom_user" id="nom_user" value="<?php echo htmlspecialchars($nomUserSearch); ?>">
+    
+    <label for="prenom_user">Prénom:</label>
+    <input type="text" name="prenom_user" id="prenom_user" value="<?php echo htmlspecialchars($prenomUserSearch); ?>">
+    
+    <input type="submit" value="Rechercher">
+</form>
+    <!-- Bouton Télécharger -->
+    <a class="btn btn-danger btn-sm" href="">
+        Télécharger le tableau <i class="fas fa-download"></i>
+    </a>
+    <!-- Boutons pour trier la table -->
+    <div>
+        <a href="?sort=asc" class="btn btn-danger btn-sm mx-1">
+            Order Table <i class="fas fa-sort-up"></i>
+        </a>
+        <a href="?sort=desc" class="btn btn-danger btn-sm">
+            <i class="fas fa-sort-down"></i>
+        </a>
+    </div>
+</div>
               </div>
-            
-                  
+              
                 </div>
                 <div class="table-responsive">
                   <table class="table align-items-center table-flush">
                     <thead class="thead-light">
+                    
                       <tr>
                         <th>CIN</th>
                         <th>FIRST Name</th>

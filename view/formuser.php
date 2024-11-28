@@ -35,9 +35,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sauvegarder le prénom dans une session
     $_SESSION['prenom_user'] = $prenom_user;
 
-    // Rediriger après l'ajout des données vers client.php
-    header("Location: client.php");
-    exit();
+    // Vérifiez le rôle de l'utilisateur pour rediriger vers la bonne page
+    if ($role_user === 'admin') {
+      header("Location: index2.php");
+  } else {
+      header("Location: client.php");
+  }
+  exit();
 }
 ?>
 
