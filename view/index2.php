@@ -509,7 +509,7 @@ try {
               <div class="card">
                 <div class="card-header py-5 d-flex flex-row align-items-center justify-content-between">
                 
-                <a class="m-0 float-right btn btn-danger btn-sm" href="downloadTable.php">Télécharger le tableau <i class="fas fa-download"></i></a>
+                <a class="m-0 float-right btn btn-danger btn-sm" href="">Télécharger le tableau <i class="fas fa-download"></i></a>
 
               </div>
             
