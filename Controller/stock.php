@@ -27,20 +27,33 @@ public function ajouter($stock){
 		echo "Error: " . $e->getMessage();
 	}
 }
-public function modifier($stocke,$nom_produit){
+public function afficherProduit($id_fournisseur)
+{
+
+try{
+	$pdo=conn::getConnexion();
+	$query=$pdo->prepare("SELECT * FROM stock WHERE id_four= :id_fournisseur");
+	$query->execute(['id_fournisseur'=>$id_fournisseur]);
+	return $query->fetchAll();
+	}
+	catch(PDOException $e) {
+	echo "Error: " . $e->getMessage();
+}
+}
+public function modifier($stocke,$id_produit){
 	$pdo=conn::getConnexion();
 	try {
-		$sql="UPDATE stock SET quantite=:quantite,unite=:unite,date_expir=:date_expir,prix_uni=:prix_uni,id_four=:id_four,dispo=:dispo WHERE nom_produit=:nom_produit";
+		$sql="UPDATE stock SET nom_produit=:nom_produit,quantite=:quantite,unite=:unite,date_expir=:date_expir,prix_uni=:prix_uni,id_four=:id_four,dispo=:dispo WHERE id_produit=:id_produit";
 		$req=$pdo->prepare($sql);
 		
-		
+		$req->bindValue(':nom_produit', $stocke->nom_produit);
         $req->bindValue(':quantite', $stocke->quantite); 
         $req->bindValue(':unite', $stocke->unite);
         $req->bindValue(':date_expir', $stocke->date_expir);
         $req->bindValue(':prix_uni', $stocke->prix_uni);
         $req->bindValue(':id_four', $stocke->id_four);
         $req->bindValue(':dispo', $stocke->dispo);
-		$req->bindValue(':nom_produit', $nom_produit);
+		$req->bindValue(':id_produit', $id_produit);
 		$req->execute();
 		
 		
@@ -49,12 +62,12 @@ public function modifier($stocke,$nom_produit){
 		echo "Error: " . $e->getMessage();
 	}
 }
-public function supprimer($nom_produit)
+public function supprimer($id_produit)
 {
-    $sql ="DELETE FROM stock WHERE nom_produit= :nom_produit";
+    $sql ="DELETE FROM stock WHERE id_produit= :id_produit";
     $db =conn::getConnexion();
     $query=$db->prepare($sql);
-    $query->bindvalue(':nom_produit',$nom_produit);
+    $query->bindvalue(':id_produit',$id_produit);
     try {
 $query->execute();
 
