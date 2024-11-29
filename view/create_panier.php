@@ -1,41 +1,22 @@
 <?php
 require_once '../Config.php';
-require_once '../controller/paniercontroller.php';
-include '../view/fonctionp.php';
+require_once '../controller/paniercontroller.php'; // Use relative paths
 
-?>
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Collect form data
+    $panier = [
+        'quantite' => $_POST['quantite'],
+        'prix_unitaire' => $_POST['prix_unitaire'],
+        'date_ajout' => $_POST['date_ajout'],
+    ];
+    
+    // Instantiate the controller
+    $panierController = new PanierController();
+    
+    // Add panier to the database
+    $panierController->addPanier($panier);
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Panier</title>
-    <link rel="stylesheet" href="C:\xampp\htdocs\ABABA\view\create_panier.css">
-    <title>RuangAdmin - Simple Tables</title>
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="css/ruang-admin.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h2>Create New Panier</h2>
-        <form action="../view/fonctionp.php" method="POST">
-            <div class="form-group">
-                <label for="quantite">Quantité:</label>
-                <input type="number" name="quantite" id="quantite" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="prix_unitaire">Prix Unitaire:</label>
-                <input type="text" name="prix_unitaire" id="prix_unitaire" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="date_ajout">Date Ajout:</label>
-                <input type="date" name="date_ajout" id="date_ajout" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-success">Add Panier</button>
-            <a href="panier.html" class="btn btn-secondary">Cancel</a>
-        </form>
-    </div>
-</body>
-</html>
+    // Redirect to the panier page after successful insertion
+    header('Location: ../view/RuangAdmin-master/simple-tables.php');
+    exit;
+}

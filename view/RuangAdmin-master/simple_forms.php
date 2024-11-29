@@ -8,17 +8,15 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>RuangAdmin - Simple Tables</title>
+  <title>RuangAdmin - Form Basics</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
+  <script src="../../view/creepanier.js" defer></script>
+
 </head>
 
 <body id="page-top">
-<?php
-  include 'C:\xampp\htdocs\ABABA\view\afficherpanier.php';
-  include 'C:\xampp\htdocs\ABABA\view\affichercommande.php';
-  ?>
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
@@ -52,34 +50,35 @@
             <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
             <a class="collapse-item" href="modals.html">Modals</a>
             <a class="collapse-item" href="popovers.html">Popovers</a>
-            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>
-          </div>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-          aria-controls="collapseForm">
-          <i class="fab fa-fw fa-wpforms"></i>
-          <span>Forms</span>
-        </a>
-        <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Forms</h6>
-            <a class="collapse-item" href="form_basics.html">Form Basics</a>
-            <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
+            <a class="collapse-item" href="progress-bar.html">Progress Bars</a>            
           </div>
         </div>
       </li>
       <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm"
+        aria-expanded="true" aria-controls="collapseForm">
+          <i class="fab fa-fw fa-wpforms"></i>
+          <span>Forms</span>
+        </a>
+        <div id="collapseForm" class="collapse show" aria-labelledby="headingForm"
+          data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Forms</h6>
+            <a class="collapse-item  active" href="form_basics.html">Form Basics</a>            
+            <a class="collapse-item" href="form_advanceds.html">Form Advanceds</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
           <span>Tables</span>
         </a>
-        <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item active" href="simple-tables.html">Simple Tables</a>
+            <a class="collapse-item" href="simple-tables.php">Simple Tables</a>
             <a class="collapse-item" href="datatables.html">DataTables</a>
           </div>
         </div>
@@ -308,131 +307,46 @@
           </ul>
         </nav>
         <!-- Topbar -->
+
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Simple Tables</h1>
+            <h1 class="h3 mb-0 text-gray-800">Form Basics</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
+              <li class="breadcrumb-item">Forms</li>
+              <li class="breadcrumb-item active" aria-current="page">Form Basics</li>
             </ol>
           </div>
 
           <div class="row">
-            <div class="col-lg-12 mb-4">
-              <!-- Simple Tables -->
-              <div class="card">
+            <div class="col-lg-6">
+              <!-- Form Basic -->
+              <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Commandes</h6>
-                  <a href="../RuangAdmin-master/form_add_commande.php" class="btn btn-sm btn-success">Cree Commande</a> 
+                  <h6 class="m-0 font-weight-bold text-primary">Form Basic</h6>
                 </div>
-                <div class="table-responsive">
-                  <table class="table align-items-center table-flush">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Date Commande</th>
-                        <th>Adresse Livraison</th>
-                        <th>Adresse Facturation</th>
-                        <th>Modifier</th>
-                        <th>Supprimer</th>  
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($rows as $row): ?>
-                      <tr>
-                          <td><?= isset($row['date_commande']) ? $row['date_commande'] : 'No Date Available'; ?></td>
-                          <td><?= isset($row['adresse_livraison']) ? $row['adresse_livraison'] : 'No Delivery Address'; ?></td>
-                          <td><?= isset($row['adresse_facturation']) ? $row['adresse_facturation'] : 'No Billing Address'; ?></td>
-                          <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="../RuangAdmin-master/form_modify_commande.php?id=<?= $row['id_commande'] ?? 0; ?>">Modifier</a></button></td>
-                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../../delet_commande.php?id=<?= $row['id_commande'] ?? 0; ?>">Supprimer</a></button></td>
-                      </tr>
-
-                    <?php endforeach; ?>
-
-                    </tbody>
-                  </table>
-                </div>
-                <div class="card-footer"></div>
-              </div>
+                <div class="card-body">
+                <form action="../fonctionp.php" method="POST">
+            <div class="form-group">
+                <label for="quantite">Quantité:</label>
+                <input type="number" name="quantite" id="quantite" class="form-control">
             </div>
-          </div>
-          <!--Row-->
-          <div class="row">
-            <div class="col-lg-12 mb-4">
-              <div class="card">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Panier</h6>
-                    <a href="../RuangAdmin-master/form_add_panier.php" class="btn btn-sm btn-success">Cree nouveau Panier</a>
-                </div>
-                <div class="table-responsive">
-                    <table class="table align-items-center table-flush">
-                        <thead>
-                            <tr>
-                                <th>Quantité</th>
-                                <th>Prix Unitaire</th>
-                                <th>Date Ajout</th>
-                                <th>Modify</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                      <?php foreach ($rows as $row): ?>
-                      <tr>
-                        <td><a href="#"><?= $row['quantite']; ?></a></td>
-                        <td><?= $row['prix_unitaire']; ?></td>
-                        <td><?= $row['date_ajout']; ?></td>
-                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="../RuangAdmin-master/form_modify_panier.php?id=<?= $row['id_panier']; ?>">Modifier</a></button></td>
-                        <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../delete_panier.php?id=<?=$row['id_panier']; ?>">Supprimer</a></button></td>
-                      </tr>
-                      <?php endforeach; ?>
-
-                    </tbody>
-                    </table>
-                  </div>
-                  <div class="card-footer"></div>
-                </div>          
+            <div class="form-group">
+                <label for="prix_unitaire">Prix Unitaire:</label>
+                <input type="text" name="prix_unitaire" id="prix_unitaire" class="form-control">
             </div>
-          </div>
-
-          <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
+            <div class="form-group">
+                <label for="date_ajout">Date Ajout:</label>
+                <input type="date" name="date_ajout" id="date_ajout" class="form-control" >
+            </div>
+            <button type="submit" class="btn btn-success">Add Panier</button>
+            <a href="../view/RuangAdmin-master/simple-tables.php" class="btn btn-secondary">Cancel</a>
+        </form>
                 </div>
               </div>
-            </div>
-          </div>
 
-        </div>
-        <!---Container Fluid-->
-      </div>
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
-            </span>
-          </div>
-        </div>
-      </footer>
-      <!-- Footer -->
-    </div>
-  </div>
+              
 
   <!-- Scroll to top -->
   <a class="scroll-to-top rounded" href="#page-top">
@@ -443,70 +357,6 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
-
-  
-
-
-  <script>
-    // Fetch panier data from the server
-    fetch('get_paniers.php')
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('panier-rows');
-            tableBody.innerHTML = ''; // Clear any existing rows
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="4">No data available</td></tr>';
-            } else {
-                data.forEach(panier => {
-                    const row = `
-                        <tr>
-                            <td>${panier.quantite}</td>
-                            <td>${panier.prix_unitaire}</td>
-                            <td>${panier.date_ajout}</td>
-                            <td>
-                                <a href="read_panier.php?id=${panier.id_panier}" class="btn btn-sm btn-info">Read</a>
-                                <a href="update_panier_form.php?id=${panier.id_panier}" class="btn btn-sm btn-warning">Update</a>
-                                <a href="delete_panier.php?id=${panier.id_panier}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
-</script>
-<script>
-    // Fetch commande data from the server
-    fetch('get_commandes.php')
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.getElementById('commande-rows');
-            tableBody.innerHTML = ''; // Clear any existing rows
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5">No data available</td></tr>';
-            } else {
-                data.forEach(commande => {
-                    const row = `
-                        <tr>
-                            <td>${commande.id_client}</td>
-                            <td>${commande.date_commande}</td>
-                            <td>${commande.adresse_livraison}</td>
-                            <td>${commande.adresse_facturation}</td>
-                            <td>
-                                <a href="read_commande.php?id=${commande.id_commande}" class="btn btn-sm btn-info">Read</a>
-                                <a href="update_commande_form.php?id=${commande.id_commande}" class="btn btn-sm btn-warning">Update</a>
-                                <a href="delete_commande.php?id=${commande.id_commande}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
-</script>
-
 
 </body>
 

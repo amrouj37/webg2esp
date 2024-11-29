@@ -1,6 +1,6 @@
 <?php
 require_once '../Config.php';
-require_once '../paniercontroller.php';
+require_once '../../paniercontroller.php';
 
 // Initialize the PanierController
 $panierController = new PanierController();
