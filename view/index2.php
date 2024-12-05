@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $adress_user = $_POST['adress_user'];
     $num_user = $_POST['num_user'];
     $role_user = $_POST['role_user'];
-    $hashed_pwd = password_hash($_POST['pwd_user'], PASSWORD_BCRYPT);
+    $plain_password = $_POST['pwd_user'];
+    $hashed_pwd = password_hash($plain_password, PASSWORD_BCRYPT);
 
     // Vérification des champs
     if (empty($cin_user) || empty($nom_user) || empty($prenom_user) || empty($email_user) || empty($adress_user) || empty($num_user) || empty($role_user)) {
@@ -31,7 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute([':cin_user' => $cin_user]);
             $existingUser = $stmt->fetch();
 
-            if ($existingUser) {
+            
+              if ($existingUser) {
+                // Si le mot de passe n'est pas haché, le hacher
+                if (!password_verify($plain_password, $existingUser['pwd_user'])) {
+                    $hashed_pwd = password_hash($plain_password, PASSWORD_BCRYPT);
+                }
                 // Mise à jour des informations
                 $sql = "UPDATE user 
                         SET nom_user = :nom_user, 
@@ -63,6 +69,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+try {
+  $sql = "SELECT id_user, pwd_user FROM user";
+  $stmt = config::getConnexion()->prepare($sql);
+  $stmt->execute();
+  $users = $stmt->fetchAll();
+
+  foreach ($users as $user) {
+      if (!password_verify($user['pwd_user'], $user['pwd_user'])) {
+          $hashed_pwd = password_hash($user['pwd_user'], PASSWORD_BCRYPT);
+          $updateSql = "UPDATE user SET pwd_user = :pwd_user WHERE id_user = :id_user";
+          $updateStmt = config::getConnexion()->prepare($updateSql);
+          $updateStmt->execute([':pwd_user' => $hashed_pwd, ':id_user' => $user['id_user']]);
+      }
+  }
+
+} catch (Exception $e) {
+  echo "Erreur : " . $e->getMessage();
+}
+
 
 
 try {
@@ -423,12 +448,19 @@ $data = [];
               </div>
             </li>
             <div class="topbar-divider d-none d-sm-block"></div>
+
 <li class="nav-item dropdown no-arrow">
   <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
     aria-haspopup="true" aria-expanded="false">
     <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
-    <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+    <?php
+    // Vérifiez si l'utilisateur est connecté et a le rôle 'admin'
+    if (isset($_SESSION['role_user']) && $_SESSION['role_user'] === 'admin') {
+        echo '<span class="ml-2 d-none d-lg-inline text-white small">' . htmlspecialchars($_SESSION['prenom_user']) . '</span>';
+    }
+    ?>
   </a>
+
   <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
     <a class="dropdown-item" href="#">
       <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>

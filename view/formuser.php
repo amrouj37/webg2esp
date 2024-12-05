@@ -13,37 +13,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $adress_user = $_POST['address_user']; // Corrigé ici pour correspondre à l'attribut du formulaire
     $num_user = $_POST['num_user'];
     $pwd_user = $_POST['pwd_user'];
-    $role_user = $_POST['role_user'];
+
+    // Définir le rôle en fonction du prénom
+    if (strtoupper(trim($prenom_user)) === 'AICHA') {
+        $role_user = 'admin';
+    } else {
+        $role_user = 'client'; // Rôle par défaut
+    }
 
     // Préparer la requête SQL pour insérer les données dans la base de données
     $sql = "INSERT INTO user (cin_user, nom_user, prenom_user, email_user, adress_user, num_user, pwd_user, role_user) 
             VALUES (:cin_user, :nom_user, :prenom_user, :email_user, :adress_user, :num_user, :pwd_user, :role_user)";
 
-    // Préparer et exécuter la requête
-    $stmt = config::getConnexion()->prepare($sql);
-    $stmt->execute([
-        ':cin_user' => $cin_user,
-        ':nom_user' => $nom_user,
-        ':prenom_user' => $prenom_user,
-        ':email_user' => $email_user,
-        ':adress_user' => $adress_user,
-        ':num_user' => $num_user,
-        ':pwd_user' => $pwd_user,
-        ':role_user' => $role_user
-    ]);
+    try {
+        // Préparer et exécuter la requête
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute([
+            ':cin_user' => $cin_user,
+            ':nom_user' => $nom_user,
+            ':prenom_user' => $prenom_user,
+            ':email_user' => $email_user,
+            ':adress_user' => $adress_user,
+            ':num_user' => $num_user,
+            ':pwd_user' => password_hash($pwd_user, PASSWORD_DEFAULT), // Hachage du mot de passe
+            ':role_user' => $role_user
+        ]);
 
-    // Sauvegarder le prénom dans une session
-    $_SESSION['prenom_user'] = $prenom_user;
+        // Sauvegarder le prénom et rôle dans une session
+        $_SESSION['prenom_user'] = $prenom_user;
+        $_SESSION['role_user'] = $role_user;
 
-    // Vérifiez le rôle de l'utilisateur pour rediriger vers la bonne page
-    if ($role_user === 'admin') {
-      header("Location: index2.php");
-  } else {
-      header("Location: client.php");
-  }
-  exit();
+        // Rediriger en fonction du rôle
+        if ($role_user === 'admin') {
+            header("Location: index2.php");
+        } else {
+            header("Location: client.php");
+        }
+        exit();
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -154,16 +166,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </tr>
               <tr>
   <td>
-    <label>Role:</label>
+    
   </td>
   <td>
-    <div>
-      <input type="radio" name="role_user" value="client" id="client" required>
-      <label for="client">Client</label>
-      
-      <input type="radio" name="role_user" value="admin" id="admin">
-      <label for="admin">Admin</label>
-    </div>
+    
   </td>
 </tr>
 

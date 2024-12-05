@@ -1,10 +1,6 @@
 <?php
+require_once '../config.php';
 session_start();
-
-// Remplacez ceci par les informations réelles de votre base de données
-$users = [
-    '' => '', // Exemple : clé = email, valeur = mot de passe
-];
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -12,24 +8,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email_user = $_POST['email_user'];
     $pwd_user = $_POST['pwd_user'];
 
-    // Vérifier si l'email existe dans la base de données (ici, simulée avec un tableau)
-    if (array_key_exists($email_user, $users)) {
-        // Vérifier si le mot de passe correspond
-        if ($users[$email_user] === $pwd_user) {
-            // Connexion réussie, démarrer la session
-            $_SESSION['user'] = $email_user;
-            echo "Bienvenue, " . htmlspecialchars($email_user) . " !";
-            // Rediriger vers une page protégée
-            header('Location: index2.php');
-            exit();
+    // Préparer une requête SQL pour vérifier les informations utilisateur
+    $sql = "SELECT prenom_user, pwd_user FROM user WHERE email_user = :email_user";
+
+    try {
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute([':email_user' => $email_user]);
+
+        // Récupérer le résultat
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            // Vérifier le mot de passe
+            if (password_verify($pwd_user, $user['pwd_user'])) {
+                // Définir le rôle en fonction du prénom
+                $prenom_user = $user['prenom_user'];
+                if (strtoupper(trim($prenom_user)) === 'AICHA') {
+                    $role_user = 'admin';
+                } else {
+                    $role_user = 'client'; // Rôle par défaut
+                }
+
+                // Sauvegarder le prénom et rôle dans une session
+                $_SESSION['prenom_user'] = $prenom_user;
+                $_SESSION['role_user'] = $role_user;
+
+                // Rediriger en fonction du rôle
+                if ($role_user === 'admin') {
+                    header("Location: index2.php");
+                } else {
+                    header("Location: client.php");
+                }
+                exit();
+            } else {
+                echo "Email ou mot de passe incorrect.";
+            }
         } else {
-            echo "Mot de passe incorrect.";
+            echo "Email ou mot de passe incorrect.";
         }
-    } else {
-        echo "L'email n'existe pas.";
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

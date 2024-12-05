@@ -1,11 +1,40 @@
 
 <?php
-session_start(); // Démarrer la session pour accéder aux données stockées
+session_start();
+require_once '../config.php'; // Inclure la configuration pour la connexion à la base de données
+$prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'User';
 
-// Vérifier si le prénom est dans la session
-$prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'Utilisateur';
+// Vérifier si l'email de l'utilisateur est défini dans la session
+if (isset($_SESSION['email_user'])) {
+    $email_user = $_SESSION['email_user'];
 
+    try {
+        // Préparer la requête SQL pour récupérer le prénom de l'utilisateur
+        $sql = "SELECT prenom_user FROM user WHERE email_user = :email_user";
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute([':email_user' => $email_user]);
+
+        // Récupérer le résultat
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            // Afficher le prénom de l'utilisateur si trouvé
+            echo '<span class="ml-2 d-none d-lg-inline text-white small">' . htmlspecialchars($user['prenom_user']) . '</span>';
+        } else {
+            // Afficher un message alternatif si l'utilisateur n'existe pas
+            echo '<span class="ml-2 d-none d-lg-inline text-white small">Utilisateur inconnu</span>';
+        }
+    } catch (PDOException $e) {
+        // Gérer les erreurs de la requête
+        echo "Erreur : " . $e->getMessage();
+    }
+} else {
+    // Afficher un message par défaut si l'email n'est pas défini dans la session
+    echo '<span class="ml-2 d-none d-lg-inline text-white small">Utilisateur</span>';
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
