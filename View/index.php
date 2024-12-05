@@ -523,6 +523,9 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
                   
                 </div>
                 <div class="table-responsive">
+                <button id="sortAsc" class="btn btn-sm btn-primary">Tri descendant</button>
+                <button id="sortDesc" class="btn btn-sm btn-primary">Tri ascendant</button>
+                <input type="text" id="searchInput" placeholder="Recherche..." />
                   <table class="table align-items-center table-flush">
                     <thead class="thead-light">
                       <tr>
@@ -538,7 +541,7 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
                         
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="bodyprod">
                       <?php foreach ($rows as $row): ?>
                       <tr>
                         <td><a href="#"><?= $row['nom_produit']; ?></a></td>
@@ -564,6 +567,9 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
                   
                 </div>
                 <div class="table-responsive">
+                <button id="sortAscf" class="btn btn-sm btn-primary">Tri descendant</button>
+                <button id="sortDescf" class="btn btn-sm btn-primary">Tri ascendant</button>
+                <input type="text" id="searchfour" placeholder="Recherche..." /> 
                   <table class="table align-items-center table-flush">
                     <thead class="thead-light">
                       <tr>
@@ -580,7 +586,7 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
                         
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="bodyf">
                     <?php foreach ($rowsf as $row): ?>
                       <tr>
                         <td><a href="#"><?= $row['cin_fournisseur']; ?></a></td>
@@ -613,22 +619,21 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
                 <?php
 $lastfour = isset($_SESSION['lastfour']) ? $_SESSION['lastfour'] : null;
 ?>
-                  <form method="post" action="../Controller/afficher_prod_four.php">
+                  <!-- <form method="post" action="../Controller/afficher_prod_four.php"> -->
                   <label>Sélectionner un fournisseur</label>
-                  <select class="table align-items-center table-flush"  name="choix">
+                  <select class="table align-items-center table-flush"  id="choix" name="choix">
                     <option>Choisir un fournisseur</option>
                     <?php foreach($fournisseur as $fournisseur):?>
                     
-                    <option value="<?= htmlspecialchars($fournisseur['id_fournisseur']); ?>">
-                <?= htmlspecialchars($fournisseur['prenom'] . " " . $fournisseur['nom']); ?>
-            </option>
+                      <option value="<?= htmlspecialchars($fournisseur['id_fournisseur']); ?>">
+    <?= htmlspecialchars($fournisseur['prenom'] . " " . $fournisseur['nom']); ?>
+</option>
                       <?php endforeach; ?>
                       
-                   
                       
                 </div>
-                <button for="rechercher" class="badge badge-success" style="border:0;">Rechercher</button>
-                    </form>
+                <!-- <button for="rechercher" class="badge badge-success" style="border:0;">Rechercher</button>
+                    </form> -->
 
                 <div class="table-responsive">
                 
@@ -650,45 +655,52 @@ $lastfour = isset($_SESSION['lastfour']) ? $_SESSION['lastfour'] : null;
                       </tr>
                     
                     </thead>
-                    
-                    <tbody>
+                    <?php
+
+
+
+
+$_SESSION['list'] = [];
+
+
+?>
+                    <tbody id="rechprod">
                       
-                     
-                      <?php if(isset($list)) foreach ($list as $row): ?>
-                      <tr>
-                        <td><a href="#"><?= $row['nom_produit']; ?></a></td>
-                        <td><?= $row['quantite']; ?></td>
-                        <td><?= $row['unite']; ?></td>
-                        <td><span class="badge <?= (($auj = new DateTime()) < ($expird = new DateTime($row['date_expir']))) ? 'badge-success' : 'badge-danger'; ?>"><?= $row['date_expir']; ?></span></td>
-                        <td><a href="#" class="btn btn-sm btn-primary"><?= $row['prix_uni']; ?></a></td>
-                        <td><a href="#"><?= $row['id_four']; ?></a></td>
-                        <td><span class="badge <?= ($row['dispo'] == 'Oui') ? 'badge-success' : 'badge-danger'; ?>">
-                        <?= $row['dispo']; ?></span></td>
-                        <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white"href="modifierstock.php?id_produit=<?=$row['id_produit'];?>&nom_produit=<?= $row['nom_produit']; ?>&quantite=<?= $row['quantite']; ?>&unite=<?= $row['unite']; ?>&date_expir=<?= $row['date_expir']; ?>&prix_uni=<?= $row['prix_uni']; ?>&id_four=<?= $row['id_four']; ?>&dispo=<?= $row['dispo']; ?>"> Modifier</a></button></td>
-                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?id_produit=<?=$row['id_produit']; ?>">Supprimer</a></button></td>
-                      </tr>
-                      <?php endforeach; ?>
-                      
-                    </tbody>
+    <?php
+    $list = isset($_SESSION['list']) ? $_SESSION['list'] : [];  
+    ?>
+    <?php if (!empty($list)) : ?>
+        <?php foreach ($list as $row): ?>
+            <tr>
+                <td><a href="#"><?= htmlspecialchars($row['nom_produit']); ?></a></td>
+                <td><?= htmlspecialchars($row['quantite']); ?></td>
+                <td><?= htmlspecialchars($row['unite']); ?></td>
+                <td>
+                    <span class="badge <?= (($auj = new DateTime()) < ($expird = new DateTime($row['date_expir']))) ? 'badge-success' : 'badge-danger'; ?>">
+                        <?= htmlspecialchars($row['date_expir']); ?>
+                    </span>
+                </td>
+                <td><a href="#" class="btn btn-sm btn-primary"><?= htmlspecialchars($row['prix_uni']); ?></a></td>
+                <td><a href="#"><?= htmlspecialchars($row['id_four']); ?></a></td>
+                <td><span class="badge <?= ($row['dispo'] == 'Oui') ? 'badge-success' : 'badge-danger'; ?>">
+                    <?= htmlspecialchars($row['dispo']); ?>
+                </span></td>
+                <td><button class="btn btn-sm btn-primary badge-warning">
+                    <a style="color:white" href="modifierstock.php?id_produit=<?= urlencode($row['id_produit']); ?>&nom_produit=<?= urlencode($row['nom_produit']); ?>&quantite=<?= urlencode($row['quantite']); ?>&unite=<?= urlencode($row['unite']); ?>&date_expir=<?= urlencode($row['date_expir']); ?>&prix_uni=<?= urlencode($row['prix_uni']); ?>&id_four=<?= urlencode($row['id_four']); ?>&dispo=<?= urlencode($row['dispo']); ?>">Modifier</a></button></td>
+                <td><button class="btn btn-sm btn-primary badge-danger">
+                    <a style="color:white" href="../Controller/supprimer_stock.php?id_produit=<?= urlencode($row['id_produit']); ?>">Supprimer</a></button></td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr><td colspan="9">No products found</td></tr>
+    <?php endif; ?>
+</tbody>
+
                     
                   </table>
                   
-                  <?php session_unset();session_destroy(); ?>
+                  
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                 <div class="card-footer"></div>
@@ -801,6 +813,460 @@ $lastfour = isset($_SESSION['lastfour']) ? $_SESSION['lastfour'] : null;
   <script src="js/ruang-admin.min.js"></script>
   <script src="vendor/chart.js/Chart.min.js"></script>
   <script src="js/demo/chart-area-demo.js"></script>  
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#sortAsc').on('click', function () {
+        fetchSortedData('ASC'); 
+    });
+
+    $('#sortDesc').on('click', function () {
+        fetchSortedData('DESC');
+    });
+
+    function fetchSortedData(order) {
+        $.ajax({
+            url:'../Controller/sort_stock.php', 
+            type: 'POST',
+            data: { sortOrder: order }, 
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.error) {
+                    resultHtml = `<tr><td colspan="8">Erreur : ${data.error}</td></tr>`;
+                } else {
+                    data.forEach(function (row) {
+                        const badgeClass = (new Date(row.date_expir) > new Date()) ? 'badge-success' : 'badge-danger';
+                        const dispoClass = row.dispo === 'Oui' ? 'badge-success' : 'badge-danger';
+                        resultHtml += `<tr>
+                            <td><a href="#">${row.nom_produit}</a></td>
+                            <td>${row.quantite}</td>
+                            <td>${row.unite}</td>
+                            <td><span class="badge ${badgeClass}">${row.date_expir}</span></td>
+                            <td><a href="#" class="btn btn-sm btn-primary">${row.prix_uni}</a></td>
+                            <td><a href="#">${row.id_four}</a></td>
+                            <td><span class="badge ${dispoClass}">${row.dispo}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-warning">
+                                    <a style="color:white" href="modifierstock.php?id_produit=${row.id_produit}&nom_produit=${row.nom_produit}&quantite=${row.quantite}&unite=${row.unite}&date_expir=${row.date_expir}&prix_uni=${row.prix_uni}&id_four=${row.id_four}&dispo=${row.dispo}">
+                                        Modifier
+                                    </a>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-danger">
+                                    <a style="color:white" href="../Controller/supprimer_stock.php?id_produit=${row.id_produit}">Supprimer</a>
+                                </button>
+                            </td>
+                        </tr>`;
+                    });
+                }
+                $('#bodyprod').html(resultHtml); 
+            },
+            error: function (xhr, status, errorThrown) {
+    console.error('AJAX Error:', errorThrown);
+    console.error('Status:', status);
+    console.error('Response:', xhr.responseText); 
+    $('#bodyprod').html('<tr><td colspan="8">Une erreur est survenue.</td></tr>');
+}
+        });
+    }
+});
+</script>
+
+
+<script>
+$(document).ready(function () {
+    $('#sortAscf').on('click', function () {
+        fetchSortedSupplierData('ASC'); 
+    });
+
+    $('#sortDescf').on('click', function () {
+        fetchSortedSupplierData('DESC');
+    });
+
+    function fetchSortedSupplierData(order) {
+        $.ajax({
+            url: '../Controller/sort_four.php', 
+            type: 'POST',
+            data: { sortOrder: order }, 
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.error) {
+                    resultHtml = `<tr><td colspan="9">Erreur : ${data.error}</td></tr>`;
+                } else {
+                    data.forEach(function (row) {
+                        resultHtml += `<tr>
+                            <td><a href="#">${row.cin_fournisseur}</a></td>
+                            <td>${row.prenom}</td>
+                            <td>${row.nom}</td>
+                            <td><span class="badge badge-success">${row.date_naiss}</span></td>
+                            <td>${row.adresse}</td>
+                            <td>${row.numero}</td>
+                            <td><span class="badge badge-success">${row.email}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-warning">
+                                    <a style="color:white" href="modifierfournisseur.php?id_fournisseur=${row.id_fournisseur}&cin_fournisseur=${row.cin_fournisseur}&prenom=${row.prenom}&nom=${row.nom}&date_naiss=${row.date_naiss}&adresse=${row.adresse}&email=${row.email}&numero=${row.numero}">
+                                        Modifier
+                                    </a>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-danger">
+                                    <a style="color:white" href="../Controller/supprimer_fournisseur.php?id_fournisseur=${row.id_fournisseur}">Supprimer</a>
+                                </button>
+                            </td>
+                        </tr>`;
+                    });
+                }
+                $('#bodyf').html(resultHtml); 
+            },
+            error: function () {
+                $('#bodyf').html('<tr><td colspan="9">Une erreur est survenue.</td></tr>');
+            }
+        });
+    }
+});
+</script>
+<script>
+$(document).ready(function () {
+  $('#searchInput').on('input', function () {
+        var searchTerm = $(this).val().trim();
+
+        if (searchTerm.length > 0) {
+            fetchSearchedData(searchTerm); 
+        } else {
+            resetTable(); 
+        }
+    });
+
+    function fetchSearchedData(searchTerm) {
+        $.ajax({
+           url: '../Controller/recherche_prod.php',
+            type: 'POST',
+            data: {
+                searchTerm: searchTerm
+            },
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.length > 0) {
+                    data.forEach(function (row) {
+                        const badgeClass = (new Date(row.date_expir) > new Date()) ? 'badge-success' : 'badge-danger';
+                        const dispoClass = row.dispo === 'Oui' ? 'badge-success' : 'badge-danger';
+                        resultHtml += `<tr>
+                            <td><a href="#">${row.nom_produit}</a></td>
+                            <td>${row.quantite}</td>
+                            <td>${row.unite}</td>
+                            <td><span class="badge ${badgeClass}">${row.date_expir}</span></td>
+                            <td><a href="#" class="btn btn-sm btn-primary">${row.prix_uni}</a></td>
+                            <td><a href="#">${row.id_four}</a></td>
+                            <td><span class="badge ${dispoClass}">${row.dispo}</span></td>
+                            <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="modifierstock.php?id_produit=${row.id_produit}&nom_produit=${row.nom_produit}&quantite=${row.quantite}&unite=${row.unite}&date_expir=${row.date_expir}&prix_uni=${row.prix_uni}&id_four=${row.id_four}&dispo=${row.dispo}">Modifier</a></button></td>
+                            <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?id_produit=${row.id_produit}">Supprimer</a></button></td>
+                        </tr>`;
+                    });
+                } else {
+                    resultHtml = `<tr><td colspan="9">No results found</td></tr>`;
+                }
+                $('#bodyprod').html(resultHtml);
+            },
+            error: function (xhr, status, error) {
+    console.error("AJAX Error: " + error);
+    console.error("Status: " + status);
+    console.error("Response: " + xhr.responseText);
+    alert('Error occurred while fetching data.');
+}
+
+        });
+    }
+    function resetTable() {
+    
+        $.ajax({
+            url: '/projet_adam_final/Controller/recherche_prod.php',
+            type: 'POST',
+            data: {
+                searchTerm: ''
+            },
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.length > 0) {
+                    data.forEach(function (row) {
+                        const badgeClass = (new Date(row.date_expir) > new Date()) ? 'badge-success' : 'badge-danger';
+                        const dispoClass = row.dispo === 'Oui' ? 'badge-success' : 'badge-danger';
+                        resultHtml += `<tr>
+                            <td><a href="#">${row.nom_produit}</a></td>
+                            <td>${row.quantite}</td>
+                            <td>${row.unite}</td>
+                            <td><span class="badge ${badgeClass}">${row.date_expir}</span></td>
+                            <td><a href="#" class="btn btn-sm btn-primary">${row.prix_uni}</a></td>
+                            <td><a href="#">${row.id_four}</a></td>
+                            <td><span class="badge ${dispoClass}">${row.dispo}</span></td>
+                            <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="modifierstock.php?id_produit=${row.id_produit}&nom_produit=${row.nom_produit}&quantite=${row.quantite}&unite=${row.unite}&date_expir=${row.date_expir}&prix_uni=${row.prix_uni}&id_four=${row.id_four}&dispo=${row.dispo}">Modifier</a></button></td>
+                            <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?id_produit=${row.id_produit}">Supprimer</a></button></td>
+                        </tr>`;
+                    });
+                } else {
+                    resultHtml = `<tr><td colspan="9">No results found</td></tr>`;
+                }
+                $('#bodyprod').html(resultHtml); 
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: " + error);
+                console.error("Status: " + status);
+                console.error("Response: " + xhr.responseText);
+                alert('Error occurred while resetting data.');
+            }
+        });
+    }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+$(document).ready(function () {
+    $('#searchfour').on('input', function () {
+        var searchTerm = $(this).val().trim();
+
+        if (searchTerm.length > 0) {
+            fetchSearchedData(searchTerm); 
+        } else {
+            resetTable(); 
+        }
+    });
+
+    function fetchSearchedData(searchTerm) {
+        $.ajax({
+            url: '../Controller/recherche_four.php',
+            type: 'POST',
+            data: {
+                searchTerm: searchTerm
+            },
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.length > 0) {
+                    data.forEach(function (row) {
+                        resultHtml += `<tr>
+                           
+                            <td><a href="#">${row.cin_fournisseur}</a></td>
+                            <td>${row.prenom}</td>
+                            <td>${row.nom}</td>
+                            <td ><span class="badge badge-success">${row.date_naiss}</span></td>
+                            <td>${row.adresse}</td>
+                            <td>${row.numero}</td>
+                            <td>${row.email}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-warning">
+                                    <a style="color:white" href="modifierfournisseur.php?id_fournisseur=${row.id_fournisseur}&cin_fournisseur=${row.cin_fournisseur}&prenom=${row.prenom}&nom=${row.nom}&date_naiss=${row.date_naiss}&adresse=${row.adresse}&numero=${row.numero}&email=${row.email}">Modifier</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-danger">
+                                    <a style="color:white" href="../Controller/supprimer_fournisseur.php?id_fournisseur=${row.id_fournisseur}">Supprimer</a>
+                                </button>
+                            </td>
+                        </tr>`;
+                    });
+                } else {
+                    resultHtml = `<tr><td colspan="10">No results found</td></tr>`;
+                }
+                $('#bodyf').html(resultHtml); 
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: " + error);
+                console.error("Status: " + status);
+                console.error("Response: " + xhr.responseText);
+                alert('Error occurred while fetching data.');
+            }
+        });
+    }
+
+    function resetTable() {
+   
+        $.ajax({
+            url: '../Controller/recherche_four.php',
+            type: 'POST',
+            data: {
+                searchTerm: '' 
+            },
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.length > 0) {
+                    data.forEach(function (row) {
+                        resultHtml += `<tr>
+                            <td>${row.cin_fournisseur}</td>
+                            <td>${row.prenom}</td>
+                            <td>${row.nom}</td>
+                            <td ><span class="badge badge-success">${row.date_naiss}</span></td>
+                            <td>${row.adresse}</td>
+                            <td>${row.numero}</td>
+                            <td>${row.email}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-warning">
+                                    <a style="color:white" href="modifierfournisseur.php?id_fournisseur=${row.id_fournisseur}&cin_fournisseur=${row.cin_fournisseur}&prenom=${row.prenom}&nom=${row.nom}&date_naiss=${row.date_naiss}&adresse=${row.adresse}&numero=${row.numero}&email=${row.email}">Modifier</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary badge-danger">
+                                    <a style="color:white" href="../Controller/supprimer_fournisseur.php?id_fournisseur=${row.id_fournisseur}">Supprimer</a>
+                                </button>
+                            </td>
+                        </tr>`;
+                    });
+                } else {
+                    resultHtml = `<tr><td colspan="10">No results found</td></tr>`;
+                }
+                $('#bodyf').html(resultHtml);
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error: " + error);
+                console.error("Status: " + status);
+                console.error("Response: " + xhr.responseText);
+                alert('Error occurred while resetting data.');
+            }
+        });
+    }
+});
+</script>
+
+<script>
+$(document).ready(function () {
+    $('#choix').on('change', function () {
+        var fournisseurId = $(this).val();
+        console.log('Selected value:', fournisseurId);
+
+        
+        if (fournisseurId && !isNaN(fournisseurId)) {
+            fournisseurId = parseInt(fournisseurId); 
+        } else {
+            fournisseurId = ''; 
+        }
+
+        
+        var searchTerm = $('#searchTermInput').val();
+        if (searchTerm && typeof searchTerm === 'string') {
+            searchTerm = searchTerm.trim();
+        } else {
+            searchTerm = '';  
+        }
+
+       
+        if (fournisseurId) {
+            fetchSearchedData(fournisseurId, searchTerm); 
+        } else {
+            resetTable();  
+        }
+    });
+
+    
+    function fetchSearchedData(fournisseurId, searchTerm) {
+        $.ajax({
+            url: '../Controller/afficher_prod_four.php',
+            type: 'POST',
+            data: {
+                fournisseurId: fournisseurId,
+                searchTerm: searchTerm        
+            },
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.length > 0) {
+                    data.forEach(function (row) {
+                        const badgeClass = (new Date(row.date_expir) > new Date()) ? 'badge-success' : 'badge-danger';
+                        const dispoClass = row.dispo === 'Oui' ? 'badge-success' : 'badge-danger';
+                        resultHtml += `<tr>
+                          <td><a href="#">${row.nom_produit}</a></td>
+                          <td>${row.quantite}</td>
+                          <td>${row.unite}</td>
+                          <td><span class="badge ${badgeClass}">${row.date_expir}</span></td>
+                          <td><a href="#" class="btn btn-sm btn-primary">${row.prix_uni}</a></td>
+                          <td><a href="#">${row.id_four}</a></td>
+                          <td><span class="badge ${dispoClass}">${row.dispo}</span></td>
+                          <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="modifierstock.php?id_produit=${row.id_produit}">Modifier</a></button></td>
+                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?id_produit=${row.id_produit}">Supprimer</a></button></td>
+                        </tr>`;
+                    });
+                } else {
+                    resultHtml = `<tr><td colspan="9">No results found</td></tr>`;
+                }
+                $('#rechprod').html(resultHtml); 
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+                alert('Error occurred while fetching data.');
+            }
+        });
+    }
+
+    
+    function resetTable() {
+        $.ajax({
+            url: '../Controller/afficher_prod_four.php',
+            type: 'POST',
+            data: {
+                fournisseurId: '',  
+                searchTerm: ''      
+            },
+            dataType: 'json',
+            success: function (data) {
+                let resultHtml = '';
+                if (data.length > 0) {
+                    data.forEach(function (row) {
+                        const badgeClass = (new Date(row.date_expir) > new Date()) ? 'badge-success' : 'badge-danger';
+                        const dispoClass = row.dispo === 'Oui' ? 'badge-success' : 'badge-danger';
+                        resultHtml += `<tr>
+                          <td><a href="#">${row.nom_produit}</a></td>
+                          <td>${row.quantite}</td>
+                          <td>${row.unite}</td>
+                          <td><span class="badge ${badgeClass}">${row.date_expir}</span></td>
+                          <td><a href="#" class="btn btn-sm btn-primary">${row.prix_uni}</a></td>
+                          <td><a href="#">${row.id_four}</a></td>
+                          <td><span class="badge ${dispoClass}">${row.dispo}</span></td>
+                          <td><button class="btn btn-sm btn-primary badge-warning"><a style="color:white" href="modifierstock.php?id_produit=${row.id_produit}">Modifier</a></button></td>
+                          <td><button class="btn btn-sm btn-primary badge-danger"><a style="color:white" href="../Controller/supprimer_stock.php?id_produit=${row.id_produit}">Supprimer</a></button></td>
+                        </tr>`;
+                    });
+                } else {
+                    resultHtml = `<tr><td colspan="9">No results found</td></tr>`;
+                }
+                $('#rechprod').html(resultHtml); 
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+                alert('Error occurred while fetching data: ' + error);
+            }
+        });
+    }
+});
+
+</script>
+
+
+
+
+
+
+
+
 </body>
 
 </html>
