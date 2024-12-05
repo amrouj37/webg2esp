@@ -62,7 +62,7 @@ if (isset($_GET['id'])) {
                     </div>
                     <div class="form-group">
                       <label>Prix Plat</label>
-                      <input type="number" class="form-control" name="prix_plat" 
+                      <input type="number" class="form-control" name="prix_plat" placeholder="Prix Plat" step="any"
                              value="<?= htmlspecialchars($plat['prix_plat'] ?? '') ?>" required>
                     </div>
                     <div class="form-group">

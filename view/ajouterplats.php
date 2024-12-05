@@ -26,15 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <form method="POST" action="ajouterplats.php">
         <label for="nom_plat">Nom du Plat:</label>
-        <input type="text" id="nom_plat" name="nom_plat" required>
+        <input type="text" id="nom_plat" name="nom_plat">
         <br>
 
         <label for="prix_plat">Prix du Plat:</label>
-        <input type="number" id="prix_plat" name="prix_plat" step="0.01" required>
+        <input type="number" id="prix_plat" name="prix_plat" step="0.01">
         <br>
 
         <label for="id_recette">ID Recette:</label>
-        <input type="number" id="id_recette" name="id_recette" required>
+        <input type="number" id="id_recette" name="id_recette">
         <br>
 
         <button type="submit" name="ajouter_plat">Ajouter Plat</button>

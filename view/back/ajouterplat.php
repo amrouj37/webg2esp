@@ -1,11 +1,20 @@
 <?php
 require_once 'C:\xampp\htdocs\QQQQQ\connection.php';
 require_once 'C:\xampp\htdocs\QQQQQ\controller\platcontroller.php';
+require_once 'C:\xampp\htdocs\QQQQQ\controller\recettecontroller.php';
+
+// Initialize database connection
+$conn = config::getConnexion(); // Assuming `config::getConnexion()` exists and works
+
+// Fetch all available recipes
+$query = $conn->prepare("SELECT id_recette, nom_recette FROM recettes");
+$query->execute();
+$recettes = $query->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nom_plat = htmlspecialchars(trim($_POST['nom_plat']));
     $prix_plat = htmlspecialchars(trim($_POST['prix_plat']));
-    $id_recette = htmlspecialchars(trim($_POST['id_recette']));
+    $id_recette = htmlspecialchars(trim($_POST['id_recette'])); // ID from dropdown
     $url_img = htmlspecialchars(trim($_POST['url_img'])); 
 
     if (empty($nom_plat) || empty($prix_plat) || empty($id_recette) || empty($url_img)) {
@@ -24,6 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -56,25 +67,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   <form method="POST" action="ajouterplat.php">
     <div class="form-group">
         <label>Nom Plat</label>
-        <input type="text" class="form-control" name="nom_plat" placeholder="Enter Nom Plat" required>
+        <input type="text" class="form-control" name="nom_plat" placeholder="Enter Nom Plat">
     </div>
     <div class="form-group">
         <label>Prix Plat</label>
-        <input type="number" class="form-control" name="prix_plat" placeholder="Prix Plat" required>
+        <input type="number" class="form-control" name="prix_plat" placeholder="Prix Plat" step="any">
     </div>
     <div class="form-group">
-        <label>Recette ID</label>
-        <input type="number" class="form-control" name="id_recette" placeholder="Recette ID" required>
+        <label>Recette</label>
+        <select name="id_recette" class="form-control">
+            <option value="" disabled selected>Choisir une recette</option>
+            <?php foreach ($recettes as $recette): ?>
+                <option value="<?= htmlspecialchars($recette['id_recette']); ?>">
+                    <?= htmlspecialchars($recette['nom_recette']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
     </div>
     <div class="form-group">
         <label>URL IMG</label>
-        <input type="text" class="form-control" name="url_img" placeholder="URL Image" required>
+        <input type="text" class="form-control" name="url_img" placeholder="URL Image">
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block">Ajouter Plat</button>
     </div>
     <hr>
 </form>
+
                   <hr>
                   <div class="text-center"></div>
                 </div>
@@ -85,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
     </div>
   </div>
-  <script src="js\valid2.js"></script>
+  <script src="js/valid2.js"></script>
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
