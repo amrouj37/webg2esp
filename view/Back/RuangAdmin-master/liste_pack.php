@@ -1,9 +1,9 @@
 <?php
 // Inclure le contrôleur ControllerQuiz
-include "C:/xamppp/htdocs/projetsarra/controller/ControllerQuiz.php";
+include "C:/xamppp/htdocs/projetsarra/controller/ControllerPack.php";
 
 // Créer une instance du contrôleur
-$c = new quiz();
+$c = new pack();
 
 // Initialiser un tableau pour afficher les résultats
 $afficher = [];
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
     $btnSearch = $_POST['btnSearch'];
     
     // Préparer la requête SQL pour rechercher un quiz par titre
-    $sql = "SELECT * FROM quiz WHERE titre LIKE :btnSearch"; // Recherche par titre
+    $sql = "SELECT * FROM pack WHERE titre LIKE :btnSearch"; // Recherche par titre
     
     // Se connecter à la base de données
     $db = config::getConnexion();
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
     }
 } else {
     // Si aucune recherche n'est effectuée, afficher tous les quizzes
-    $afficher = $c->getAllQuiz(); // Methode pour obtenir tous les quizzes
+    $afficher = $c->getAllPack(); // Methode pour obtenir tous les quizzes
 }
 ?>
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Quizzes</title>
+    <title>List of Packs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Custom styles for better table appearance */
@@ -92,23 +92,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
 
 <!-- Search Form -->
 <div class="container">
-    <form method="POST" action="liste.php" class="search-form">
+    <form method="POST" action="list_pack.php" class="search-form">
         <div class="input-group">
             <input type="text" name="btnSearch" class="form-control" placeholder="Rechercher par titre" required>
             <button type="submit" class="btn btn-primary">Rechercher</button>
-            <button type="submit" name="exportExcel" class="btn btn-success">Exporter en Excel</button>
         </div>
     </form>
 
     <!-- Table of Quizzes -->
-    <h2 class="header">Liste des Quizzes</h2>
+    <h2 class="header">Liste des Packs</h2>
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
             <tr>
-                <th>id</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Date de Création</th>
+                <th>#</th>
+                <th>Nom utilisateur</th>
+                <th>Contenu</th>
+                <th>Date soumission</th>
                 <th>Catégorie</th>
                 <th>Actions</th>
             </tr>
@@ -117,16 +116,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
             <?php
             // Vérifier s'il y a des quizzes à afficher
             if (!empty($afficher)) {
-                foreach ($afficher as $quiz) {
+                foreach ($afficher as $pack) {
                     echo "<tr>
-                        <td>" . htmlspecialchars($quiz['id_quiz']) . "</td>
-                        <td>" . htmlspecialchars($quiz['titre']) . "</td>
-                        <td>" . htmlspecialchars($quiz['description']) . "</td>
-                        <td>" . htmlspecialchars($quiz['date_creation']) . "</td>
-                        <td>" . htmlspecialchars($quiz['categorie']) . "</td>
+                        <td>" . htmlspecialchars($pack['id_pack']) . "</td>
+                        <td>" . htmlspecialchars($pack['nom_utilisateur']) . "</td>
+                        <td>" . htmlspecialchars($pack['contenu']) . "</td>
+                        <td>" . htmlspecialchars($pack['date_soumission']) . "</td>
+                        <td>" . htmlspecialchars($pack['categorie']) . "</td>
                         <td>
-                            <a href='modifier.php?id_quiz=" . urlencode($quiz['id_quiz']) . "' class='btn btn-sm btn-edit'>Mettre à jour</a>
-                            <a href='supprimer.php?id_quiz=" . urlencode($quiz['id_quiz']) . "' class='btn btn-sm btn-delete' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer ce quiz ?\");'>Supprimer</a>
+                            <a href='edit_pack.php?id_pack=" . urlencode($pack['id_pack']) . "' class='btn btn-sm btn-edit'>Mettre à jour</a>
+                            <a href='delete_pack.php?id_pack=" . urlencode($pack['id_pack']) . "' class='btn btn-sm btn-delete' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer ce pack ?\");'>Supprimer</a>
                         </td>
                     </tr>";
                 }

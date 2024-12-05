@@ -1,23 +1,22 @@
 <?php
 //ob_start(); // Commencer le tampon de sortie
-require_once 'C:\xamppp\htdocs\projetsarra\controller\ControllerQuiz.php';
-require_once ' C:\xamppp\htdocs\projetsarra\Config.php';
-//require_once 'courses.php';
+require_once 'C:/xamppp/htdocs/projetsarra/controller/ControllerQuiz.php';
+require_once 'C:/xamppp/htdocs/projetsarra/model/Quiz.php';
 
 // Instanciation du contrôleur
-$controllerQuiz = new controllerQuiz();
+$ControllerQuiz = new ControllerQuiz();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données du formulaire
     $titre = $_POST['titre'] ?? null;
     $description = $_POST['description'] ?? null;
     $date_creation = $_POST['date_creation'] ?? null; 
-    $description = $_POST['description'] ?? null;
+    $categorie = $_POST['categorie'] ?? null;
   
 
     // Validation des données (exemple simple)
-    if ($titre && $description && $date_creation && $description ) {
-        if ($ControllerQuiz->ajout($titre, $description, $date_creation, $desciption)) {
+    if ($titre && $description && $date_creation && $categorie ) {
+        if ($ControllerQuiz->ajout($titre, $description, $date_creation, $categorie)) {
             // Redirection vers la page liste des cours
             header("Location: liste.php");
             exit(); // Arrête l'exécution après la redirection
@@ -42,22 +41,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST" action="">
             <div class="form-group">
                 <label for="titre">Titre</label>
-                <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre" required>
+                <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre" >
             </div>
 
             <div class="form-group">
                 <label for="categorie">Catégorie</label>
-                <input type="text" class="form-control" id="categorie" name="categorie" placeholder="Entrez la catégorie" required>
+                <input type="text" class="form-control" id="categorie" name="categorie" placeholder="Entrez la catégorie" >
             </div>
 
             <div class="form-group">
                 <label for="date_creation">Date de Création</label>
-                <input type="date" class="form-control" id="date_creation" name="date_creation" required>
+                <input type="date" class="form-control" id="date_creation" name="date_creation" >
             </div>
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" placeholder="Entrez une description" rows="3" required></textarea>
+                <textarea class="form-control" id="description" name="description" placeholder="Entrez une description" rows="3" ></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Ajouter</button>

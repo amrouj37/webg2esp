@@ -1,5 +1,4 @@
 <?php
-require_once _DIR_ . '/../config.php';
 
 class quiz {
     private $pdo;
@@ -21,23 +20,6 @@ class quiz {
     }
 
 
-    public function ajout() {
-        $sql = "INSERT INTO cours (titre, description, categorie, date_creation) 
-                VALUES (:titre, :description, :categorie, :date_creation)";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([
-                'titre' => $this->titre,
-                'description' => $this->description,
-                'categorie' => $this->categorie,
-                'date_creation' => $this->date_creation,
-                
-            ]);
-            return true;
-        } catch (PDOException $e) {
-            throw new Exception("Erreur lors de l'ajout du quiz : " . $e->getMessage());
-        }
-    }
 
     public function getid_quiz(){
         return $this->id_quiz;
@@ -72,18 +54,19 @@ class quiz {
     
 
     public function supprimer($id_quiz) {
-        $sql = "DELETE FROM ges_pack WHERE id_quiz = :id_quiz";
+        $sql = "DELETE FROM quiz WHERE id_quiz = :id_quiz";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(['id_quiz' => $id_quiz]);
-            return true;
+            return true;  // Return true if deletion was successful
         } catch (PDOException $e) {
+            // Catch PDO exceptions and throw a custom exception
             throw new Exception("Erreur lors de la suppression du quiz : " . $e->getMessage());
         }
     }
 
     public function getById($idc) {
-        $sql = "SELECT * FROM ges_pack WHERE id_quiz = :id_quiz";
+        $sql = "SELECT * FROM quiz WHERE id_quiz = :id_quiz";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(['id_quiz' => $id_quiz]);
@@ -94,7 +77,7 @@ class quiz {
     }
 
     public function getAllQuiz() {
-        $sql = "SELECT * FROM ges_pack";
+        $sql = "SELECT * FROM quiz";
         try {
             $stmt = $this->pdo->query($sql);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
