@@ -1,6 +1,10 @@
 <?php
 require_once '../config.php';
-session_start();
+require_once 'session.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -49,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
     }
-}
+}}
 ?>
 
 

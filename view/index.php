@@ -282,14 +282,15 @@
                 <a href="formuser.php" >
                   <svg width="24" height="24"><use xlink:href="#user"></use></svg>
                 </a>
-              <li class="nav-item">
-                <a href="Login.php" class="nav-link">Log In</a>
-              </li>
-              <li>
-                <a href="#" class="p-2 mx-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                  <svg width="24" height="24"><use xlink:href="#shopping-bag"></use></svg>
-                </a>
-              </li>
+                <li class="nav-item">
+            <a href="login.php" class="nav-link">
+              <!-- Affiche le prénom si défini, sinon "Utilisateur" -->
+              Log in
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="logout.php" class="nav-link">Log out</a>
+          </li>
             </ul>
           </div>
           

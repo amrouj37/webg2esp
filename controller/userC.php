@@ -129,10 +129,52 @@ public function getUserByEmail($email_user) {
     return $user;
 }
 
+// Fonction pour connecter un utilisateur et créer un cookie
+function loginUser($userId, $prenom, $email, $role) {
+    // Générer un token unique pour la session
+    $sessionToken = bin2hex(random_bytes(16));
+
+    try {
+        // Mettre à jour la base de données avec le token de session
+        $sql = "UPDATE user SET session_token = :session_token WHERE id_user = :id_user";
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute([
+            ':session_token' => $sessionToken,
+            ':id_user' => $userId
+        ]);
+
+        // Stocker les informations dans la session
+        $_SESSION['user_id'] = $userId;
+        $_SESSION['prenom_user'] = $prenom;
+        $_SESSION['email_user'] = $email;
+        $_SESSION['role_user'] = $role;
+
+        // Créer un cookie pour la session
+        setcookie('user_session', $sessionToken, time() + (86400 * 30), '/'); // Cookie valable 30 jours
+    } catch (PDOException $e) {
+        echo "Erreur lors de la création de la session : " . $e->getMessage();
+    }
+    // Fonction pour déconnecter un utilisateur
+function logoutUser() {
+    // Supprimer les cookies et la session
+    if (isset($_SESSION['user_id'])) {
+        try {
+            $sql = "UPDATE user SET session_token = NULL WHERE id_user = :id_user";
+            $stmt = config::getConnexion()->prepare($sql);
+            $stmt->execute([':id_user' => $_SESSION['user_id']]);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la déconnexion : " . $e->getMessage();
+        }
+    }
+
+    // Supprimer les sessions et les cookies
+    session_unset();
+    session_destroy();
+    setcookie('user_session', '', time() - 3600, '/');
+}
 
 
-
-
+}
 }
 
 ?>
