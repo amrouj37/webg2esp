@@ -1,6 +1,6 @@
 <?php
 // Inclure le fichier de connexion à la base de données
-require_once '../config.php';
+require_once 'C:\xampp\htdocs\projectA\config.php';
 session_start(); // Démarrer la session
 
 // Vérifiez si le formulaire a été soumis
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Rediriger en fonction du rôle
         if ($role_user === 'admin') {
-            header("Location: index2.php");
+            header("Location: /projectA/view/back/index2.php");
         } else {
             header("Location: client.php");
         }

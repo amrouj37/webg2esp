@@ -2,8 +2,8 @@
 <?php
 
 
-require_once '../config.php'; 
-require_once '../model/user.php';
+require_once 'C:\xampp\htdocs\projectA\config.php'; 
+require_once 'C:\xampp\htdocs\projectA\model\user.php';
 class userC{
     public function getUser() {
         $conn = config::getConnexion();
@@ -175,6 +175,53 @@ function logoutUser() {
 
 
 }
+
+
+public function exportToExcel() {
+    $list = $this->getAllUsers(); // Récupère tous les utilisateurs depuis la méthode existante
+
+    // Définir les en-têtes pour l'exportation Excel
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=index2.xls");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+    // Vérifier si des données sont disponibles
+    if (!empty($list)) {
+        echo "<table border='1'>"; // Début du tableau HTML
+        echo "<thead>
+                <tr>
+                    <th>CIN</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Adresse</th>
+                    <th>Numéro</th>
+                    <th>Rôle</th>
+                </tr>
+              </thead>";
+        echo "<tbody>";
+
+        // Boucle pour afficher chaque utilisateur dans une ligne
+        foreach ($list as $user) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($user['cin_user']) . "</td>";
+            echo "<td>" . htmlspecialchars($user['prenom_user']) . "</td>";
+            echo "<td>" . htmlspecialchars($user['nom_user']) . "</td>";
+            echo "<td>" . htmlspecialchars($user['email_user']) . "</td>";
+            echo "<td>" . htmlspecialchars($user['adress_user']) . "</td>";
+            echo "<td>" . htmlspecialchars($user['num_user']) . "</td>";
+            echo "<td>" . htmlspecialchars($user['role_user']) . "</td>";
+            echo "</tr>";
+        }
+
+        echo "</tbody>";
+        echo "</table>"; // Fin du tableau HTML
+    } else {
+        echo "Aucun utilisateur trouvé."; // Message si aucune donnée n'est disponible
+    }
+}
+
 }
 
 ?>

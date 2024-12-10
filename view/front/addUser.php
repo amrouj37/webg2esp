@@ -1,6 +1,6 @@
 <?php
-require_once '../controller/UserC.php';
-require_once '../model/user.php'; // Inclure la classe User
+require_once 'C:\xampp\htdocs\projectA\controller\userC.php';
+require_once 'C:\xampp\htdocs\projectA\model\user.php../model/user.php'; // Inclure la classe User
 
 // Créer une instance du contrôleur
 $userC = new UserC();

@@ -1,6 +1,6 @@
 <?php
-require_once '../config.php'; // Inclure la configuration de la base de données
-require_once '../model/user.php'; 
+require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration de la base de données
+require_once 'C:\xampp\htdocs\projectA\model\user.php'; 
 // Démarrer ou reprendre la session
 session_start();
 

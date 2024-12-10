@@ -1,40 +1,9 @@
-
 <?php
-session_start();
-require_once '../config.php'; // Inclure la configuration pour la connexion à la base de données
-$prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'User';
 
-// Vérifier si l'email de l'utilisateur est défini dans la session
-if (isset($_SESSION['email_user'])) {
-    $email_user = $_SESSION['email_user'];
+require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration pour la connexion à la base de données
+require_once 'C:\xampp\htdocs\projectA\view\front\index.php';
 
-    try {
-        // Préparer la requête SQL pour récupérer le prénom de l'utilisateur
-        $sql = "SELECT prenom_user FROM user WHERE email_user = :email_user";
-        $stmt = config::getConnexion()->prepare($sql);
-        $stmt->execute([':email_user' => $email_user]);
-
-        // Récupérer le résultat
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user) {
-            // Afficher le prénom de l'utilisateur si trouvé
-            echo '<span class="ml-2 d-none d-lg-inline text-white small">' . htmlspecialchars($user['prenom_user']) . '</span>';
-        } else {
-            // Afficher un message alternatif si l'utilisateur n'existe pas
-            echo '<span class="ml-2 d-none d-lg-inline text-white small">Utilisateur inconnu</span>';
-        }
-    } catch (PDOException $e) {
-        // Gérer les erreurs de la requête
-        echo "Erreur : " . $e->getMessage();
-    }
-} else {
-    // Afficher un message par défaut si l'email n'est pas défini dans la session
-    echo '<span class="ml-2 d-none d-lg-inline text-white small">Utilisateur</span>';
-}
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -297,7 +266,7 @@ if (isset($_SESSION['email_user'])) {
                 <a href="index.php" class="nav-link">Home</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle pe-3" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
+                <a class="nav-link dropdown-toggle pe-3" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
                 <ul class="dropdown-menu border-0 p-3 rounded-0 shadow" aria-labelledby="pages">
                   <li><a href="index.php" class="dropdown-item">About Us </a></li>
                   <li><a href="index.php" class="dropdown-item">Shop </a></li>
@@ -313,10 +282,11 @@ if (isset($_SESSION['email_user'])) {
                   <li><a href="index.php" class="dropdown-item">404 Error </a></li>
                 </ul>
               </li>
-              <li class="nav-item active">
-            <a href="formuser.php" class="nav-link"><?php echo htmlspecialchars($prenom_user); ?></a>
-          </li>
-          <li class="nav-item">
+              <li class="nav-item">
+                <a href="formuser.php" >
+                  <svg width="24" height="24"><use xlink:href="#user"></use></svg>
+                </a>
+                <li class="nav-item">
             <a href="login.php" class="nav-link">
               <!-- Affiche le prénom si défini, sinon "Utilisateur" -->
               Log in
@@ -325,7 +295,6 @@ if (isset($_SESSION['email_user'])) {
           <li class="nav-item">
             <a href="logout.php" class="nav-link">Log out</a>
           </li>
-              
             </ul>
           </div>
           
@@ -1895,6 +1864,7 @@ if (isset($_SESSION['email_user'])) {
                       <img src="images/product-thumb-12.png" alt="Product Thumbnail" class="tab-image">
                     </a>
                   </figure>
+                  
                   <div class="d-flex flex-column text-center">
                     <h3 class="fs-6 fw-normal">Fresh Oranges</h3>
                     <div>

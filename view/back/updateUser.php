@@ -1,6 +1,6 @@
 <?php
-include '../controller/userC.php';
-include_once '../model/user.php';
+include 'C:\xampp\htdocs\projectA\controller\userC.php';
+include_once 'C:\xampp\htdocs\projectA\model\user.php';
 
 $error = "";
 $success = "";

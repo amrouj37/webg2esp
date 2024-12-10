@@ -1,6 +1,7 @@
 <?php
 // Inclure le fichier de connexion à la base de données
-require_once '../config.php';
+require_once 'C:\xampp\htdocs\projectA\config.php';
+require_once 'C:\xampp\htdocs\projectA\view\back\index2.php';
 
 // Récupérer l'ordre de tri demandé (par défaut : ASC)
 $sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
@@ -27,14 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         try {
             // Vérifier si l'utilisateur existe
-            $sql = "SELECT id_user FROM user WHERE cin_user = :cin_user";
+            $sql = "SELECT * FROM user WHERE cin_user = :cin_user";
             $stmt = config::getConnexion()->prepare($sql);
             $stmt->execute([':cin_user' => $cin_user]);
             $existingUser = $stmt->fetch();
 
-            
-              if ($existingUser) {
-                // Si le mot de passe n'est pas haché, le hacher
+            if ($existingUser) {
+                // Vérifier si le mot de passe a changé
                 if (!password_verify($plain_password, $existingUser['pwd_user'])) {
                     $hashed_pwd = password_hash($plain_password, PASSWORD_BCRYPT);
                 }
@@ -69,29 +69,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+// Hachage des mots de passe manquants
 try {
-  $sql = "SELECT id_user, pwd_user FROM user";
-  $stmt = config::getConnexion()->prepare($sql);
-  $stmt->execute();
-  $users = $stmt->fetchAll();
+    $sql = "SELECT id_user, pwd_user FROM user";
+    $stmt = config::getConnexion()->prepare($sql);
+    $stmt->execute();
+    $users = $stmt->fetchAll();
 
-  foreach ($users as $user) {
-      if (!password_verify($user['pwd_user'], $user['pwd_user'])) {
-          $hashed_pwd = password_hash($user['pwd_user'], PASSWORD_BCRYPT);
-          $updateSql = "UPDATE user SET pwd_user = :pwd_user WHERE id_user = :id_user";
-          $updateStmt = config::getConnexion()->prepare($updateSql);
-          $updateStmt->execute([':pwd_user' => $hashed_pwd, ':id_user' => $user['id_user']]);
-      }
-  }
-
+    foreach ($users as $user) {
+        if (isset($user['pwd_user']) && !password_verify($user['pwd_user'], $user['pwd_user'])) {
+            $hashed_pwd = password_hash($user['pwd_user'], PASSWORD_BCRYPT);
+            $updateSql = "UPDATE user SET pwd_user = :pwd_user WHERE id_user = :id_user";
+            $updateStmt = config::getConnexion()->prepare($updateSql);
+            $updateStmt->execute([':pwd_user' => $hashed_pwd, ':id_user' => $user['id_user']]);
+        }
+    }
 } catch (Exception $e) {
-  echo "Erreur : " . $e->getMessage();
+    echo "Erreur : " . $e->getMessage();
 }
 
-
-
+// Récupération des utilisateurs avec tri
 try {
-    // Récupérer les utilisateurs triés selon l'ordre de tri demandé
     $sql = "SELECT * FROM user ORDER BY cin_user $sortOrder";
     $stmt = config::getConnexion()->prepare($sql);
     $stmt->execute();
@@ -101,72 +100,52 @@ try {
     $users = [];
 }
 
-
-
-// Préparer la requête de recherche
+// Recherche d'utilisateurs
 try {
-  if (empty($nomUserSearch) && empty($prenomUserSearch)) {
-      // Si aucun critère de recherche, récupérer tous les utilisateurs
-      $sql = "SELECT * FROM user ORDER BY cin_user $sortOrder";
-      $stmt = config::getConnexion()->prepare($sql);
-      $stmt->execute();
-  } else {
-      // Sinon, appliquer les filtres de recherche
-      $sql = "SELECT * FROM user WHERE nom_user LIKE :nom_user AND prenom_user LIKE :prenom_user ORDER BY cin_user $sortOrder";
-      $stmt = config::getConnexion()->prepare($sql);
-      $stmt->execute([
-          ':nom_user' => '%' . $nomUserSearch . '%',
-          ':prenom_user' => '%' . $prenomUserSearch . '%'
-      ]);
-  }
-  $users = $stmt->fetchAll();
+    if (empty($nomUserSearch) && empty($prenomUserSearch)) {
+        $sql = "SELECT * FROM user ORDER BY cin_user $sortOrder";
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute();
+    } else {
+        $sql = "SELECT * FROM user WHERE nom_user LIKE :nom_user AND prenom_user LIKE :prenom_user ORDER BY cin_user $sortOrder";
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute([
+            ':nom_user' => '%' . $nomUserSearch . '%',
+            ':prenom_user' => '%' . $prenomUserSearch . '%'
+        ]);
+    }
+    $users = $stmt->fetchAll();
 } catch (Exception $e) {
-  echo "Erreur : " . $e->getMessage();
-  $users = [];
+    echo "Erreur : " . $e->getMessage();
+    $users = [];
 }
 
 // Préparer les statistiques pour le graphique
 try {
-  $sql = "SELECT adress_user, COUNT(*) as count
-          FROM user
-          WHERE role_user = 'client'
-          GROUP BY adress_user";
-  $stmt = config::getConnexion()->prepare($sql);
-  $stmt->execute();
-  $statistics = $stmt->fetchAll();
+    $sql = "SELECT adress_user, COUNT(*) as count
+            FROM user
+            WHERE role_user = 'client'
+            GROUP BY adress_user";
+    $stmt = config::getConnexion()->prepare($sql);
+    $stmt->execute();
+    $statistics = $stmt->fetchAll();
 
-  
-// Calculer le nombre total de clients
-$totalClients = 0;
-foreach ($statistics as $stat) {
-    $totalClients += $stat['count'];
-}
+    $totalClients = array_sum(array_column($statistics, 'count'));
+    $clientsMoisPrecedent = 300; // Exemple
 
-// Exemple de nombre de clients du mois précédent
-$clientsMoisPrecedent = 300; // Remplacez par la valeur réelle ou récupérez-la depuis la base de données
+    $pourcentageChange = $clientsMoisPrecedent > 0
+        ? (($totalClients - $clientsMoisPrecedent) / $clientsMoisPrecedent) * 100
+        : 0;
 
-// Calculer le pourcentage de changement
-if ($clientsMoisPrecedent > 0) {
-    $pourcentageChange = (($totalClients - $clientsMoisPrecedent) / $clientsMoisPrecedent) * 100;
-} else {
-    $pourcentageChange = 0; // Evitez une division par zéro
-}
-
-// Préparer les données pour Chart.js
-$labels = [];
-$data = [];
-
-foreach ($statistics as $stat) {
-    $labels[] = $stat['adress_user']; // Adresse
-    $data[] = $stat['count'];         // Nombre de clients
-}
+    $labels = array_column($statistics, 'adress_user');
+    $data = array_column($statistics, 'count');
 } catch (Exception $e) {
-echo "Erreur : " . $e->getMessage();
-$labels = [];
-$data = [];
+    echo "Erreur : " . $e->getMessage();
+    $labels = [];
+    $data = [];
 }
-
 ?>
+
 
 
 
@@ -476,7 +455,7 @@ $data = [];
     </a>
     <div class="dropdown-divider"></div>
     <!-- Logout button directly redirects to index.php -->
-    <a class="dropdown-item" href="index.php">
+    <a class="dropdown-item" href="../front/index.php">
       <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
       Logout
     </a>
@@ -664,9 +643,9 @@ $data = [];
     <input type="submit" value="Rechercher">
 </form>
     <!-- Bouton Télécharger -->
-    <a class="btn btn-danger btn-sm" href="">
-        Télécharger le tableau <i class="fas fa-download"></i>
-    </a>
+    
+    <a href="exportToExcel.php" class="btn btn-success">Exporter en Excel</a><i class="fas fa-download"></i>
+    
     <!-- Boutons pour trier la table -->
     <div>
         <a href="?sort=asc" class="btn btn-danger btn-sm mx-1">
@@ -758,7 +737,7 @@ if (!empty($users)) {
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
+                  <a href="../front/index.php" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>

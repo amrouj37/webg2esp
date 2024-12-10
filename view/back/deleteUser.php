@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once 'C:\xampp\htdocs\projectA\config.php';
 
 // Vérifiez si un paramètre 'id_user' est passé dans l'URL
 if (isset($_GET['id_user']) && !empty($_GET['id_user'])) {

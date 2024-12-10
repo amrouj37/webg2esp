@@ -1,6 +1,6 @@
 <?php
-require_once '../config.php';
-require_once 'session.php';
+require_once 'C:\xampp\htdocs\projectA\config.php';
+require_once 'C:\xampp\htdocs\projectA\view\front\session.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

@@ -1,6 +1,6 @@
 <?php
-require_once '../config.php'; // Inclure la configuration si nécessaire
-require_once 'session.php'; // Assurez-vous que le chemin est correct
+require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration si nécessaire
+require_once 'C:\xampp\htdocs\projectA\view\front\session.php'; 
 
 // Démarrer ou reprendre la session
 if (session_status() === PHP_SESSION_NONE) {
