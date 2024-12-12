@@ -1,3 +1,16 @@
+ <?php
+require_once 'C:\xampp\htdocs\projet_adam_final\config.php'; 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+  
+    error_log(print_r($_POST, true));
+
+    if (isset($_GET['email'])&& isset($_GET['prenom'])) {
+        $email= $_GET['email'];
+        $prenom= $_GET['prenom'];
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,25 +21,36 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
-  <title>RuangAdmin - Charts</title>
+  <title>SAHA PREP-Contacter_fournisseur</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "Tn_9WtglUAW8NAyPt",
+      });
+   })();
+</script>
+
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
         <div class="sidebar-brand-icon">
           <img src="img/logo/logo2.png">
         </div>
-        <div class="sidebar-brand-text mx-3">RuangAdmin</div>
+        <div class="sidebar-brand-text mx-3">Saha Prep</div>
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -66,16 +90,16 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
           aria-controls="collapseTable">
           <i class="fas fa-fw fa-table"></i>
           <span>Tables</span>
         </a>
-        <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+        <div id="collapseTable" class="collapse show" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="simple-tables.html">Simple Tables</a>
+            <a class="collapse-item active" href="#">Modifier un fournisseur</a>
             <a class="collapse-item" href="datatables.html">DataTables</a>
           </div>
         </div>
@@ -106,7 +130,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span>
@@ -307,71 +331,53 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Charts</h1>
+            <h1 class="h3 mb-0 text-gray-800">Modifier un fournisseur</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Charts</li>
+              <li class="breadcrumb-item">Tables</li>
+              <li class="breadcrumb-item active" aria-current="page">Simple Tables</li>
             </ol>
           </div>
-          <!-- Row -->
           <div class="row">
-            <!-- Area Charts -->
-            <div class="col-lg-12">
-              <div class="card mb-4">
+            <div class="col-lg-12 mb-4">
+              <!-- Simple Tables -->
+              <div class="card">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+                 <!-- <h6 class="m-0 font-weight-bold text-primary">Ajouter un fournisseur</h6> -->
                 </div>
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                  <hr>
-                  Styling for the area chart can be found in the
-                  <code>/js/demo/chart-area-demo.js</code> file.
-                </div>
-              </div>
-            </div>
-            <!-- Bar Chart -->
-            <div class="col-lg-8">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-bar">
-                    <canvas id="myBarChart"></canvas>
-                  </div>
-                  <hr>
-                  Styling for the bar chart can be found in the <code>/js/demo/chart-bar-demo.js</code> file.
-                </div>
-              </div>
-            </div>
-            <!-- Donut Chart -->
-            <div class="col-lg-4">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
-                </div>
-                <div class="card-body">
-                  <div class="chart-pie pt-4">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <hr>
-                  Styling for the donut chart can be found in the <code>/js/demo/chart-pie-demo.js</code> file.
-                </div>
+                <div >
+                <!-- onsubmit="return validateForm(event)" -->
+                  <form  style="padding-left: 20px ;padding-right: 20px" >
+                  <div class="form-group">
+                        <label>Email du Fournisseur</label>
+                        <input type="email" name="email" value="<?= htmlspecialchars($_GET['email']); ?>" class="form-control" id="email"  required>
+          
+                    </div>
+                    <div class="form-group">
+                        <label>Prenom du fournisseur</label>
+                        <input type="text" name="prenom" value="<?= htmlspecialchars($_GET['prenom']); ?>" class="form-control" id="prenom"  required>
+          
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>message:</label>
+                        <textarea rows="10" cols="30" name="message"  class="form-control" placeholder="Message" id="message" required></textarea>
+          
+                    </div>
+                    <hr>
+                    <button id="cf" type="submit" class="btn btn-primary btn-block" onclick="sendmail()">Contacter le fournisseur</button>
+                    
+                    <hr>
+                    <a href="index.php" class="btn btn-google btn-block">Retour au Dashboard</a>
+                </form>
+                
+                 </div>
+                <div class="card-footer"></div>
               </div>
             </div>
           </div>
           <!--Row-->
-
-          <!-- Documentation Link -->
-          <div class="row">
-            <div class="col-lg-12">
-              <p class="mb-4">Chart.js is a third party plugin that is used to generate the charts in this theme. The
-                charts below have been customized - for further customization options, please visit the <a
-                  target="_blank" href="https://www.chartjs.org/docs/latest/">official Chart.js documentation</a>.</p>
-            </div>
-          </div>
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
@@ -395,7 +401,6 @@
             </div>
           </div>
 
-
         </div>
         <!---Container Fluid-->
       </div>
@@ -404,7 +409,7 @@
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+              <b><a href="#" target="_blank">GOATS</a></b>
             </span>
           </div>
         </div>
@@ -417,18 +422,64 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+  <script>
+  // function sendmail() {
+  //   console.log('Sending email...');
+
+  //   // Get input values
+  //   const email = document.getElementById('email').value;
+  //   const message = document.getElementById('message').value;
+  //   // Define parameters for EmailJS
+  //   const parms = {
+  //     email: email,
+  //     message: message
+  //   };
+
+  //   // Use EmailJS to send email
+  //   emailjs
+  //     .send("service_h41o208", "template_fag9c2r", parms)
+  //     .then(
+  //       function(response) {
+  //         // Success callback
+  //         alert("Email sent successfully!");
+  //         console.log("Success:", response);
+  //       }
+  //     );
+  // }
+
+
+function sendmail() {
+    console.log('Sending email...');
+
+    // Get input values
+    const email = document.getElementById('email').value;
+    const prenom = document.getElementById('prenom').value;
+    const message = document.getElementById('message').value;
+    console.log(email);
+    // Define parameters for EmailJS
+    const parms = {
+      prenom: prenom,
+      email: email,
+     
+      message: message
+    };
+
+    // Use EmailJS to send email
+    emailjs
+      .send("service_h41o208", "template_fag9c2r", parms)
+      .then(
+          alert("Email sent successfully!") );
+          window.location.href = "index.php"; 
+      
+  }
+</script>
 
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
-  <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
-  <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
-  <script src="js/demo/chart-bar-demo.js"></script>
-</body>
+  <script src="https://smtpjs.com/v3/smtp.js">
+</script>
 
 </body>
 

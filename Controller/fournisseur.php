@@ -29,19 +29,19 @@ public function ajouter($fournisseur){
 }
 public function supprimer($id_fournisseur)
 {
-    $sql ="DELETE FROM fournisseur WHERE id_fournisseur$id_fournisseur= :id_fournisseur$id_fournisseur";
-    $db =conn::getConnexion();
-    $query=$db->prepare($sql);
-    $query->bindvalue(':id_fournisseur$id_fournisseur',$id_fournisseur);
+    $sql = "DELETE FROM fournisseur WHERE id_fournisseur = :id_fournisseur";  // Fixed query syntax
+    $db = conn::getConnexion();
+    $query = $db->prepare($sql);
+    $query->bindValue(':id_fournisseur', $id_fournisseur);
+    
     try {
-$query->execute();
-
-    }catch(PDOException $e){
-        $e->getMessage();
+        $query->execute();
+    } catch(PDOException $e) {
+        // It is a good practice to log the error or handle it properly
+        echo "Error: " . $e->getMessage();
     }
-
-
 }
+
 public function modifier($fournisseure,$id_fournisseur){
 	$pdo=conn::getConnexion();
 	try {
