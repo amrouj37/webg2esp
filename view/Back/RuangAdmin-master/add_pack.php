@@ -2,11 +2,26 @@
 require_once 'C:/xamppp/htdocs/projetsarra/controller/ControllerPack.php';
 require_once 'C:/xamppp/htdocs/projetsarra/model/Pack.php';
 
+// Initialize the controller
+$controllerPack = new ControllerPack();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $controller = new ControllerPack();
-    $controller->add_Pack($_POST['nom_utilisateur'], $_POST['contenu'], $_POST['date_soumission'], $_POST['categorie']);
-    header("Location: liste_pack.php");
-    exit;
+    // Get the form data
+    $nom_utilisateur = $_POST['nom_utilisateur'];
+    $contenu = $_POST['contenu'];
+    $date_soumission = $_POST['date_soumission'];
+    $categorie = $_POST['categorie'];
+    $id_quiz = $_POST['id_quiz']; // Get the quiz ID from the form
+
+    // Debugging: Check the value of id_quiz
+    echo "Valeur de id_quiz : " . htmlspecialchars($id_quiz); // Pour vérifier si l'id_quiz est bien soumis
+
+    // Call the addPack method
+    $controllerPack->addPack($nom_utilisateur, $contenu, $date_soumission, $categorie, $id_quiz);
+
+    // Redirect to another page after successful submission (for example, back to the list page)
+    header("Location: index.php"); // You can change this URL to any page you want to redirect to
+    exit(); // Make sure the script stops after redirection
 }
 ?>
 
@@ -20,24 +35,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 <div class="container">
     <h1>Ajouter un Pack</h1>
-    <form method="POST">
-        <div class="mb-3">
-            <label for="nom_utilisateur" class="form-label">Nom Utilisateur</label>
-            <input type="text" class="form-control" id="nom_utilisateur" name="nom_utilisateur" required>
+    <form method="POST" action="add_pack.php">
+        <div class="form-group">
+            <label for="nom_utilisateur">Nom d'utilisateur</label>
+            <input type="text" name="nom_utilisateur" class="form-control" required>
         </div>
-        <div class="mb-3">
-            <label for="contenu" class="form-label">Contenu</label>
-            <textarea class="form-control" id="contenu" name="contenu" rows="3" required></textarea>
+        <div class="form-group">
+            <label for="contenu">Contenu</label>
+            <input type="text" name="contenu" class="form-control" required>
         </div>
-        <div class="mb-3">
-            <label for="date_soumission" class="form-label">Date de Soumission</label>
-            <input type="date" class="form-control" id="date_soumission" name="date_soumission" required>
+        <div class="form-group">
+            <label for="date_soumission">Date de Soumission</label>
+            <input type="date" name="date_soumission" class="form-control" required>
         </div>
-        <div class="mb-3">
-            <label for="categorie" class="form-label">Catégorie</label>
-            <input type="text" class="form-control" id="categorie" name="categorie" required>
+        <div class="form-group">
+            <label for="categorie">Catégorie</label>
+            <input type="text" name="categorie" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Ajouter</button>
+        <div class="form-group">
+            <label for="id_quiz">ID Quiz</label>
+            <input type="number" name="id_quiz" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter Pack</button>
     </form>
 </div>
 </body>

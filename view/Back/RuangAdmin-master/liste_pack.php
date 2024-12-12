@@ -1,9 +1,9 @@
 <?php
-// Inclure le contrôleur ControllerQuiz
+// Inclure le contrôleur ControllerPack
 include "C:/xamppp/htdocs/projetsarra/controller/ControllerPack.php";
 
 // Créer une instance du contrôleur
-$c = new pack();
+$controllerPack = new ControllerPack(); // Use ControllerPack, not Pack
 
 // Initialiser un tableau pour afficher les résultats
 $afficher = [];
@@ -11,28 +11,13 @@ $afficher = [];
 // Vérifier si le formulaire de recherche a été soumis
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
     // Récupérer la valeur du bouton de recherche
-    $btnSearch = $_POST['btnSearch'];
+    $btnSearch = "%" . $_POST['btnSearch'] . "%"; // Use LIKE with wildcards
     
-    // Préparer la requête SQL pour rechercher un quiz par titre
-    $sql = "SELECT * FROM pack WHERE titre LIKE :btnSearch"; // Recherche par titre
-    
-    // Se connecter à la base de données
-    $db = config::getConnexion();
-
-    try {
-        // Exécuter la requête préparée
-        $query = $db->prepare($sql);
-        $query->bindParam(':btnSearch', $btnSearch, PDO::PARAM_STR);
-        $query->execute();
-
-        // Récupérer tous les résultats
-        $afficher = $query->fetchAll();
-    } catch (Exception $e) {
-        die('Erreur: ' . $e->getMessage());
-    }
+    // Fetch search results based on the title
+    $afficher = $controllerPack->searchPackByTitle($btnSearch); // Call searchPackByTitle
 } else {
-    // Si aucune recherche n'est effectuée, afficher tous les quizzes
-    $afficher = $c->getAllPack(); // Methode pour obtenir tous les quizzes
+    // Si aucune recherche n'est effectuée, afficher tous les packs
+    $afficher = $controllerPack->getAllPack(); // Fetch all packs using ControllerPack
 }
 ?>
 

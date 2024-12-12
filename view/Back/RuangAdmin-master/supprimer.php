@@ -15,7 +15,7 @@ if (isset($_GET['id_quiz']) && !empty($_GET['id_quiz'])) {
 
     if ($deleteSuccess) {
         // If deletion was successful, redirect to the quiz list page
-        header('Location: liste.php');
+        header('Location: index.php');
         exit;
     } else {
         echo "<div class='alert alert-danger'>Erreur lors de la suppression du quiz.</div>";

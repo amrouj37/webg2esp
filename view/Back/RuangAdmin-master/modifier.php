@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Appelez la méthode de mise à jour
         $ControllerQuiz->modifier($quiz, $id_quiz);
-        header("Location: liste.php"); // Redirect after updating
+        header("Location: index.php"); // Redirect after updating
         exit;
     } else {
         $error = "Des informations sont manquantes.";

@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validation des données (exemple simple)
     if ($titre && $description && $date_creation && $categorie ) {
-        if ($ControllerQuiz->ajout($titre, $description, $date_creation, $categorie)) {
+        if ($ControllerQuiz->addQuiz($titre, $description, $date_creation, $categorie)) {
             // Redirection vers la page liste des cours
-            header("Location: liste.php");
+            header("Location: index.php");
             exit(); // Arrête l'exécution après la redirection
         } else {
             echo "Erreur lors de l'ajout du cours.";

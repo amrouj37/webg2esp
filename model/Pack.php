@@ -1,91 +1,68 @@
 <?php
 
-class pack {
-    private $pdo;
+class Pack {
     private $id_pack;
     private $nom_utilisateur;
     private $contenu;
     private $date_soumission;
     private $categorie;
-    
-   
-   
+    private $id_quiz; // Foreign key
 
-    public function __construct($pdo = null, $id_pack= null, $nom_utilisateur = null, $contenu = null, $date_soumission=  null, $categorie= null)  {
-        $this->pdo = $pdo ?? config::getConnexion();
+    public function __construct($id_pack = null, $nom_utilisateur = null, $contenu = null, $date_soumission = null, $categorie = null, $id_quiz = null) {
         $this->id_pack = $id_pack;
         $this->nom_utilisateur = $nom_utilisateur;
         $this->contenu = $contenu;
         $this->date_soumission = $date_soumission;
         $this->categorie = $categorie;
-      
+        $this->id_quiz = $id_quiz;
     }
 
-
-
-    public function getid_pack(){
+    public function getIdPack() {
         return $this->id_pack;
     }
-    public function setid_pack($id_pack){
-        $this->id_pack=$id_pack;
+
+    public function setIdPack($id_pack) {
+        $this->id_pack = $id_pack;
     }
-    public function getnom_utilisateur(){
+
+    public function getNomUtilisateur() {
         return $this->nom_utilisateur;
     }
-    public function setnom_utilisateur($nom_utilisateur){
-        $this->nom_utilisateur=$nom_utilisateur;
+
+    public function setNomUtilisateur($nom_utilisateur) {
+        $this->nom_utilisateur = $nom_utilisateur;
     }
-    public function getcontenu(){
+
+    public function getContenu() {
         return $this->contenu;
     }
-    public function setcontenu($contenu){
-        $this->contenu=$contenu;
+
+    public function setContenu($contenu) {
+        $this->contenu = $contenu;
     }
-    public function getdate_soumission(){
+
+    public function getDateSoumission() {
         return $this->date_soumission;
     }
-    public function setdate_soumission($date_soumission){
-        $this->date_soumission=$date_soumission;
-    }
-    public function getcategorie(){
-        return $this->date_ceation;
-    }
-    public function setcategorie($categorie){
-        $this->categorie=$categorie;
-    }
-    
 
-    public function delete_pack($id_pack) {
-        $sql = "DELETE FROM pack WHERE id_pack = :id_pack";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['id_pack' => $id_pack]);
-            return true;  // Return true if deletion was successful
-        } catch (PDOException $e) {
-            // Catch PDO exceptions and throw a custom exception
-            throw new Exception("Erreur lors de la suppression du pack : " . $e->getMessage());
-        }
+    public function setDateSoumission($date_soumission) {
+        $this->date_soumission = $date_soumission;
     }
 
-    public function getById($idp) {
-        $sql = "SELECT * FROM pack WHERE id_pack = :id_pack";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['id_pack' => $id_pack]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la récupération du pack : " . $e->getMessage());
-        }
+    public function getCategorie() {
+        return $this->categorie;
     }
 
-    public function getAllpack() {
-        $sql = "SELECT * FROM pack";
-        try {
-            $stmt = $this->pdo->query($sql);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la récupération des packs : " . $e->getMessage());
-        }
+    public function setCategorie($categorie) {
+        $this->categorie = $categorie;
+    }
+
+    public function getIdQuiz() {
+        return $this->id_quiz;
+    }
+
+    public function setIdQuiz($id_quiz) {
+        $this->id_quiz = $id_quiz;
     }
 }
 ?>

@@ -409,33 +409,13 @@
                       <button type="button" id="btnChoisirpack" class="btn btn-primary">Choisir pack</button>
                       <script>
                         document.getElementById('btnChoisirpack').addEventListener('click', function() {
-                            window.location.href = 'http://localhost/projetsarra/view/Back/RuangAdmin-master/ajout.php'; // Rediriger vers la page addQuiz.php
+                            window.location.href = 'file:///C:/xamppp/htdocs/projetsarra/view/front/organic-1.0.0/pack.html'; // Rediriger vers la page addQuiz.php
                         });
                     </script>
                     </form>
                 </section>
                 <script>
-                  // Écouteur sur le bouton "choisir pack"
-                  document.getElementById("btnChoisirpack").addEventListener("click", function () {
-                      // Sélectionner la section des packs
-                      const packSection = document.getElementById("packs");
-          
-                      // Si la section des packs existe
-                      if (packSection) {
-                          // Afficher la section
-                          packSection.style.display = "block";
-          
-                          // Supprimer la surbrillance après 1 seconde
-                          setTimeout(() => {
-                              packSection.classList.remove("highlight");
-                          }, 1000);
-          
-                          // Déplacer automatiquement vers la section des packs
-                          packSection.scrollIntoView({ behavior: "smooth" });
-                      } else {
-                          console.error("Section des packs introuvable !");
-                      }
-                  });
+               
               </script>
                 </div>
               </div>

@@ -1,38 +1,23 @@
 <?php
-// Inclure le contrôleur ControllerQuiz
+// Include the ControllerQuiz
 include "C:/xamppp/htdocs/projetsarra/controller/ControllerQuiz.php";
 
-// Créer une instance du contrôleur
-$c = new quiz();
+// Create an instance of the controller
+$controllerQuiz = new ControllerQuiz();
 
-// Initialiser un tableau pour afficher les résultats
+// Initialize the array for displaying results
 $afficher = [];
 
-// Vérifier si le formulaire de recherche a été soumis
+// Check if the search form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
-    // Récupérer la valeur du bouton de recherche
-    $btnSearch = $_POST['btnSearch'];
+    // Get the search value
+    $btnSearch = "%" . $_POST['btnSearch'] . "%"; // Use LIKE with wildcards
     
-    // Préparer la requête SQL pour rechercher un quiz par titre
-    $sql = "SELECT * FROM quiz WHERE titre LIKE :btnSearch"; // Recherche par titre
-    
-    // Se connecter à la base de données
-    $db = config::getConnexion();
-
-    try {
-        // Exécuter la requête préparée
-        $query = $db->prepare($sql);
-        $query->bindParam(':btnSearch', $btnSearch, PDO::PARAM_STR);
-        $query->execute();
-
-        // Récupérer tous les résultats
-        $afficher = $query->fetchAll();
-    } catch (Exception $e) {
-        die('Erreur: ' . $e->getMessage());
-    }
+    // Fetch search results based on the title
+    $afficher = $controllerQuiz->searchQuizByTitle($btnSearch);
 } else {
-    // Si aucune recherche n'est effectuée, afficher tous les quizzes
-    $afficher = $c->getAllQuiz(); // Methode pour obtenir tous les quizzes
+    // If no search is performed, display all quizzes
+    $afficher = $controllerQuiz->getAllQuiz();
 }
 ?>
 
@@ -96,8 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
         <div class="input-group">
             <input type="text" name="btnSearch" class="form-control" placeholder="Rechercher par titre" required>
             <button type="submit" class="btn btn-primary">Rechercher</button>
-            <button type="submit" name="exportExcel" class="btn btn-success">Exporter en Excel</button>
         </div>
+        <a href="exporterExel.php" class="btn btn-custom shadow-sm px-4 py-2">
+            <i class="fas fa-file-excel"></i> Exporter en Excel
+        </a>
     </form>
 
     <!-- Table of Quizzes -->
@@ -105,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
             <tr>
-                <th>id</th>
+                <th>ID</th>
                 <th>Titre</th>
                 <th>Description</th>
                 <th>Date de Création</th>
@@ -115,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
         </thead>
         <tbody>
             <?php
-            // Vérifier s'il y a des quizzes à afficher
+            // Check if there are any quizzes to display
             if (!empty($afficher)) {
                 foreach ($afficher as $quiz) {
                     echo "<tr>
@@ -136,10 +123,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSearch'])) {
             ?>
         </tbody>
     </table>
+    </script>
+
+   </script>   
 </div>
 
 <!-- Include Bootstrap JS and jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+
 </body>
 </html>

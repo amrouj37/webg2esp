@@ -15,7 +15,7 @@ if (isset($_GET['id_pack']) && !empty($_GET['id_pack'])) {
 
     if ($deleteSuccess) {
         // If deletion was successful, redirect to the Pack list page
-        header('Location: liste.php');
+        header('Location: index.php');
         exit;
     } else {
         echo "<div class='alert alert-danger'>Erreur lors de la suppression du Pack.</div>";
