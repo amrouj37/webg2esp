@@ -3,6 +3,16 @@
 session_start();
 require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration pour la connexion à la base de données
 require_once 'C:\xampp\htdocs\projectA\view\front\client.php';
+require_once 'C:\xampp\htdocs\projectA\view\front\session.php';
+session_start();
+
+// Vérifiez si l'utilisateur est connecté
+if (!isset($_SESSION['prenom_user'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$prenom_user = $_SESSION['prenom_user'];
 
 $prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'User';
 
@@ -316,7 +326,7 @@ if (isset($_SESSION['email_user'])) {
                 </ul>
               </li>
               <li class="nav-item active">
-            <a href="formuser.php" class="nav-link"><?php echo htmlspecialchars($prenom_user); ?></a>
+            <a href="profile.php" class="nav-link"><?php echo htmlspecialchars($prenom_user); ?></a>
           </li>
           <li class="nav-item">
             <a href="login.php" class="nav-link">

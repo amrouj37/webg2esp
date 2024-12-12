@@ -222,6 +222,38 @@ public function exportToExcel() {
     }
 }
 
+
+    public function sendWelcomeEmail($email, $prenom, $nom) {
+        $from = "no-reply@yourdomain.com"; // Remplacez par votre adresse d'expéditeur
+        $subject = "Welcome to Our Service, $prenom";
+        $message = "
+        <html>
+        <head>
+            <title>Welcome to Our Service</title>
+        </head>
+        <body>
+            <h1>Hello $prenom $nom,</h1>
+            <p>Thank you for registering with us. We are glad to have you on board!</p>
+            <p>Your account has been successfully created.</p>
+            <p>If you have any questions, feel free to contact us.</p>
+            <p>Best regards, <br> The Team</p>
+        </body>
+        </html>
+        ";
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: $from" . "\r\n";
+
+        // Envoi de l'email
+        if (mail($email, $subject, $message, $headers)) {
+            return true; // L'email a été envoyé avec succès
+        } else {
+            return false; // L'envoi de l'email a échoué
+        }
+    }
+
+
+
 }
 
 ?>

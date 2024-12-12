@@ -49,6 +49,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             header("Location: client.php");
         }
+
+        // Envoi de l'email de confirmation
+        $from = "no-reply@yourdomain.com"; // Remplacez par votre adresse d'expéditeur
+        $subject = "Welcome to Our Service, $prenom_user";
+        $message = "
+        <html>
+        <head>
+            <title>Welcome to Our Service</title>
+        </head>
+        <body>
+            <h1>Hello $prenom_user $nom_user,</h1>
+            <p>Thank you for registering with us. We are glad to have you on board!</p>
+            <p>Your account has been successfully created.</p>
+            <p>If you have any questions, feel free to contact us.</p>
+            <p>Best regards, <br> The Team</p>
+        </body>
+        </html>
+        ";
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: $from" . "\r\n";
+
+        if (mail($email_user, $subject, $message, $headers)) {
+            // L'email a été envoyé avec succès
+            // Vous pouvez ajouter un message de confirmation si nécessaire
+        } else {
+            // Gérer l'erreur si l'email n'a pas pu être envoyé
+            echo "Failed to send email to $email_user.";
+        }
+
         exit();
     } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
@@ -190,3 +220,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
   <script src="js/ajoutuser.js"></script>
+  

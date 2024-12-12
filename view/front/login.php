@@ -5,56 +5,87 @@ require_once 'C:\xampp\htdocs\projectA\view\front\session.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 
+    // Vérifier si le formulaire a été soumis
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Récupérer les informations envoyées par le formulaire
+        $email_user = $_POST['email_user'];
+        $pwd_user = $_POST['pwd_user'];
 
-// Vérifier si le formulaire a été soumis
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Récupérer les informations envoyées par le formulaire
-    $email_user = $_POST['email_user'];
-    $pwd_user = $_POST['pwd_user'];
+        // Vérifier la présence de g-recaptcha-response
+        if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+            $recaptchaSecret = '6LfItpgqAAAAANiDa0nF-p7AyFGisSNDQfQvDjdv'; // Remplacez par votre clé secrète
+            $recaptchaResponse = $_POST['g-recaptcha-response'];
 
-    // Préparer une requête SQL pour vérifier les informations utilisateur
-    $sql = "SELECT prenom_user, pwd_user FROM user WHERE email_user = :email_user";
+            $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
 
-    try {
-        $stmt = config::getConnexion()->prepare($sql);
-        $stmt->execute([':email_user' => $email_user]);
+            // Utiliser cURL pour vérifier la réponse reCAPTCHA
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $recaptchaUrl);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query([
+                'secret' => $recaptchaSecret,
+                'response' => $recaptchaResponse
+            ]));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($curl);
+            curl_close($curl);
 
-        // Récupérer le résultat
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $responseData = json_decode($response);
 
-        if ($user) {
-            // Vérifier le mot de passe
-            if (password_verify($pwd_user, $user['pwd_user'])) {
-                // Définir le rôle en fonction du prénom
-                $prenom_user = $user['prenom_user'];
-                if (strtoupper(trim($prenom_user)) === 'AICHA') {
-                    $role_user = 'admin';
-                } else {
-                    $role_user = 'client'; // Rôle par défaut
+            if ($responseData && $responseData->success) {
+                // Préparer une requête SQL pour vérifier les informations utilisateur
+                $sql = "SELECT prenom_user, pwd_user FROM user WHERE email_user = :email_user";
+
+                try {
+                    $stmt = config::getConnexion()->prepare($sql);
+                    $stmt->execute([':email_user' => $email_user]);
+
+                    // Récupérer le résultat
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($user) {
+                        // Vérifier le mot de passe
+                        if (password_verify($pwd_user, $user['pwd_user'])) {
+                            // Définir le rôle en fonction du prénom
+                            $prenom_user = $user['prenom_user'];
+                            if (strtoupper(trim($prenom_user)) === 'AICHA') {
+                                $role_user = 'admin';
+                            } else {
+                                $role_user = 'client'; // Rôle par défaut
+                            }
+
+                            // Sauvegarder le prénom et rôle dans une session
+                            $_SESSION['prenom_user'] = $prenom_user;
+                            $_SESSION['role_user'] = $role_user;
+
+                            // Rediriger en fonction du rôle
+                            if ($role_user === 'admin') {
+                                header("Location: index2.php");
+                                exit(); // Terminer le script après la redirection
+                            } else {
+                                header("Location: client.php");
+                                exit(); // Terminer le script après la redirection
+                            }
+                        } else {
+                            echo "Email ou mot de passe incorrect.";
+                        }
+                    } else {
+                        echo "Utilisateur non trouvé.";
+                    }
+                } catch (PDOException $e) {
+                    echo "Erreur : " . $e->getMessage();
                 }
-
-                // Sauvegarder le prénom et rôle dans une session
-                $_SESSION['prenom_user'] = $prenom_user;
-                $_SESSION['role_user'] = $role_user;
-
-                // Rediriger en fonction du rôle
-                if ($role_user === 'admin') {
-                    header("Location: index2.php");
-                } else {
-                    header("Location: client.php");
-                }
-                exit();
             } else {
-                echo "Email ou mot de passe incorrect.";
+                $error_message = "Veuillez vérifier le reCAPTCHA.";
+                echo $error_message;
             }
         } else {
-            echo "Email ou mot de passe incorrect.";
+            echo "Le reCAPTCHA est requis.";
         }
-    } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
     }
-}}
+}
 ?>
+
 
 
 <!DOCTYPE html>
@@ -140,8 +171,9 @@ input.form-control:focus {
             <br>
             <h1 align="center">Log in</h1>
     </header>
-
-        <form action="client.php" method="POST">
+        
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <form id="login-form"  action="login.php" method="POST">
             <div class="form-group">
                 <label for="email_user">Email</label>
                 <input type="email" id="email_user" name="email_user" class="form-control" required>
@@ -150,6 +182,8 @@ input.form-control:focus {
                 <label for="pwd_user">Mot de passe</label>
                 <input type="password" id="pwd_user" name="pwd_user" class="form-control" required>
             </div>
+             <div class="g-recaptcha" data-sitekey="6LfItpgqAAAAAHV9x9DRfY6k3nWm470ju6eAGFzJ"></div>
+
             <br>
             <button type="submit" class="btn btn-primary">Connexion</button>
             <p class="text-center" >
@@ -157,6 +191,16 @@ input.form-control:focus {
 </p>
         </form>
     </div>
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function (event) {
+            // Vérifier si reCAPTCHA est cochée
+            const recaptchaResponse = document.querySelector(".g-recaptcha-response").value;
+            if (!recaptchaResponse) {
+                event.preventDefault();
+                alert("Veuillez cocher la case 'Je ne suis pas un robot' pour continuer.");
+            }
+        });
+    </script>
 
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>

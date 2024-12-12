@@ -1,8 +1,28 @@
 <?php
 require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration de la base de données
 require_once 'C:\xampp\htdocs\projectA\model\user.php'; 
+
 // Démarrer ou reprendre la session
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+/**
+ * Fonction pour déconnecter l'utilisateur.
+ */
+function logout() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    session_unset(); // Supprime toutes les variables de session
+    session_destroy(); // Détruit la session
+    // Supprimer le cookie de session si présent
+    if (isset($_COOKIE['user_session'])) {
+        setcookie('user_session', '', time() - 3600, '/');
+    }
+    header("Location: login.php");
+    exit();
+}
 
 // Vérifier si l'utilisateur est connecté via un cookie ou une session
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_session'])) {
@@ -26,12 +46,31 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_session'])) {
             setcookie('user_session', '', time() - 3600, '/');
         }
     } catch (PDOException $e) {
+        // Gestion de l'erreur de connexion ou d'exécution de la requête
         echo "Erreur lors de la récupération de l'utilisateur : " . $e->getMessage();
     }
 }
 
+// Vérifier si l'utilisateur est toujours connecté
+function isLoggedIn() {
+    return isset($_SESSION['user_id']);
+}
 
+/**
+ * Récupérer le rôle actuel de l'utilisateur.
+ * @return string|null
+ */
+function getRole() {
+    return $_SESSION['role_user'] ?? null;
+}
 
-
-
+/**
+ * Redirige l'utilisateur si son rôle ne correspond pas.
+ * @param string $requiredRole
+ */
+function requireRole($requiredRole) {
+    if (getRole() !== $requiredRole) {
+        logout(); // Déconnecte et redirige vers la page de login
+    }
+}
 ?>
