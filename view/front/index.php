@@ -1,9 +1,31 @@
 <?php
 require_once 'C:/xampp/htdocs/QQQQQ/controller/platcontroller.php';
 require_once 'C:/xampp/htdocs/QQQQQ/controller/recettecontroller.php';
+require_once 'C:/xampp/htdocs/QQQQQ/controller/ratingcontroller.php';
+require_once 'C:/xampp/htdocs/QQQQQ/view/front/getAverageRating.php';
+require_once 'C:/xampp/htdocs/QQQQQ/view/front/displayRatingInfo.php';
+require_once 'C:/xampp/htdocs/QQQQQ/view/front/getLatestRating.php';
 
 $platController = new PlatController();
 $recetteController = new RecetteController();
+$ratingController = new RatingController();  // Create an instance of RatingController
+
+// Get the connection instance
+$conn = config::getConnexion();
+
+// Handle rating submission (POST request)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating']) && isset($_POST['id_plat'])) {
+    $rating = $_POST['rating'];
+    $id_plat = $_POST['id_plat'];
+
+    // Validate the rating
+    if ($rating >= 1 && $rating <= 5) {
+        // Call the addRating method from RatingController
+        $ratingController->addRating($id_plat, $rating); 
+    } 
+}
+
+// Fetch recettes based on ingredients or all recettes if no ingredients are specified
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['ingredients'])) {
     $ingredients = explode(',', $_POST['ingredients']);
     $ingredients = array_map('trim', $ingredients);
@@ -11,7 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['ingredients'])) {
 } else {
     $recettes = $recetteController->getRecettes();
 }
-$plats = $platController->getPlats();
+
+// Get sorted plats by average rating
+$sortedPlats = $ratingController->getSortedPlatsByRating();  // Call the new function to get sorted plats
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +55,7 @@ $plats = $platController->getPlats();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/vendor.css">
+    <link rel="stylesheet" href="css/badge.css">
     <link rel="stylesheet" type="text/css" href="style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -489,35 +516,74 @@ $plats = $platController->getPlats();
         </div>
       </div>
     </section>
-
     <section class="pb-5">
-      <div class="container-lg">
-
-        <div class="row">
-            <div class="section-header d-flex flex-wrap justify-content-between my-4">
-              <h2 class="section-title">Best selling products</h2>
-              <div class="d-flex align-items-center">
-                <a href="#" class="btn btn-primary rounded-1">View All</a>
-              </div>
+    <div class="container">
+        <div class="section-header d-flex flex-wrap justify-content-between my-4">
+            <h2 class="section-title">Best Selling Products</h2>
+            <div class="d-flex align-items-center ml-3">
+                <label for="sortBy" class="mr-2 mb-0">Sort by:</label>
+                <select id="sortBy" class="form-control" onchange="sortPlats()">
+                    <option value="ratingHighest">Highest Average Rating</option>
+                    <option value="ratingLowest">Lowest Average Rating</option>
+                    <option value="priceLowest">Lowest Price</option>
+                    <option value="priceHighest">Highest Price</option>
+                </select>
             </div>
-            <div class="row">
-
-  <?php foreach ($plats as $plat): ?>
-    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-      <div class="card h-100">
-      <img 
-  src="img/<?= htmlspecialchars($plat['url_img']); ?>" 
-  class="card-img-top img-fluid" 
-  alt="<?= htmlspecialchars($plat['nom_plat']); ?>" 
->
-        <div class="card-body text-center">
-          <h5 class="card-title"><?= htmlspecialchars($plat['nom_plat']); ?></h5>
-          <p class="card-text"><?= number_format($plat['prix_plat'], 2); ?> TND</p>
-            <button type="submit" class="btn btn-primary">Ajouter au Panier</button>
         </div>
-      </div>
+
+        <div class="row" id="platsContainer">
+            <?php 
+            $sortedPlats = $ratingController->getSortedPlatsByRating();
+            foreach ($sortedPlats as $plat): 
+                $id_plat = $plat['id_plat'];
+                $average_rating = getAverageRating($id_plat);
+                $latest_rating = getLatestRating($id_plat);
+            ?>
+            <div class="col-xl-3 col-lg-4 col-md-6 mb-4" data-rating="<?= $average_rating ?>" data-price="<?= $plat['prix_plat'] ?>">
+                <div class="card h-100">
+                    <img 
+                        src="img/<?= htmlspecialchars($plat['url_img']); ?>" 
+                        class="card-img-top img-fluid" 
+                        alt="<?= htmlspecialchars($plat['nom_plat']); ?>"
+                    >
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><?= htmlspecialchars($plat['nom_plat']); ?></h5>
+                        <p class="card-text"><?= number_format($plat['prix_plat'], 2); ?> TND</p>
+                        <?= displayRatingInfo($average_rating, $latest_rating); ?>
+                        <form action="index.php" method="POST">
+                            <div class="form-group">
+                                <label for="rating">Rate this plat:</label>
+                                <select name="rating" id="rating" class="form-control">
+                                    <option value="1">1 ⭐</option>
+                                    <option value="2">2 ⭐</option>
+                                    <option value="3">3 ⭐</option>
+                                    <option value="4">4 ⭐</option>
+                                    <option value="5">5 ⭐</option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="id_plat" value="<?= htmlspecialchars($plat['id_plat']); ?>">
+                            <button type="submit" class="btn btn-primary">Submit Rating</button>
+                        </form>
+
+                        <button class="btn btn-primary">Ajouter au Panier</button>
+                    </div>
+                </div>
+            </div>
+
+            <?php endforeach; ?>
+        </div>
     </div>
-  <?php endforeach; ?>
+</section>
+
+
+
+
+
+
+
+
+
+    </div>
 </div>
 
 <div class="container">
@@ -538,39 +604,48 @@ $plats = $platController->getPlats();
     >
   </div>
   <div class="w-100 mb-4">
-    <form method="POST" action="index.php" class="d-flex justify-content-center">
-      <input 
-        type="text" 
-        name="ingredients" 
-        class="form-control w-50" 
-        placeholder="Search by ingredients" 
-        value="<?= htmlspecialchars($_POST['ingredients'] ?? ''); ?>" 
-        required
-      >
-      <button type="submit" class="btn btn-primary mx-2">Search</button>
-    </form>
-  </div>
-  <div class="row">
-    <?php if (!empty($recettes)): ?>
-      <?php foreach ($recettes as $recette): ?>
-        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-          <div class="card h-100">
-            <div class="card-body text-center">
-              <h5 class="card-title"><?= htmlspecialchars($recette['nom_recette']); ?></h5>
-              <p class="card-text">Nombre d'ingredients: <?= number_format($recette['nombre_ing'], 0); ?> </p>
-              <p class="card-text"><?= htmlspecialchars($recette['instructions_recette']); ?></p>
-              <button type="button" class="btn btn-primary">Save Recette</button>
-            </div>
+  <form method="POST" action="index.php" class="d-flex justify-content-center">
+    <input 
+      type="text" 
+      id="ingredient-input" 
+      class="form-control w-50" 
+      placeholder="Enter an ingredient and press Enter" 
+    >
+    <input 
+      type="hidden" 
+      name="ingredients" 
+      id="hidden-ingredients" 
+      value="<?= htmlspecialchars($_POST['ingredients'] ?? ''); ?>"
+    >
+    <button type="submit" class="btn btn-primary mx-2">Search</button>
+  </form>
+</div>
+
+<div id="badge-container" class="d-flex flex-wrap"></div>
+
+
+
+<div class="row">
+  <?php if (!empty($recettes)): ?>
+    <?php foreach ($recettes as $recette): ?>
+      <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <h5 class="card-title"><?= htmlspecialchars($recette['nom_recette']); ?></h5>
+            <p class="card-text">Nombre d'ingrédients: <?= number_format($recette['nombre_ing'], 0); ?></p>
+            <p class="card-text"><?= htmlspecialchars($recette['instructions_recette']); ?></p>
+            <button type="button" class="btn btn-primary" onclick="saveRecetteAsTxt('<?= htmlspecialchars($recette['nom_recette']); ?>', '<?= htmlspecialchars($recette['instructions_recette']); ?>', '<?= htmlspecialchars($recette['nombre_ing']); ?>')">Save Recette</button>
           </div>
         </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <div class="col-12 text-center">
-        <p>No recipes found with the specified ingredients.</p>
       </div>
-    <?php endif; ?>
-  </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <div class="col-12 text-center">
+      <p>No recipes found with the specified ingredients.</p>
+    </div>
+  <?php endif; ?>
 </div>
+
 
 
     </div>
@@ -617,10 +692,7 @@ $plats = $platController->getPlats();
                   </div>
                 </div>
               </div>
-
-            </div>
-            <!-- / Banner Blocks -->
-              
+            </div>          
           </div>
         </div>
       </div>
@@ -951,6 +1023,9 @@ $plats = $platController->getPlats();
         </div>
       </div>
     </div>
+    <script src="js/ingredients.js"></script>
+    <script src="js/sort.js"></script>
+    <script src="js/save.js"></script>
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
