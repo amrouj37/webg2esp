@@ -1,22 +1,18 @@
 <?php
-require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration si nécessaire
-require_once 'C:\xampp\htdocs\projectA\view\front\session.php'; 
+require_once 'C:\xampp\htdocs\projectA\config.php'; // Chemin vers le fichier de configuration
 
-// Démarrer ou reprendre la session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
-// Détruire la session
+// Récupérer le nom de l'utilisateur avant de détruire la session (si défini)
+$prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : '';
+
+// Réinitialiser et détruire la session
+$_SESSION = [];
+unset($_SESSION['key']);
+session_unset();
 session_destroy();
 
-// Supprimer le cookie de session si existant
-if (isset($_COOKIE['user_session'])) {
-    setcookie('user_session', '', time() - 3600, '/'); // Expiration immédiate
-}
-
-// Rediriger vers la page de connexion
-header("Location: login.php");
+// Redirection vers la page de connexion avec le nom de l'utilisateur en paramètre
+header("Location: login.php?prenom_user=" . urlencode($prenom_user));
 exit();
 ?>
-

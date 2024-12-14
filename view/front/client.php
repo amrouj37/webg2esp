@@ -1,25 +1,14 @@
-
 <?php
 session_start();
-require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration pour la connexion à la base de données
-require_once 'C:\xampp\htdocs\projectA\view\front\client.php';
-require_once 'C:\xampp\htdocs\projectA\view\front\session.php';
-session_start();
+require_once 'C:/xampp/htdocs/projectA/config.php'; // Inclure la configuration pour la connexion à la base de données
 
-// Vérifiez si l'utilisateur est connecté
-if (!isset($_SESSION['prenom_user'])) {
-    header("Location: login.php");
-    exit();
-}
+// Récupérer le prénom de l'utilisateur depuis la session (ou un nom par défaut)
+$prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'user';
 
-$prenom_user = $_SESSION['prenom_user'];
+$email_user = isset($_SESSION['email_user']) ? $_SESSION['email_user'] : null; // Assurez-vous que la variable récupère bien une valeur
+$pwd_user = isset($_SESSION['pwd_user']) ? $_SESSION['pwd_user'] : null;
 
-$prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'User';
-
-// Vérifier si l'email de l'utilisateur est défini dans la session
-if (isset($_SESSION['email_user'])) {
-    $email_user = $_SESSION['email_user'];
-
+if ($email_user) { // Vérifier que l'email existe dans la session
     try {
         // Préparer la requête SQL pour récupérer le prénom de l'utilisateur
         $sql = "SELECT prenom_user FROM user WHERE email_user = :email_user";
@@ -28,6 +17,7 @@ if (isset($_SESSION['email_user'])) {
 
         // Récupérer le résultat
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
 
         if ($user) {
             // Afficher le prénom de l'utilisateur si trouvé
@@ -45,6 +35,7 @@ if (isset($_SESSION['email_user'])) {
     echo '<span class="ml-2 d-none d-lg-inline text-white small">Utilisateur</span>';
 }
 ?>
+
 
 
 <!DOCTYPE html>

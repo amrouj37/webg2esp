@@ -1,133 +1,156 @@
 <?php
-// Code PHP pour récupérer les données POST du formulaire
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nom_user = htmlspecialchars($_POST['nom_user']); // Sécurisation contre les attaques XSS
-    $prenom_user = htmlspecialchars($_POST['prenom_user']);
-    $email_user = htmlspecialchars($_POST['email_user']);
-    $cin_user = htmlspecialchars($_POST['cin_user']);
-    $adress_user = htmlspecialchars($_POST['adress_user']);
-    $num_user = htmlspecialchars($_POST['num_user']);
-    $pwd_user = htmlspecialchars($_POST['pwd_user']); // Il est recommandé de hacher le mot de passe pour la sécurité
+session_start();
+require_once 'C:\xampp\htdocs\projectA\config.php';  
+require_once 'C:\xampp\htdocs\projectA\view\front\profile.php';  // Ajout du point-virgule manquant
 
-    // Afficher les données récupérées pour vérification (pour les besoins de démonstration)
-    echo "<h2>Utilisateur créé :</h2>";
-    echo "<p>Nom : " . $nom_user . "</p>";
-    echo "<p>Prénom : " . $prenom_user . "</p>";
-    echo "<p>Email : " . $email_user . "</p>";
-    echo "<p>CIN : " . $cin_user . "</p>";
-    echo "<p>Adresse : " . $adress_user . "</p>";
-    echo "<p>Numéro : " . $num_user . "</p>";
-    echo "<p>Mot de passe : " . $pwd_user . "</p>";
+// Vérifier si l'utilisateur est connecté
+if (isset($_SESSION['id_user']) && isset($_SESSION['prenom_user'])) {
 
-    // Ici, vous pourriez ajouter du code pour enregistrer ces données dans une base de données.
+    try {
+        // Connexion à la base de données
+        $pdo = config::getConnexion();
+        
+        // Récupérer l'ID de l'utilisateur connecté
+        $id_user = $_SESSION['id_user'];
+        
+        // Requête pour récupérer les données de l'utilisateur
+        $sql = "SELECT id_user, cin_user,prenom_user, nom_user, email_user, pwd_user, role_user, password FROM utilisateur WHERE id_user = :id_user";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id_user' => $id_user]);
+        
+        // Récupérer les données de l'utilisateur
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user) {
+            // Afficher les données de l'utilisateur
+            // (Code d'affichage ici)
+        }
+    } catch (PDOException $e) {
+        echo "Erreur de connexion : " . $e->getMessage();
+    }
+} else {
+    echo "Veuillez vous connecter.";
 }
+ else {
+    // Si l'utilisateur n'existe pas dans la base de données
+    echo "User not found.";
+}
+
+ catch (PDOException $e) {
+// En cas d'erreur avec la base de données
+echo "Error: " . $e->getMessage();
+}
+
+ else {
+// Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
+header("Location: client.php");
+exit();
+}
+
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Advanced CSS Effects</title>
-    <style>
-        body {
-            background-color: #f8f9fa; /* Fond gris clair */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police plus moderne */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
 
-        .box {
-            background-color: #ffffff; /* Fond blanc pour le formulaire */
-            padding: 30px;
-            border-radius: 10px; /* Coins arrondis */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Ombre plus profonde */
-            text-align: center;
-            width: 450px; /* Largeur du formulaire */
-        }
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>User Profile</title>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background-color: #f7f7f7;
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        color: #333;
+                    }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #333; /* Couleur du texte */
-        }
+                    .profile-container {
+                        background-color: #fff;
+                        border-radius: 12px;
+                        padding: 30px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        width: 100%;
+                        max-width: 500px;
+                        box-sizing: border-box;
+                    }
 
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%; /* Largeur complète */
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc; /* Bordure grise */
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 14px; /* Taille du texte */
-        }
+                    h2 {
+                        text-align: center;
+                        font-size: 24px;
+                        color: #444;
+                        margin-bottom: 20px;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    }
 
-        button {
-            padding: 10px 20px;
-            margin: 15px 10px; /* Espacement entre les boutons */
-            border: none;
-            border-radius: 5px; /* Coins arrondis */
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease; /* Animation douce */
-            outline: none; /* Enlever la bordure par défaut */
-        }
+                    .profile-container p {
+                        font-size: 16px;
+                        margin-bottom: 15px;
+                    }
 
-        button:hover {
-            opacity: 0.9; /* Légère transparence au survol */
-        }
+                    .profile-container p strong {
+                        color: #4CAF50;
+                    }
 
-        button:nth-of-type(1) {
-            background-color: #dc3545; /* Couleur rouge pour le bouton CANCEL */
-        }
+                    .btn {
+                        display: inline-block;
+                        width: 100%;
+                        padding: 12px;
+                        background-color: #4caf50;
+                        border: none;
+                        border-radius: 8px;
+                        color: #fff;
+                        font-size: 18px;
+                        font-weight: 600;
+                        text-align: center;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease, transform 0.3s ease;
+                        margin-top: 20px;
+                    }
 
-        button:nth-of-type(1):hover {
-            background-color: #c82333; /* Couleur rouge foncé au survol */
-        }
+                    .btn:hover {
+                        background-color: #45a049;
+                        transform: translateY(-3px);
+                    }
 
-        button:nth-of-type(2) {
-            background-color: #28a745; /* Couleur verte pour le bouton DONE */
-        }
+                    .btn:active {
+                        transform: translateY(1px);
+                    }
 
-        button:nth-of-type(2):hover {
-            background-color: #218838; /* Couleur verte foncée au survol */
-        }
-    </style>
-</head>
-<body>
-    <center>
-        <div class="box">
-            <!-- Formulaire de création de compte -->
-            <form method="post" action="">
-                <label for="nom_user">Nom</label>
-                <input type="text" name="nom_user" placeholder="Nom" required>
-                
-                <label for="prenom_user">Prénom</label>
-                <input type="text" name="prenom_user" placeholder="Prénom" required>
-                
-                <label for="email_user">Email</label>
-                <input type="email" name="email_user" placeholder="Email ID" required>
-                
-                <label for="cin_user">CIN</label>
-                <input type="text" name="cin_user" placeholder="CIN" required>
-                
-                <label for="adress_user">Adresse</label>
-                <input type="text" name="adress_user" placeholder="Adresse" required>
-                
-                <label for="num_user">Numéro</label>
-                <input type="text" name="num_user" placeholder="Numéro de téléphone" required>
-                
-                <label for="pwd_user">Mot de passe</label>
-                <input type="password" name="pwd_user" placeholder="Mot de passe" required>
+                    .back-link {
+                        display: block;
+                        text-align: center;
+                        margin-top: 15px;
+                        font-size: 16px;
+                        color: #4CAF50;
+                        text-decoration: none;
+                        font-weight: 600;
+                    }
 
-                <div style="display: flex; justify-content: space-between;">
-                    <button type="reset" style="background-color: #dc3545;">CANCEL</button>
-                    <button type="submit" style="background-color: #28a745;">DONE</button>
+                    .back-link:hover {
+                        text-decoration: underline;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="profile-container">
+                    <h2>User Profile</h2>
+                    <p><strong>Username:</strong> <?php echo htmlspecialchars($user['prenom_user']); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($user['DOB']); ?></p>
+                    <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
+                    <p><strong>Role:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
+                    
+                    <!-- Button to logout -->
+                    <a href="client.php" class="btn">Logout</a>
+                    
+                    <!-- Link to return to the profile page -->
+                    <a href="client.php" class="back-link">Back to Profile</a>
                 </div>
-            </form>
-        </div>
-    </center>
-</body>
-</html>
+            </body>
+            </html>
+            

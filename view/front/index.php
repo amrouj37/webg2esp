@@ -1,7 +1,7 @@
 <?php
 
-require_once 'C:\xampp\htdocs\projectA\config.php'; // Inclure la configuration pour la connexion à la base de données
-require_once 'C:\xampp\htdocs\projectA\view\front\index.php';
+require_once 'C:/xampp/htdocs/projectA/config.php'; // Inclure la configuration pour la connexion à la base de données
+require_once 'C:/xampp/htdocs/projectA/view/front/index.php';
 
 ?>
 <!DOCTYPE html>

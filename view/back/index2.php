@@ -1,7 +1,8 @@
 <?php
+session_start();
 // Inclure le fichier de connexion à la base de données
-require_once 'C:\xampp\htdocs\projectA\config.php';
-require_once 'C:\xampp\htdocs\projectA\view\back\index2.php';
+require_once 'C:/xampp/htdocs/projectA/config.php';
+require_once 'C:/xampp/htdocs/projectA/view/back/index2.php';
 
 // Récupérer l'ordre de tri demandé (par défaut : ASC)
 $sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
