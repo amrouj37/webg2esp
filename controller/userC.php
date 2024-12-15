@@ -221,6 +221,98 @@ public function exportToExcel() {
         echo "Aucun utilisateur trouvé."; // Message si aucune donnée n'est disponible
     }
 }
+<?php
+// Inclure le fichier de connexion à la base de données
+require_once 'C:\xampp\htdocs\projectA\config.php';
+require_once 'vendor/autoload.php';  // Charger PHPMailer via Composer
+
+session_start(); // Démarrer la session
+
+// Vérifiez si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer les données du formulaire
+    $cin_user = $_POST['cin_user'];
+    $nom_user = $_POST['nom_user'];
+    $prenom_user = $_POST['prenom_user'];
+    $email_user = $_POST['email_user'];
+    $adress_user = $_POST['address_user'];
+    $num_user = $_POST['num_user'];
+    $pwd_user = $_POST['pwd_user'];
+
+    // Définir le rôle en fonction du prénom
+    if (strtoupper(trim($prenom_user)) === 'AICHA') {
+        $role_user = 'admin';
+    } else {
+        $role_user = 'client'; // Rôle par défaut
+    }
+
+    // Préparer la requête SQL pour insérer les données dans la base de données
+    $sql = "INSERT INTO user (cin_user, nom_user, prenom_user, email_user, adress_user, num_user, pwd_user, role_user) 
+            VALUES (:cin_user, :nom_user, :prenom_user, :email_user, :adress_user, :num_user, :pwd_user, :role_user)";
+
+    try {
+        // Préparer et exécuter la requête
+        $stmt = config::getConnexion()->prepare($sql);
+        $stmt->execute([
+            ':cin_user' => $cin_user,
+            ':nom_user' => $nom_user,
+            ':prenom_user' => $prenom_user,
+            ':email_user' => $email_user,
+            ':adress_user' => $adress_user,
+            ':num_user' => $num_user,
+            ':pwd_user' => password_hash($pwd_user, PASSWORD_DEFAULT),
+            ':role_user' => $role_user
+        ]);
+
+        // Sauvegarder le prénom et rôle dans une session
+        $_SESSION['prenom_user'] = $prenom_user;
+        $_SESSION['role_user'] = $role_user;
+
+        // Fonction pour envoyer l'email
+        sendConfirmationEmail($email_user, $prenom_user);
+
+        // Rediriger en fonction du rôle
+        if ($role_user === 'admin') {
+            header("Location: /projectA/view/back/index2.php");
+        } else {
+            header("Location: client.php");
+        }
+
+        exit();
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+    }
+}
+
+function sendConfirmationEmail($email_user, $prenom_user) {
+    // Créer une instance de PHPMailer
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
+
+    // Paramètres du serveur
+    $mail->isSMTP();  // Utiliser SMTP
+    $mail->Host = 'smtp.example.com'; // Exemple : smtp.gmail.com
+    $mail->SMTPAuth = true;
+    $mail->Username = 'your_email@example.com'; // Votre e-mail
+    $mail->Password = 'your_email_password'; // Votre mot de passe d'email
+    $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;  // Port SMTP
+
+    // Paramètres de l'e-mail
+    $mail->setFrom('your_email@example.com', 'Saha Prep'); // L'expéditeur
+    $mail->addAddress($email_user); // L'adresse de destination (email de l'utilisateur)
+    $mail->isHTML(true); // Utiliser le format HTML
+    $mail->Subject = 'Confirmation d\'inscription';
+    $mail->Body    = '<h1>Bienvenue sur Saha Prep, ' . htmlspecialchars($prenom_user) . '!</h1>
+                      <p>Merci de vous être inscrit sur notre site. Nous sommes heureux de vous avoir parmi nous.</p>';
+
+    // Envoyer l'e-mail
+    if($mail->send()) {
+        echo 'Un e-mail de confirmation a été envoyé.';
+    } else {
+        echo 'L\'envoi de l\'e-mail a échoué : ' . $mail->ErrorInfo;
+    }
+}
+?>
 
 
         

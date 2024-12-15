@@ -7,6 +7,10 @@ $prenom_user = isset($_SESSION['prenom_user']) ? $_SESSION['prenom_user'] : 'use
 
 $email_user = isset($_SESSION['email_user']) ? $_SESSION['email_user'] : null; // Assurez-vous que la variable récupère bien une valeur
 $pwd_user = isset($_SESSION['pwd_user']) ? $_SESSION['pwd_user'] : null;
+$cin_user = isset($_SESSION['cin_user']) ? $_SESSION['cin_user'] : null;
+$num_user = isset($_SESSION['num_user']) ? $_SESSION['num_user'] : null;
+$adress_user = isset($_SESSION['adress_user']) ? $_SESSION['adress_user'] : null;
+
 
 if ($email_user) { // Vérifier que l'email existe dans la session
     try {

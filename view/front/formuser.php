@@ -55,6 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
     }
+    
+
 }
 ?>
 
@@ -140,31 +142,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <table>
               <tr>
                   <td><label for="prenom_user" class="form-label">First Name:</label></td>
-                  <td><input type="text" class="form-control rounded-0" name="prenom_user" id="prenom_user" placeholder="first Name" required></td>
+                  <td><input type="text" class="form-control rounded-0" name="prenom_user" id="prenom_user" placeholder="first Name" required>
+                  <span id="prenom_error" style="color:red"></span><br>   
+                </td>
+                
               </tr>
               <tr>
                 <td><label for="nom_user" class="form-label">last Name:</label></td>
-                <td><input type="text" class="form-control rounded-0" name="nom_user" id="nom_user" placeholder="last Name" required></td>
+                <td><input type="text" class="form-control rounded-0" name="nom_user" id="nom_user" placeholder="last Name" required>
+                <span id="nom_error" class="error" style="color:red"></span>
+              </td>
+              
             </tr>
               <tr>
                   <td><label for="cin_user" class="form-label">CIN:</label></td>
-                  <td><input type="text" class="form-control rounded-0" name="cin_user" id="cin_user" placeholder="CIN" required></td>
+                  <td><input type="text" class="form-control rounded-0" name="cin_user" id="cin_user" placeholder="CIN" required>
+                  <span id="cin_error" class="error"style="color:red"></span>
+                </td>
+                
               </tr>
               <tr>
                   <td><label for="email_user" class="form-label">Email:</label></td>
-                  <td><input type="email" class="form-control rounded-0" name="email_user" id="email_user" placeholder="Name@gmail.com" required></td>
+                  <td><input type="email" class="form-control rounded-0" name="email_user" id="email_user" placeholder="Name@gmail.com" required>
+                  <span id="email_error" class="error" style="color:red"></span>
+                </td>
               </tr>
               <tr>
                   <td><label for="address_user" class="form-label">Address:</label></td>
-                  <td><input type="text" class="form-control rounded-0" name="address_user" id="address_user" placeholder="Address" required ></td>
+                  <td><input type="text" class="form-control rounded-0" name="address_user" id="address_user" placeholder="Address" required >
+
+                </td>
               </tr>
               <tr>
                   <td><label for="num_user" class="form-label">Phone Number:</label></td>
-                  <td><input type="tel" class="form-control rounded-0" name="num_user" id="num_user" placeholder="Phone Number" required></td>
+                  <td><input type="tel" class="form-control rounded-0" name="num_user" id="num_user" placeholder="Phone Number" required>
+                  <span id="num_error" class="error"style="color:red"></span>
+                </td>
               </tr>
               <tr>
                   <td><label for="pwd_user" class="form-label">Password:</label></td>
-                  <td><input type="password" class="form-control rounded-0" name="pwd_user" id="pwd_user" placeholder="Password" required></td>
+                  <td><input type="password" class="form-control rounded-0" name="pwd_user" id="pwd_user" placeholder="Password" required>
+                  <span id="pwd_error" class="error" style="color:red"></span>
+                </td>
               </tr>
               <tr>
   <td>
@@ -184,12 +203,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
       </form>
   </div>
-  </body>
-  
-</html>
-<script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
   <script src="js/ajoutuser.js"></script>
+  </body>
+  
+</html>
+
   

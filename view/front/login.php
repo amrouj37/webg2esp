@@ -8,30 +8,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email_user = isset($_POST['email_user']) ? trim($_POST['email_user']) : '';
     $pwd_user = isset($_POST['pwd_user']) ? trim($_POST['pwd_user']) : '';
 
-    // Vous pouvez ajouter une validation supplémentaire ici (ex: vérifier le mot de passe)
-
     // Stocker les informations de l'utilisateur dans la session
     $_SESSION['email_user'] = $email_user;
-    $sql = "SELECT prenom_user FROM user WHERE email_user = :email_user";
-    $stmt = config::getConnexion()->prepare($sql);
-    $stmt->execute([':email_user' => $email_user]);
 
-        // Récupérer le résultat
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $_SESSION['prenom_user'] = $user['prenom_user'];
-        
+    // Vérifier la présence de g-recaptcha-response
+    if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+        $recaptchaSecret = '6LfItpgqAAAAANiDa0nF-p7AyFGisSNDQfQvDjdv'; // Remplacez par votre clé secrète
+        $recaptchaResponse = $_POST['g-recaptcha-response'];
 
-    // Condition de redirection basée sur l'email utilisateur
-    if ($email_user === 'aichasaber123@gmail.com') {
-        header("Location: /projectA/view/back/index2.php");
-    } else {
-        header("Location: /projectA/view/front/client.php");
+        $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
+
+        // Utiliser cURL pour vérifier la réponse reCAPTCHA
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $recaptchaUrl);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query([
+            'secret' => $recaptchaSecret,
+            'response' => $recaptchaResponse
+        ]));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $responseData = json_decode($response);
+
+        if ($responseData && $responseData->success) {
+            $sql = "SELECT prenom_user FROM user WHERE email_user = :email_user";
+            $stmt = config::getConnexion()->prepare($sql);
+            $stmt->execute([':email_user' => $email_user]);
+
+            // Récupérer le résultat
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['prenom_user'] = $user['prenom_user'];
+
+            // Condition de redirection basée sur l'email utilisateur
+            if ($email_user === 'aichasaber123@gmail.com') {
+                header("Location: /projectA/view/back/index2.php");
+            } else {
+                header("Location: /projectA/view/front/client.php");
+            }
+            exit();
+        }
     }
-    exit();
 }
 ?>
-
-
 
 
 
@@ -54,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    
     <style>
         /* Appliquer l'arrière-plan à tout le body */
         body {
@@ -119,8 +138,8 @@ input.form-control:focus {
             <h1 align="center">Log in</h1>
     </header>
         
-   
-        <form   method="POST" action="" >
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <form id="login-form"  action="login.php" method="POST">
             <div class="form-group">
                 <label for="email_user">Email</label>
                 <input type="email" id="email_user" name="email_user" class="form-control" required>
@@ -129,7 +148,7 @@ input.form-control:focus {
                 <label for="pwd_user">Mot de passe</label>
                 <input type="password" id="pwd_user" name="pwd_user" class="form-control" required>
             </div>
-             
+             <div class="g-recaptcha" data-sitekey="6LfItpgqAAAAAHV9x9DRfY6k3nWm470ju6eAGFzJ"></div>
 
             <br>
             <button type="submit" class="btn btn-primary">Connexion</button>
@@ -138,7 +157,16 @@ input.form-control:focus {
 </p>
         </form>
     </div>
-   
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function (event) {
+            // Vérifier si reCAPTCHA est cochée
+            const recaptchaResponse = document.querySelector(".g-recaptcha-response").value;
+            if (!recaptchaResponse) {
+                event.preventDefault();
+                alert("Veuillez cocher la case 'Je ne suis pas un robot' pour continuer.");
+            }
+        });
+    </script>
 
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>

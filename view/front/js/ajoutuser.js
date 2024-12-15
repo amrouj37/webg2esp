@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
-    
+
     form.addEventListener("submit", function (e) {
-        // Empêcher la soumission si une validation échoue
         let valid = true;
 
-        // Récupération des champs
+        // Récupérer les champs
         const prenomUser = document.getElementById("prenom_user").value.trim();
         const nomUser = document.getElementById("nom_user").value.trim();
         const cinUser = document.getElementById("cin_user").value.trim();
@@ -13,53 +12,53 @@ document.addEventListener("DOMContentLoaded", function () {
         const addressUser = document.getElementById("address_user").value.trim();
         const numUser = document.getElementById("num_user").value.trim();
         const pwdUser = document.getElementById("pwd_user").value.trim();
-        const roleUser = document.getElementById("role_user").value.trim();
+
+        // Réinitialiser les messages d'erreur
+        document.getElementById("prenom_error").innerHTML = "";
+        document.getElementById("nom_error").innerHTML = "";
+        document.getElementById("cin_error").innerHTML = "";
+        document.getElementById("email_error").innerHTML = "";
+        document.getElementById("num_error").innerHTML = "";
+        document.getElementById("pwd_error").innerHTML = "";
 
         // Validation des champs
-        // 1. Prénom : lettres uniquement
+        // Prénom : lettres uniquement
         if (!/^[a-zA-Z]+$/.test(prenomUser)) {
-            alert(" First name must contain only letters !");
+            document.getElementById("prenom_error").innerHTML = "Le prénom doit contenir uniquement des lettres.";
             valid = false;
         }
 
-        // 2. Nom : lettres uniquement
+        // Nom : lettres uniquement
         if (!/^[a-zA-Z]+$/.test(nomUser)) {
-            alert(" Last name must contain only letters !");
+            document.getElementById("nom_error").innerHTML = "Le nom doit contenir uniquement des lettres.";
             valid = false;
         }
 
-        // 3. CIN : 8 chiffres uniquement
+        // CIN : 8 chiffres
         if (!/^\d{8}$/.test(cinUser)) {
-            alert("CIN must contain exactly 8 digits !");
+            document.getElementById("cin_error").innerHTML = "Le CIN doit contenir exactement 8 chiffres.";
             valid = false;
         }
 
-        // 4. Email : format valide
+        // Email : format valide
         if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailUser)) {
-            alert("Please enter a valid email address (ex: name@gmail.com).");
+            document.getElementById("email_error").innerHTML = "Veuillez saisir une adresse email valide (ex: name@gmail.com).";
             valid = false;
         }
 
-        // 5. Numéro de téléphone : 8 chiffres uniquement
+        // Numéro de téléphone : 8 chiffres
         if (!/^\d{8}$/.test(numUser)) {
-            alert("Pone number must contain exactly 8 digits !");
-            
+            document.getElementById("num_error").innerHTML = "Le numéro de téléphone doit contenir exactement 8 chiffres.";
             valid = false;
         }
 
-        // 6. Mot de passe : minimum 7 caractères (lettres et chiffres)
+        // Mot de passe : au moins 7 caractères, lettres et chiffres
         if (!/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{7,}$/.test(pwdUser)) {
-            alert("The password must contain at least 7 characters with letters and numbers !");
+            document.getElementById("pwd_error").innerHTML = "Le mot de passe doit contenir au moins 7 caractères avec des lettres et des chiffres.";
             valid = false;
         }
 
-        // 7. Rôle : lettres uniquement
-        if (!/^[a-zA-Z]+$/.test(roleUser)) {
-            alert("The role must contain only letters !");
-            valid = false;
-        }
-
-        // Empêche la soumission si des champs sont invalides
+        // Empêche la soumission du formulaire si des champs sont invalides
         if (!valid) {
             e.preventDefault();
         }
