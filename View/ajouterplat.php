@@ -16,26 +16,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $prix_plat = htmlspecialchars(trim($_POST['prix_plat']));
     $id_recette = htmlspecialchars(trim($_POST['id_recette'])); // ID from dropdown
     $url_img = htmlspecialchars(trim($_POST['url_img'])); 
+    $is_healthy = isset($_POST['is_healthy']) ? 1 : 0; // Check if checkbox is ticked
 
+    // Validate inputs
     if (empty($nom_plat) || empty($prix_plat) || empty($id_recette) || empty($url_img)) {
-        echo "Veuillez remplir tous les champs.";
+        $error_message = "Veuillez remplir tous les champs.";
+    } elseif (!is_numeric($prix_plat) || $prix_plat <= 0) {
+        $error_message = "Le prix du plat doit être un nombre positif.";
     } else {
         $plat = [
             'nom_plat' => $nom_plat,
             'prix_plat' => $prix_plat,
             'id_recette' => $id_recette,
             'url_img' => $url_img,
+            'is_healthy' => $is_healthy, // Add healthy status to the data
         ];
         $platController = new PlatController();
         $platController->ajouterPlat($plat);
+        header('Location: index.php');
+        exit();
     }
-    header('Location: index.php');
-    exit();
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
-  <meconteme="author" content="">
+  <meta name="author" content="">
   <link href="img/logo/logo.png" rel="icon">
   <title>Ajouter un Plat</title>
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -65,34 +67,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h1 class="h4 text-gray-900 mb-4">Ajouter un Plat</h1>
                   </div>
                   <form method="POST" action="ajouterplat.php">
-    <div class="form-group">
-        <label>Nom Plat</label>
-        <input type="text" class="form-control" name="nom_plat" placeholder="Enter Nom Plat">
-    </div>
-    <div class="form-group">
-        <label>Prix Plat</label>
-        <input type="number" class="form-control" name="prix_plat" placeholder="Prix Plat" step="any">
-    </div>
-    <div class="form-group">
-        <label>Recette</label>
-        <select name="id_recette" class="form-control">
-            <option value="" disabled selected>Choisir une recette</option>
-            <?php foreach ($recettes as $recette): ?>
-                <option value="<?= htmlspecialchars($recette['id_recette']); ?>">
-                    <?= htmlspecialchars($recette['nom_recette']); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>URL IMG</label>
-        <input type="text" class="form-control" name="url_img" placeholder="URL Image">
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block">Ajouter Plat</button>
-    </div>
-    <hr>
-</form>
+                    <!-- Error message display -->
+                    <?php if (isset($error_message)): ?>
+                        <div class="alert alert-danger">
+                            <?php echo $error_message; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="form-group">
+                        <label>Nom Plat</label>
+                        <input type="text" class="form-control" name="nom_plat" placeholder="Enter Nom Plat">
+                    </div>
+                    <div class="form-group">
+                        <label>Prix Plat</label>
+                        <input type="number" class="form-control" name="prix_plat" placeholder="Prix Plat" step="any">
+                    </div>
+                    <div class="form-group">
+                        <label>Recette</label>
+                        <select name="id_recette" class="form-control">
+                            <option value="" disabled selected>Choisir une recette</option>
+                            <?php foreach ($recettes as $recette): ?>
+                                <option value="<?= htmlspecialchars($recette['id_recette']); ?>">
+                                    <?= htmlspecialchars($recette['nom_recette']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>URL IMG</label>
+                        <input type="text" class="form-control" name="url_img" placeholder="URL Image">
+                    </div>
+                    <div class="form-group">
+                        <label>Check if healthy</label>
+                        <input type="checkbox" name="is_healthy">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Ajouter Plat</button>
+                    </div>
+                    <hr>
+                </form>
 
                   <hr>
                   <div class="text-center"></div>

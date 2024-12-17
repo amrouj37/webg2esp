@@ -15,12 +15,14 @@ if (isset($_GET['id'])) {
         $prix_plat = htmlspecialchars(trim($_POST['prix_plat']));
         $id_recette = htmlspecialchars(trim($_POST['id_recette']));
         $url_img = htmlspecialchars(trim($_POST['url_img']));
+        $is_healthy = isset($_POST['is_healthy']) ? 1 : 0;  // Handle is_healthy checkbox
 
         $platController->updatePlat($idPlat, [
             'nom_plat' => $nom_plat,
             'prix_plat' => $prix_plat,
             'id_recette' => $id_recette,
             'url_img' => $url_img,
+            'is_healthy' => $is_healthy,  // Include is_healthy in the update
         ]);
         header('Location: index.php');
         exit();
@@ -74,6 +76,10 @@ if (isset($_GET['id'])) {
                       <label>URL Image</label>
                       <input type="text" class="form-control" name="url_img" 
                              value="<?= htmlspecialchars($plat['url_img'] ?? '') ?>" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Check if healthy</label>
+                      <input type="checkbox" name="is_healthy" <?= isset($plat['is_healthy']) && $plat['is_healthy'] ? 'checked' : '' ?>>
                     </div>
                     <div class="form-group">
                       <button type="submit" class="btn btn-primary btn-block">Mettre à Jour</button>

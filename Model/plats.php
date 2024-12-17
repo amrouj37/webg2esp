@@ -6,13 +6,17 @@ class Plat {
     private $id_recette;
     private $url_img;
     private $disponible;
-    public function __construct($nom_plat, $prix_plat, $id_recette, $url_img, $disponible, $id_plat = null) {
+    private $is_healthy; // Add this property
+
+    // Modify the constructor to include is_healthy
+    public function __construct($nom_plat, $prix_plat, $id_recette, $url_img, $disponible, $is_healthy, $id_plat = null) {
         $this->id_plat = $id_plat;
         $this->nom_plat = $nom_plat;
         $this->prix_plat = $prix_plat;
         $this->id_recette = $id_recette;
         $this->url_img = $url_img;
         $this->disponible = $disponible;
+        $this->is_healthy = $is_healthy; // Initialize the new property
     }
 
     // Getters
@@ -40,6 +44,10 @@ class Plat {
         return $this->disponible;
     }
 
+    public function getIsHealthy() {
+        return $this->is_healthy; // Getter for is_healthy
+    }
+
     // Setters
     public function setIdPlat($id_plat) {
         $this->id_plat = $id_plat;
@@ -63,6 +71,10 @@ class Plat {
 
     public function setDisponible($disponible) {
         $this->disponible = $disponible;
+    }
+
+    public function setIsHealthy($is_healthy) {
+        $this->is_healthy = $is_healthy; // Setter for is_healthy
     }
 }
 ?>

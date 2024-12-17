@@ -13,7 +13,8 @@ require_once 'C:/xampp/htdocs/projet_adam_final/Controller/recettecontroller.php
 $recetteController = new RecetteController();
 
 // Fetch data
-$plats = $platController-> getPlats();
+$plats = $platController->getPlats();
+
 $recettes = $recetteController->getRecettes();
   ?>
   
@@ -526,8 +527,9 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
         <thead class="thead-light">
           <tr>
             <th>Nom PLAT</th>
-            <th>Prix plat</th>
+            <th>Prix Plat</th>
             <th>ID Recette</th>
+            <th>is healthy?</th> <!-- New column for is_healthy -->
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -538,6 +540,9 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
               <td><a href="#"><?= htmlspecialchars($plat['nom_plat']); ?></a></td>
               <td><?= htmlspecialchars($plat['prix_plat']); ?></td>
               <td><?= htmlspecialchars($plat['id_recette']); ?></td>
+              <td>
+    <?= $plat['is_healthy'] == 1 ? 'Oui' : 'Non'; ?>
+</td>
               <td>
                 <a href="modifierplat.php?id=<?= $plat['id_plat']; ?>" class="btn btn-sm btn-warning">
                   Modifier
@@ -555,6 +560,7 @@ $fournisseur=$fournisseurC->afficherFournisseur();?>
     </div>
   </div>
 </div>
+
 
 
 
